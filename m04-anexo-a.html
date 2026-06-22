@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M04 — Anexo A 2022: Los 93 Controles | ISOTECNIA</title>
+  <link rel="stylesheet" href="../css/isotecnia.css">
+  <style>
+    /* ---- Filtro de controles ---- */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
+      background: var(--off-white);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(46,92,138,0.1);
+    }
+    .filter-btn {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid rgba(46,92,138,0.15);
+      background: var(--white);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: var(--font-sans);
+    }
+    .filter-btn:hover { border-color: var(--steel-mid); color: var(--steel-mid); }
+    .filter-btn.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .filter-btn.active-cat { background: var(--accent); color: var(--navy); border-color: var(--accent); }
+
+    /* ---- Tabla de controles interactiva ---- */
+    .controls-table-wrap { overflow-x: auto; }
+    .controls-full-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .controls-full-table th {
+      background: var(--navy);
+      color: var(--ice);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 10px 12px;
+      text-align: left;
+      white-space: nowrap;
+    }
+    .controls-full-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid rgba(46,92,138,0.07);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+    .controls-full-table tr:hover td { background: var(--off-white); }
+    .ctrl-row { display: table-row; }
+    .ctrl-row.hidden { display: none; }
+
+    .ctrl-ref {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent-dark);
+      white-space: nowrap;
+    }
+    .ctrl-name { font-weight: 500; color: var(--navy); }
+    .ctrl-cat-pill {
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .cat-org  { background: #EEF5FF; color: #1565C0; }
+    .cat-per  { background: #FFF3E0; color: #E65100; }
+    .cat-fis  { background: #E8F5E9; color: #2E7D32; }
+    .cat-tec  { background: #F3E5F5; color: #6A1B9A; }
+
+    .tipo-pill {
+      font-size: 0.6rem;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .tipo-prev { background: #E8F5E9; color: #2E7D32; }
+    .tipo-det  { background: #FFF8E1; color: #F57F17; }
+    .tipo-cor  { background: #FCE4EC; color: #880E4F; }
+
+    .nuevo-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      background: rgba(0,200,150,0.12);
+      color: var(--accent-dark);
+      border: 1px solid rgba(0,200,150,0.3);
+      padding: 1px 6px;
+      border-radius: 100px;
+      margin-left: 4px;
+    }
+
+    /* ---- Estadísticas de filtro ---- */
+    .filter-stats {
+      font-size: 0.78rem;
+      color: var(--text-faint);
+      margin-bottom: 0.75rem;
+      font-style: italic;
+    }
+
+    /* ---- Análisis profundo por subcategoría ---- */
+    .deep-section {
+      background: var(--white);
+      border: 1px solid rgba(46,92,138,0.1);
+      border-radius: var(--radius-lg);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .deep-section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--off-white);
+      border-bottom: 1px solid rgba(46,92,138,0.08);
+    }
+    .deep-section-body { padding: 1.5rem; }
+
+    /* Search */
+    .ctrl-search {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-family: var(--font-sans);
+      border: 1px solid rgba(46,92,138,0.15);
+      border-radius: var(--radius-md);
+      outline: none;
+      background: var(--white);
+      color: var(--text-body);
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .ctrl-search:focus { border-color: var(--steel-mid); }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar-track"><div class="progress-bar-fill"></div></div>
+
+<nav class="navbar">
+  <div class="navbar__inner">
+    <a href="../index.html" class="navbar__logo">
+      <div class="navbar__logo-mark">IT</div>
+      <div>
+        <span class="navbar__logo-text">ISOTECNIA</span>
+        <span class="navbar__logo-sub">ISO 27001 + ISO 27701</span>
+      </div>
+    </a>
+    <ul class="navbar__nav">
+      <li><a href="../index.html#modulos">Módulos</a></li>
+      <li><a href="../recursos/glosario.html">Glosario</a></li>
+      <li><a href="../recursos/plantillas.html">Plantillas</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="lesson-layout">
+
+  <aside class="sidebar">
+    <p class="sidebar__module-title" style="margin-top:1rem;">M04 · Anexo A 2022</p>
+    <ul class="sidebar__nav">
+      <li><a href="#l001" data-lesson-id="m04-l001"><span class="lesson-icon">○</span> L01 · Nueva estructura Anexo A</a></li>
+      <li><a href="#l002" data-lesson-id="m04-l002"><span class="lesson-icon">○</span> L02 · Controles organizativos</a></li>
+      <li><a href="#l003" data-lesson-id="m04-l003"><span class="lesson-icon">○</span> L03 · Los 11 controles nuevos</a></li>
+      <li><a href="#l004" data-lesson-id="m04-l004"><span class="lesson-icon">○</span> L04 · Controles de personas</a></li>
+      <li><a href="#l005" data-lesson-id="m04-l005"><span class="lesson-icon">○</span> L05 · Controles físicos</a></li>
+      <li><a href="#l006" data-lesson-id="m04-l006"><span class="lesson-icon">○</span> L06 · Controles tecnológicos I</a></li>
+      <li><a href="#l007" data-lesson-id="m04-l007"><span class="lesson-icon">○</span> L07 · Controles tecnológicos II</a></li>
+      <li><a href="#l008" data-lesson-id="m04-l008"><span class="lesson-icon">○</span> L08 · Atributos de los controles</a></li>
+      <li><a href="#l009" data-lesson-id="m04-l009"><span class="lesson-icon">○</span> L09 · Cifrado y criptografía</a></li>
+      <li><a href="#l010" data-lesson-id="m04-l010"><span class="lesson-icon">○</span> L10 · Identidad y control de acceso</a></li>
+      <li><a href="#l011" data-lesson-id="m04-l011"><span class="lesson-icon">○</span> L11 · Seguridad en software</a></li>
+      <li><a href="#l012" data-lesson-id="m04-l012"><span class="lesson-icon">○</span> L12 · Gestión de incidentes</a></li>
+    </ul>
+
+    <p class="sidebar__module-title" style="margin-top:2rem;">Navegación</p>
+    <ul class="sidebar__nav">
+      <li><a href="m03-gestion-riesgos.html"><span class="lesson-icon">←</span> M03 · Gestión de riesgos</a></li>
+      <li><a href="m05-declaracion-aplicabilidad.html"><span class="lesson-icon">→</span> M05 · Declaración de Aplicabilidad</a></li>
+      <li><a href="m06-iso27701-sgpi.html"><span class="lesson-icon">→</span> M06 · ISO 27701</a></li>
+    </ul>
+
+    <div style="padding:1.5rem; margin-top:2rem; border-top:1px solid var(--navy-light);">
+      <p style="font-size:0.7rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem;">Recursos</p>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+        <li><a href="../recursos/plantillas.html#soa" style="font-size:0.8rem; color:var(--ice);">📄 Plantilla SoA 93 controles</a></li>
+        <li><a href="../recursos/referencias.html#iso27001" style="font-size:0.8rem; color:var(--ice);">🔗 ISO 27001:2022 oficial</a></li>
+        <li><a href="https://www.iso.org/standard/75652.html" target="_blank" rel="noopener noreferrer" style="font-size:0.8rem; color:var(--ice);">🔗 ISO 27002:2022 ↗</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="lesson-content">
+
+    <!-- Cabecera del módulo -->
+    <div style="background:var(--navy); border-radius:var(--radius-lg); padding:2rem 2.5rem; margin-bottom:3rem;">
+      <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem;">Módulo 04 · 12 lecciones + referencia interactiva</p>
+      <h1 style="color:var(--white); margin-bottom:0.75rem; font-size:1.7rem;">Anexo A 2022: los 93 controles</h1>
+      <p style="color:var(--ice); font-size:0.95rem; line-height:1.75; max-width:580px;">
+        El Anexo A es el catálogo completo de controles de seguridad de ISO 27001:2022. Este módulo analiza en profundidad cada categoría, los 11 controles nuevos, y proporciona la referencia interactiva completa con buscador y filtros.
+      </p>
+      <div style="display:flex; gap:0.75rem; margin-top:1.25rem; flex-wrap:wrap;">
+        <span class="tag tag--norm">ISO/IEC 27001:2022 Anexo A</span>
+        <span class="tag tag--norm">ISO/IEC 27002:2022</span>
+        <span class="tag tag--level">93 controles · 4 categorías</span>
+        <span class="tag tag--cert">11 controles nuevos en 2022</span>
+      </div>
+    </div>
+
+    <!-- ====================================================
+         L01 — NUEVA ESTRUCTURA
+         ==================================================== -->
+    <article id="l001">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lección 1 de 12</p>
+        <h1 class="lesson-title">La nueva estructura del Anexo A: 4 categorías</h1>
+        <div class="lesson-meta">
+          <span>⏱ 14 min</span>
+          <span><span class="badge badge--27001">Anexo A 2022</span></span>
+        </div>
+      </div>
+
+      <p>
+        La revisión 2022 del Anexo A supone la reestructuración más profunda del catálogo de controles desde la primera edición de ISO 27001. El cambio no es cosmético: la nueva organización en 4 categorías refleja una visión más moderna de la seguridad, orientada a <em>quién o qué</em> aplica el control, en lugar de los dominios temáticos de la versión 2013.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">De 114 controles en 14 dominios a 93 en 4 categorías</h2>
+
+      <table class="control-table">
+        <thead><tr><th>Versión 2013</th><th>→</th><th>Versión 2022</th></tr></thead>
+        <tbody>
+          <tr><td>114 controles</td><td style="text-align:center; color:var(--accent);">→</td><td>93 controles</td></tr>
+          <tr><td>14 dominios temáticos (A.5 a A.18)</td><td style="text-align:center; color:var(--accent);">→</td><td>4 categorías (5, 6, 7, 8)</td></tr>
+          <tr><td>Sin atributos</td><td style="text-align:center; color:var(--accent);">→</td><td>5 ejes de atributos por control</td></tr>
+          <tr><td>Objetivos de control explícitos</td><td style="text-align:center; color:var(--accent);">→</td><td>Propósito por control (en ISO 27002)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--info" style="margin-top:1.5rem;">
+        <p class="callout__title">¿Desaparecieron controles o se fusionaron?</p>
+        <p>La reducción de 114 a 93 controles no significa que se haya eliminado cobertura de seguridad. La mayor parte se debe a <strong>fusiones</strong> de controles relacionados de la versión 2013 en controles más amplios en 2022. Los verdaderamente nuevos son 11. Ningún ámbito de seguridad relevante ha quedado sin cobertura — de hecho, se han añadido áreas como threat intelligence, DLP, filtrado web y codificación segura.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Las 4 categorías y su lógica</h2>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem;">
+        <div style="background:var(--white); border:1px solid rgba(46,92,138,0.1); border-radius:var(--radius-lg); padding:1.25rem; border-top:3px solid #1565C0;">
+          <p style="font-size:0.7rem; font-weight:700; color:#1565C0; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem;">Categoría 5</p>
+          <p style="font-weight:700; font-size:1rem; color:var(--navy); margin-bottom:0.5rem;">Organizativos</p>
+          <p style="font-size:0.82rem; color:var(--text-muted);">37 controles. Políticas, procesos, roles y responsabilidades. Lo que la organización <em>define y decide</em>.</p>
+        </div>
+        <div style="background:var(--white); border:1px solid rgba(46,92,138,0.1); border-radius:var(--radius-lg); padding:1.25rem; border-top:3px solid #E65100;">
+          <p style="font-size:0.7rem; font-weight:700; color:#E65100; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem;">Categoría 6</p>
+          <p style="font-weight:700; font-size:1rem; color:var(--navy); margin-bottom:0.5rem;">De personas</p>
+          <p style="font-size:0.82rem; color:var(--text-muted);">8 controles. Todo el ciclo de vida del empleado y su relación con la seguridad.</p>
+        </div>
+        <div style="background:var(--white); border:1px solid rgba(46,92,138,0.1); border-radius:var(--radius-lg); padding:1.25rem; border-top:3px solid #2E7D32;">
+          <p style="font-size:0.7rem; font-weight:700; color:#2E7D32; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem;">Categoría 7</p>
+          <p style="font-weight:700; font-size:1rem; color:var(--navy); margin-bottom:0.5rem;">Físicos</p>
+          <p style="font-size:0.82rem; color:var(--text-muted);">14 controles. Seguridad de instalaciones, equipos y medios físicos.</p>
+        </div>
+        <div style="background:var(--white); border:1px solid rgba(46,92,138,0.1); border-radius:var(--radius-lg); padding:1.25rem; border-top:3px solid #6A1B9A;">
+          <p style="font-size:0.7rem; font-weight:700; color:#6A1B9A; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.5rem;">Categoría 8</p>
+          <p style="font-weight:700; font-size:1rem; color:var(--navy); margin-bottom:0.5rem;">Tecnológicos</p>
+          <p style="font-size:0.82rem; color:var(--text-muted);">34 controles. Todos los controles técnicos: endpoints, redes, aplicaciones, criptografía, monitorización.</p>
+        </div>
+      </div>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Una organización certificada bajo ISO 27001:2013 tiene una SoA con los 14 dominios del Anexo A antiguo. Al migrar a la versión 2022, ¿qué debe hacer obligatoriamente con su SoA?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l01"> Puede mantener la SoA existente; los controles son los mismos aunque con numeración diferente.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m04-l01"> Debe revisar y actualizar completamente la SoA para reflejar los 93 controles de la nueva estructura, justificar inclusiones y exclusiones bajo la nueva numeración, e incorporar los 11 controles nuevos con su evaluación de aplicabilidad.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l01"> Solo debe añadir los 11 controles nuevos a la SoA existente.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l01"> La SoA es opcional en la versión 2022; solo se requiere el plan de tratamiento del riesgo.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>La migración a ISO 27001:2022 exige una revisión completa de la SoA. No basta con un mapeo de numeraciones. Los 93 controles tienen una estructura distinta (algunos son fusiones de varios controles 2013), los 11 nuevos deben evaluarse, y la justificación de aplicabilidad debe revisarse a la luz del nuevo contexto normativo. El IAF MD 26:2023 especifica los requisitos del proceso de transición.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L02 — CONTROLES ORGANIZATIVOS
+         ==================================================== -->
+    <article id="l002">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lección 2 de 12</p>
+        <h1 class="lesson-title">Controles organizativos (5.1–5.37): análisis completo</h1>
+        <div class="lesson-meta">
+          <span>⏱ 25 min</span>
+          <span><span class="badge badge--27001">Cat. Organizativa</span></span>
+        </div>
+      </div>
+
+      <p>
+        Los 37 controles organizativos son la columna vertebral del SGSI. Definen cómo la organización estructura, decide y gestiona la seguridad de la información a nivel de política, proceso y gobernanza. Son los controles más examinados en auditoría porque reflejan el grado de madurez del sistema de gestión.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Agrupaciones temáticas dentro de los controles organizativos</h2>
+
+      <div class="deep-section">
+        <div class="deep-section-header">
+          <span class="ctrl-cat-pill cat-org" style="font-size:0.75rem; padding:4px 12px;">5.1 – 5.4</span>
+          <div>
+            <p style="font-weight:600; color:var(--navy);">Políticas y roles de seguridad</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">4 controles</p>
+          </div>
+        </div>
+        <div class="deep-section-body">
+          <table class="control-table">
+            <thead><tr><th>Ref.</th><th>Control</th><th>Tipo</th><th>Puntos clave de implementación</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="ctrl-ref">5.1</td>
+                <td class="ctrl-name">Políticas de seguridad de la información</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Política de alto nivel aprobada por la dirección + políticas temáticas específicas. Revisión periódica obligatoria. Comunicación interna y externa cuando proceda.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.2</td>
+                <td class="ctrl-name">Roles y responsabilidades de seguridad</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Asignación formal de responsabilidades a personas concretas. Segregación de funciones incompatibles. Documentación en descripción de puestos o política.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.3</td>
+                <td class="ctrl-name">Segregación de funciones</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Evitar que una sola persona controle todas las fases críticas de un proceso (ej: quien aprueba pagos no debe ejecutarlos). Matriz RACI como herramienta de gestión.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.4</td>
+                <td class="ctrl-name">Responsabilidades de la dirección</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Compromiso demostrable. Cumplimiento de la política por parte del personal. Recursos asignados formalmente.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="deep-section">
+        <div class="deep-section-header">
+          <span class="ctrl-cat-pill cat-org" style="font-size:0.75rem; padding:4px 12px;">5.5 – 5.8</span>
+          <div>
+            <p style="font-weight:600; color:var(--navy);">Contacto con autoridades, inteligencia de amenazas y gestión de proyectos</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">4 controles · incluye 1 nuevo</p>
+          </div>
+        </div>
+        <div class="deep-section-body">
+          <table class="control-table">
+            <thead><tr><th>Ref.</th><th>Control</th><th>Tipo</th><th>Puntos clave</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="ctrl-ref">5.5</td>
+                <td class="ctrl-name">Contacto con autoridades</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Relaciones formales con INCIBE-CERT, CCN-CERT, Fuerzas y Cuerpos de Seguridad, AEPD. Procedimiento de notificación de incidentes relevantes.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.6</td>
+                <td class="ctrl-name">Contacto con grupos de interés especiales</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Participación en ISACs, foros de seguridad sectoriales, comunidades de práctica. Mantenimiento del conocimiento actualizado.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.7 <span class="nuevo-badge">NUEVO</span></td>
+                <td class="ctrl-name">Inteligencia sobre amenazas (Threat Intelligence)</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Recopilar, analizar y producir inteligencia sobre amenazas relevantes. Fuentes: ENISA, CCN-CERT, MITRE ATT&CK, ISACs. Integración en la gestión del riesgo.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.8</td>
+                <td class="ctrl-name">Seguridad de la información en la gestión de proyectos</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Security by Design desde la fase de inicio. Revisión de seguridad como gate obligatorio en el ciclo de vida de proyectos. Evaluación de riesgos de proyectos.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="deep-section">
+        <div class="deep-section-header">
+          <span class="ctrl-cat-pill cat-org" style="font-size:0.75rem; padding:4px 12px;">5.9 – 5.13</span>
+          <div>
+            <p style="font-weight:600; color:var(--navy);">Gestión de activos e información</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">5 controles</p>
+          </div>
+        </div>
+        <div class="deep-section-body">
+          <table class="control-table">
+            <thead><tr><th>Ref.</th><th>Control</th><th>Tipo</th><th>Puntos clave</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="ctrl-ref">5.9</td>
+                <td class="ctrl-name">Inventario de información y otros activos asociados</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Inventario actualizado con propietario asignado. No es solo hardware y software — incluye información, servicios y activos intangibles. Base para el análisis de riesgos.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.10</td>
+                <td class="ctrl-name">Uso aceptable de la información</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Política de uso aceptable documentada, comunicada y firmada. Cubre dispositivos corporativos, BYOD, acceso remoto, redes sociales y correo.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.11</td>
+                <td class="ctrl-name">Devolución de activos</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Procedimiento de devolución al cese. Checklist de activos: dispositivos, accesos, credenciales, documentación. Coordinación con RR.HH.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.12</td>
+                <td class="ctrl-name">Clasificación de la información</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Esquema de clasificación (Público / Interno / Confidencial / Secreto o equivalente). Criterios claros. Propietario responsable de clasificar.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.13</td>
+                <td class="ctrl-name">Etiquetado de la información</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Etiquetado físico y digital coherente con la clasificación. Metadatos en documentos electrónicos. Aplicación automática donde sea posible (DLP, Microsoft Purview).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="deep-section">
+        <div class="deep-section-header">
+          <span class="ctrl-cat-pill cat-org" style="font-size:0.75rem; padding:4px 12px;">5.14 – 5.18</span>
+          <div>
+            <p style="font-weight:600; color:var(--navy);">Acceso, identidad y criptografía</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">5 controles</p>
+          </div>
+        </div>
+        <div class="deep-section-body">
+          <table class="control-table">
+            <thead><tr><th>Ref.</th><th>Control</th><th>Tipo</th><th>Puntos clave</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="ctrl-ref">5.14</td>
+                <td class="ctrl-name">Transferencia de información</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Políticas y acuerdos de transferencia (NDA, cláusulas contractuales). Cifrado en tránsito. Control de canales de transferencia (correo, FTP, mensajería).</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.15</td>
+                <td class="ctrl-name">Control de acceso</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Política de control de acceso basada en necesidad de conocer y mínimo privilegio. Gestión del ciclo de vida de accesos (provisioning, revisión, revocación).</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.16</td>
+                <td class="ctrl-name">Gestión de identidades</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Ciclo de vida completo de identidades: creación, gestión, revisión y eliminación. Cuentas de servicio y cuentas privilegiadas con controles adicionales.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.17</td>
+                <td class="ctrl-name">Información de autenticación</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Gestión segura de contraseñas y otros factores de autenticación. Política de contraseñas alineada con NIST SP 800-63. MFA para accesos críticos.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.18</td>
+                <td class="ctrl-name">Derechos de acceso</td>
+                <td><span class="tipo-pill tipo-prev">Prev.</span></td>
+                <td>Provisión, revisión, modificación y revocación de derechos. Revisiones periódicas de acceso (User Access Review). Segregación de funciones.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="deep-section">
+        <div class="deep-section-header">
+          <span class="ctrl-cat-pill cat-org" style="font-size:0.75rem; padding:4px 12px;">5.19 – 5.22</span>
+          <div>
+            <p style="font-weight:600; color:var(--navy);">Seguridad en la cadena de suministro</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">4 controles · área crítica en NIS2</p>
+          </div>
+        </div>
+        <div class="deep-section-body">
+          <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">Los ataques a la cadena de suministro (SolarWinds, XZ Utils, MOVEit) han elevado estos controles a prioridad máxima. NIS2 los exige explícitamente para entidades esenciales e importantes.</p>
+          <table class="control-table">
+            <thead><tr><th>Ref.</th><th>Control</th><th>Puntos clave</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="ctrl-ref">5.19</td>
+                <td class="ctrl-name">Seguridad de la información en las relaciones con proveedores</td>
+                <td>Política de seguridad de proveedores. Clasificación de proveedores por criticidad. Requisitos mínimos de seguridad según tipo de proveedor.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.20</td>
+                <td class="ctrl-name">Requisitos de seguridad en los acuerdos con proveedores</td>
+                <td>Cláusulas contractuales de seguridad. Derecho de auditoría. Notificación de incidentes. Requisitos de subcontratación.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.21</td>
+                <td class="ctrl-name">Gestión de la seguridad en la cadena de suministro de TIC</td>
+                <td>Gestión de riesgos en la cadena de software y hardware. Verificación de integridad. Gestión de dependencias de componentes de terceros.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.22</td>
+                <td class="ctrl-name">Seguimiento, revisión y gestión de cambios de los servicios de proveedores</td>
+                <td>Monitorización continua del desempeño de seguridad de proveedores. Gestión de cambios en servicios subcontratados. Revisión anual de acuerdos.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="deep-section">
+        <div class="deep-section-header">
+          <span class="ctrl-cat-pill cat-org" style="font-size:0.75rem; padding:4px 12px;">5.23 – 5.30</span>
+          <div>
+            <p style="font-weight:600; color:var(--navy);">Cloud, incidentes, continuidad y cumplimiento</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">8 controles · incluye 2 nuevos</p>
+          </div>
+        </div>
+        <div class="deep-section-body">
+          <table class="control-table">
+            <thead><tr><th>Ref.</th><th>Control</th><th>Nuevo</th><th>Puntos clave</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="ctrl-ref">5.23</td>
+                <td class="ctrl-name">Seguridad de la información para el uso de servicios en la nube</td>
+                <td><span class="nuevo-badge">NUEVO</span></td>
+                <td>Política de uso de servicios cloud. Evaluación de proveedores cloud (certificaciones ISO 27017, SOC2, CSA STAR). Modelo de responsabilidad compartida. Shadow IT.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.24</td>
+                <td class="ctrl-name">Planificación y preparación de la gestión de incidentes de SI</td>
+                <td></td>
+                <td>Procedimientos de detección, análisis, contención, erradicación y recuperación. Roles y escalado. Comunicación interna y externa. Ejercicios de respuesta.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.25</td>
+                <td class="ctrl-name">Evaluación y decisión sobre eventos de SI</td>
+                <td></td>
+                <td>Criterios para clasificar eventos como incidentes. Proceso de triage. Umbral de notificación. CSIRT interno o externo.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.26</td>
+                <td class="ctrl-name">Respuesta a incidentes de SI</td>
+                <td></td>
+                <td>Ejecución del plan de respuesta. Cadena de custodia de evidencias. Comunicación a autoridades (AEPD, CCN-CERT según aplique). Lecciones aprendidas.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.27</td>
+                <td class="ctrl-name">Aprendizaje de los incidentes de SI</td>
+                <td></td>
+                <td>Post-incident review obligatorio. Mejora de controles derivada de incidentes. Alimentación del proceso de gestión del riesgo.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.28</td>
+                <td class="ctrl-name">Recopilación de evidencias</td>
+                <td></td>
+                <td>Procedimiento forense básico: integridad de evidencias, cadena de custodia, admisibilidad legal. Coordinación con asesoría jurídica.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.29</td>
+                <td class="ctrl-name">Seguridad de la información durante la interrupción</td>
+                <td></td>
+                <td>Mantenimiento de controles de seguridad durante contingencias. El BCP debe incluir requisitos de seguridad de la información en modo degradado.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.30 <span class="nuevo-badge">NUEVO</span></td>
+                <td class="ctrl-name">Preparación de las TIC para la continuidad del negocio</td>
+                <td><span class="nuevo-badge">NUEVO</span></td>
+                <td>ICT Readiness for Business Continuity (IRBC). RTO y RPO para sistemas críticos. Planes de recuperación TIC alineados con el BCP. Pruebas periódicas.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="deep-section">
+        <div class="deep-section-header">
+          <span class="ctrl-cat-pill cat-org" style="font-size:0.75rem; padding:4px 12px;">5.31 – 5.37</span>
+          <div>
+            <p style="font-weight:600; color:var(--navy);">Cumplimiento legal, auditoría y protección de la privacidad</p>
+            <p style="font-size:0.8rem; color:var(--text-muted);">7 controles</p>
+          </div>
+        </div>
+        <div class="deep-section-body">
+          <table class="control-table">
+            <thead><tr><th>Ref.</th><th>Control</th><th>Puntos clave</th></tr></thead>
+            <tbody>
+              <tr>
+                <td class="ctrl-ref">5.31</td>
+                <td class="ctrl-name">Requisitos legales, estatutarios, reglamentarios y contractuales</td>
+                <td>Registro de requisitos legales aplicables (RGPD, NIS2, ENS, PCI-DSS, HIPAA...). Proceso de seguimiento de cambios legislativos. Propietario del cumplimiento.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.32</td>
+                <td class="ctrl-name">Derechos de propiedad intelectual</td>
+                <td>Gestión de licencias de software. Uso de software libre (open source) con política documentada. Propiedad intelectual generada internamente.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.33</td>
+                <td class="ctrl-name">Protección de registros</td>
+                <td>Política de retención de registros. Plazos legales de conservación. Protección contra modificación o destrucción no autorizada. WORM storage para registros críticos.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.34</td>
+                <td class="ctrl-name">Privacidad y protección de la PII</td>
+                <td>Política de privacidad alineada con RGPD. Registro de actividades de tratamiento. Coordinación con el DPO. Enlace directo con ISO 27701.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.35</td>
+                <td class="ctrl-name">Revisión independiente de la seguridad de la información</td>
+                <td>Auditoría independiente periódica (puede ser tercera parte). Complementa la auditoría interna. Resultados a la alta dirección.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.36</td>
+                <td class="ctrl-name">Cumplimiento de las políticas, reglas y normas de SI</td>
+                <td>Revisión del cumplimiento de los controles por los propietarios. No es solo auditoría formal — es verificación continua del day-to-day.</td>
+              </tr>
+              <tr>
+                <td class="ctrl-ref">5.37</td>
+                <td class="ctrl-name">Procedimientos de operación documentados</td>
+                <td>Documentación de procedimientos operativos críticos: gestión de backups, gestión de cambios, monitorización, gestión de incidentes. Accesibles para quienes los necesitan.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L03 — LOS 11 CONTROLES NUEVOS
+         ==================================================== -->
+    <article id="l003">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lección 3 de 12</p>
+        <h1 class="lesson-title">Los 11 controles nuevos en 2022: análisis en profundidad</h1>
+        <div class="lesson-meta">
+          <span>⏱ 22 min</span>
+          <span><span class="badge badge--27001">Controles nuevos 2022</span></span>
+        </div>
+      </div>
+
+      <p>
+        Los 11 controles genuinamente nuevos en la versión 2022 no existían en ninguna forma en el Anexo A de 2013. Reflejan la evolución del panorama tecnológico y de amenazas de la última década: cloud computing, trabajo remoto, ataques a la cadena de suministro, exfiltración de datos y amenazas sofisticadas persistentes.
+      </p>
+
+      <div class="callout callout--norm" style="margin-top:1rem; margin-bottom:2rem;">
+        <p class="callout__title">Implicación para la transición</p>
+        <p>Estos 11 controles son los que mayor esfuerzo de implementación suelen requerir en las organizaciones que migran desde la versión 2013, precisamente porque no hay ninguna implementación previa sobre la que construir. La SoA debe incluirlos todos con evaluación de aplicabilidad explícita.</p>
+      </div>
+
+      <table class="control-table">
+        <thead>
+          <tr><th>Ref.</th><th>Control</th><th>Cat.</th><th>Análisis de implementación</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="ctrl-ref">5.7</td>
+            <td class="ctrl-name">Inteligencia sobre amenazas</td>
+            <td><span class="ctrl-cat-pill cat-org">Org.</span></td>
+            <td>Exige un proceso formal de recopilación y análisis de threat intelligence. En organizaciones pequeñas puede satisfacerse con suscripción a feeds gratuitos (CCN-CERT, ENISA) y revisión mensual. En organizaciones grandes: plataforma TIP, integración con SIEM, equipo dedicado.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">5.23</td>
+            <td class="ctrl-name">Seguridad en servicios cloud</td>
+            <td><span class="ctrl-cat-pill cat-org">Org.</span></td>
+            <td>El control más relevante para la mayoría de organizaciones hoy. Exige: política de uso de cloud aprobada, inventario de servicios cloud (combatir shadow IT), evaluación de proveedores, comprensión del modelo de responsabilidad compartida y cláusulas contractuales de seguridad.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">5.30</td>
+            <td class="ctrl-name">Preparación TIC para continuidad</td>
+            <td><span class="ctrl-cat-pill cat-org">Org.</span></td>
+            <td>Vincula el BCP con los sistemas TIC. Requiere definir RTO (Recovery Time Objective) y RPO (Recovery Point Objective) para sistemas críticos, planes de recuperación TIC documentados, y pruebas periódicas de recuperación. ISO 22301 es la norma de referencia complementaria.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.4</td>
+            <td class="ctrl-name">Monitorización de seguridad física</td>
+            <td><span class="ctrl-cat-pill cat-fis">Fís.</span></td>
+            <td>CCTV, sistemas de alarma y control de acceso físico con registro de eventos. Los registros deben conservarse con protección adecuada. Monitorización activa (no solo grabación pasiva) en zonas de alta sensibilidad.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">8.9</td>
+            <td class="ctrl-name">Gestión de la configuración</td>
+            <td><span class="ctrl-cat-pill cat-tec">Tec.</span></td>
+            <td>Configuration Management Database (CMDB) o equivalente. Baselines de configuración segura para sistemas críticos (CIS Benchmarks como referencia). Control de cambios sobre configuraciones. Detección de desvíos de baseline.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">8.10</td>
+            <td class="ctrl-name">Eliminación de información</td>
+            <td><span class="ctrl-cat-pill cat-tec">Tec.</span></td>
+            <td>Borrado seguro según sensibilidad: sobreescritura para HDD, destrucción física o borrado criptográfico para SSD y dispositivos móviles. Política de retención y destrucción. Certificados de destrucción de soportes. Especialmente relevante para RGPD (derecho al olvido).</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">8.11</td>
+            <td class="ctrl-name">Enmascaramiento de datos (Data Masking)</td>
+            <td><span class="ctrl-cat-pill cat-tec">Tec.</span></td>
+            <td>Técnicas: seudonimización, anonimización, tokenización, truncación. Obligatorio en entornos de desarrollo/pruebas que usan datos de producción. Herramientas: Delphix, Informatica Data Masking, scripts ad hoc.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">8.12</td>
+            <td class="ctrl-name">Prevención de fuga de datos (DLP)</td>
+            <td><span class="ctrl-cat-pill cat-tec">Tec.</span></td>
+            <td>Controles para detectar y prevenir la exfiltración de información sensible. Herramientas DLP en endpoints, correo y red. Integración con clasificación de información (5.12/5.13). Microsoft Purview, Forcepoint DLP, Symantec DLP como ejemplos de mercado.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">8.16</td>
+            <td class="ctrl-name">Monitorización de actividades</td>
+            <td><span class="ctrl-cat-pill cat-tec">Tec.</span></td>
+            <td>Monitorización de redes, sistemas y aplicaciones para detectar comportamientos anómalos. SIEM (Security Information and Event Management) como tecnología central. Definición de casos de uso de detección. Retención de logs según requisitos legales (mínimo 1 año para NIS2).</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">8.23</td>
+            <td class="ctrl-name">Filtrado web</td>
+            <td><span class="ctrl-cat-pill cat-tec">Tec.</span></td>
+            <td>Bloqueo de categorías de sitios maliciosos, phishing y contenido inapropiado. Proxy web con categorización. DNS filtering (Cisco Umbrella, Cloudflare Gateway). Política de uso aceptable de internet alineada con el control.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">8.28</td>
+            <td class="ctrl-name">Codificación segura</td>
+            <td><span class="ctrl-cat-pill cat-tec">Tec.</span></td>
+            <td>Principios de secure coding integrados en el ciclo de vida de desarrollo (SDLC). Referencias: OWASP Top 10, OWASP ASVS, NIST SSDF. Code review de seguridad, SAST/DAST herramientas, formación en secure coding para desarrolladores.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Una empresa de desarrollo de software usa datos reales de clientes en sus entornos de testing. ¿Qué control nuevo del Anexo A 2022 aborda directamente este riesgo, y qué técnica específica recomienda?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l03"> Control 8.12 (DLP) — implementar herramientas de prevención de fuga en el entorno de testing.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m04-l03"> Control 8.11 (Data Masking) — aplicar seudonimización, tokenización o anonimización para que los datos de testing no contengan información real identificable.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l03"> Control 8.28 (Secure Coding) — aplicar principios de codificación segura en el acceso a datos de testing.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l03"> Control 8.9 (Gestión de configuración) — segregar el entorno de testing del de producción.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>El control 8.11 (Data Masking) aborda explícitamente el uso de datos de producción en entornos no productivos. La seudonimización sustituye identificadores directos por pseudónimos; la tokenización reemplaza datos sensibles por tokens sin valor fuera del sistema; la anonimización elimina toda posibilidad de reidentificación. Adicionalmente, este riesgo también es relevante bajo el RGPD — procesar datos reales en testing sin base legal adecuada puede ser una infracción.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L04 — CONTROLES DE PERSONAS
+         ==================================================== -->
+    <article id="l004">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lección 4 de 12</p>
+        <h1 class="lesson-title">Controles de personas (6.1–6.8)</h1>
+        <div class="lesson-meta">
+          <span>⏱ 14 min</span>
+          <span><span class="badge badge--27001">Cat. Personas</span></span>
+        </div>
+      </div>
+
+      <p>Los 8 controles de personas cubren el ciclo de vida completo de la relación entre la organización y sus empleados, contratistas y cualquier persona con acceso a sus activos de información. Son los controles más directamente vinculados con el factor humano — origen del 80% de los incidentes de seguridad según la mayoría de estadísticas del sector.</p>
+
+      <table class="control-table" style="margin-top:1.5rem;">
+        <thead><tr><th>Ref.</th><th>Control</th><th>Fase</th><th>Evidencias clave en auditoría</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="ctrl-ref">6.1</td>
+            <td class="ctrl-name">Selección</td>
+            <td style="white-space:nowrap; font-size:0.78rem; color:var(--text-faint);">Pre-empleo</td>
+            <td>Verificación de antecedentes (según legislación), verificación de referencias, comprobación de cualificaciones. Debe ser proporcional al riesgo del puesto. RGPD: base legal para verificaciones.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">6.2</td>
+            <td class="ctrl-name">Términos y condiciones del empleo</td>
+            <td style="white-space:nowrap; font-size:0.78rem; color:var(--text-faint);">Incorporación</td>
+            <td>Contrato o acuerdo que incluya: obligaciones de confidencialidad, responsabilidades de seguridad, consecuencias del incumplimiento. Firma antes del acceso a sistemas.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">6.3</td>
+            <td class="ctrl-name">Toma de conciencia, educación y formación en SI</td>
+            <td style="white-space:nowrap; font-size:0.78rem; color:var(--text-faint);">Durante empleo</td>
+            <td>Programa de concienciación estructurado. Formación en incorporación + formación periódica. Registro de asistencia obligatorio. Incluye simulaciones de phishing. Actualización ante nuevas amenazas.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">6.4</td>
+            <td class="ctrl-name">Proceso disciplinario</td>
+            <td style="white-space:nowrap; font-size:0.78rem; color:var(--text-faint);">Durante empleo</td>
+            <td>Procedimiento formal documentado para incumplimientos de seguridad. Proporcional a la gravedad. Coordinación con RR.HH. y asesoría jurídica. Comunicado al personal.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">6.5</td>
+            <td class="ctrl-name">Responsabilidades tras el cese o cambio de empleo</td>
+            <td style="white-space:nowrap; font-size:0.78rem; color:var(--text-faint);">Cese</td>
+            <td>Obligaciones de confidencialidad que se extienden más allá del cese (cláusulas post-contractuales). Devolución de activos. Revocación inmediata de accesos.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">6.6</td>
+            <td class="ctrl-name">Acuerdos de confidencialidad y no divulgación</td>
+            <td style="white-space:nowrap; font-size:0.78rem; color:var(--text-faint);">Transversal</td>
+            <td>NDA firmados por empleados, contratistas y terceros con acceso a información confidencial. Revisión periódica para asegurar vigencia. Registro de NDAs firmados.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">6.7</td>
+            <td class="ctrl-name">Trabajo a distancia</td>
+            <td style="white-space:nowrap; font-size:0.78rem; color:var(--text-faint);">Durante empleo</td>
+            <td>Política de teletrabajo: requisitos de seguridad del entorno doméstico, uso obligatorio de VPN, cifrado de dispositivos, prohibición de redes wifi públicas sin VPN, gestión de pantallas en entornos no privados.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">6.8</td>
+            <td class="ctrl-name">Notificación de eventos de SI</td>
+            <td style="white-space:nowrap; font-size:0.78rem; color:var(--text-faint);">Transversal</td>
+            <td>Canal de reporte claro y accesible para todos los empleados. Cultura "no blame" que fomente la notificación temprana. Tiempo de respuesta definido. Feedback al notificador.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">El offboarding: el proceso más frecuentemente deficiente</p>
+        <p>Los controles 6.5 y 5.11 (devolución de activos) junto con el proceso de revocación de accesos forman el trío del offboarding. Es uno de los hallazgos más frecuentes en auditoría: cuentas activas de exempleados, accesos VPN sin revocar, dispositivos no devueltos. La coordinación entre IT, RR.HH. y el responsable del área es crítica y debe estar procedimentada con plazos concretos.</p>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L05 — CONTROLES FÍSICOS
+         ==================================================== -->
+    <article id="l005">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lección 5 de 12</p>
+        <h1 class="lesson-title">Controles físicos (7.1–7.14)</h1>
+        <div class="lesson-meta">
+          <span>⏱ 14 min</span>
+          <span><span class="badge badge--27001">Cat. Física</span></span>
+        </div>
+      </div>
+
+      <p>Los 14 controles físicos protegen la información y los activos de TI frente a accesos físicos no autorizados, interferencias y daños ambientales. Con la proliferación del cloud y el trabajo remoto, la seguridad física a veces se subestima — pero una brecha física puede ser tan devastadora como una brecha lógica.</p>
+
+      <table class="control-table" style="margin-top:1.5rem;">
+        <thead><tr><th>Ref.</th><th>Control</th><th>Nuevo</th><th>Puntos clave</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="ctrl-ref">7.1</td>
+            <td class="ctrl-name">Perímetros de seguridad física</td>
+            <td></td>
+            <td>Definición de zonas de seguridad con niveles crecientes de control (zonas públicas, privadas, restringidas, seguras). Barreras físicas: vallas, paredes, puertas reforzadas.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.2</td>
+            <td class="ctrl-name">Controles de entrada física</td>
+            <td></td>
+            <td>Control de acceso por tarjeta, biometría o PIN. Registro de entradas y salidas. Visitantes acompañados en zonas restringidas. Revisión periódica de autorizaciones.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.3</td>
+            <td class="ctrl-name">Seguridad de oficinas, despachos e instalaciones</td>
+            <td></td>
+            <td>Diseño de la distribución de oficinas considerando la seguridad. Almacenamiento seguro de documentación sensible. Política de escritorio y pantalla limpia.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.4 <span class="nuevo-badge">NUEVO</span></td>
+            <td class="ctrl-name">Monitorización de la seguridad física</td>
+            <td><span class="nuevo-badge">NUEVO</span></td>
+            <td>CCTV con cobertura adecuada y retención de grabaciones. Sistemas de detección de intrusión. Alarmas. Monitorización activa en zonas de alta sensibilidad (CPD, salas de servidores).</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.5</td>
+            <td class="ctrl-name">Protección contra amenazas físicas y ambientales</td>
+            <td></td>
+            <td>Protección frente a desastres naturales, incendio, inundación. Detección y supresión de incendios. Sistemas antihumedad. Ubicación estratégica del CPD.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.6</td>
+            <td class="ctrl-name">Trabajo en áreas seguras</td>
+            <td></td>
+            <td>Procedimientos para el trabajo en zonas de alta seguridad. Principio de mínima presencia. Prohibición de dispositivos no autorizados. Supervisión del trabajo de terceros.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.7</td>
+            <td class="ctrl-name">Escritorio limpio y pantalla limpia</td>
+            <td></td>
+            <td>Política documentada y comunicada. Documentos sensibles guardados al ausentarse. Bloqueo automático de pantalla. Destrucción de documentos en papel (trituradoras).</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.8</td>
+            <td class="ctrl-name">Ubicación y protección de los equipos</td>
+            <td></td>
+            <td>Equipos protegidos de acceso no autorizado, daños ambientales y electromagnéticos. Servidores en bastidores cerrados con llave. Pantallas orientadas para evitar shoulder surfing.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.9</td>
+            <td class="ctrl-name">Seguridad de los activos fuera de las instalaciones</td>
+            <td></td>
+            <td>Portátiles y dispositivos móviles fuera de la oficina: cifrado obligatorio, política de transporte, no dejarlos desatendidos en vehículos visibles.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.10</td>
+            <td class="ctrl-name">Medios de almacenamiento</td>
+            <td></td>
+            <td>Gestión del ciclo de vida de soportes: adquisición, uso, almacenamiento, transporte y destrucción segura. Inventario de soportes portátiles. Cifrado de USB corporativos.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.11</td>
+            <td class="ctrl-name">Servicios de suministro</td>
+            <td></td>
+            <td>SAI (UPS) para sistemas críticos. Generadores de respaldo. Redundancia de suministro eléctrico. Pruebas periódicas de los sistemas de respaldo.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.12</td>
+            <td class="ctrl-name">Seguridad del cableado</td>
+            <td></td>
+            <td>Cableado de red y eléctrico protegido de interceptación o daño. Cableado etiquetado. Separación física de cableado de red y eléctrico. Salas de comunicaciones con acceso controlado.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.13</td>
+            <td class="ctrl-name">Mantenimiento de los equipos</td>
+            <td></td>
+            <td>Mantenimiento según especificaciones del fabricante. Registro de mantenimiento. Autorización para mantenimiento externo. Verificación de integridad tras mantenimiento.</td>
+          </tr>
+          <tr>
+            <td class="ctrl-ref">7.14</td>
+            <td class="ctrl-name">Eliminación o reutilización segura de los equipos</td>
+            <td></td>
+            <td>Borrado seguro antes de reutilización o baja. Destrucción física para equipos con información muy sensible. Certificado de destrucción. Proceso de baja en el inventario de activos.</td>
+          </tr>
+        </tbody>
+      </table>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L06 + L07 — CONTROLES TECNOLÓGICOS
+         ==================================================== -->
+    <article id="l006">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lecciones 6 y 7 de 12</p>
+        <h1 class="lesson-title">Controles tecnológicos (8.1–8.34): análisis completo</h1>
+        <div class="lesson-meta">
+          <span>⏱ 30 min</span>
+          <span><span class="badge badge--27001">Cat. Tecnológica</span></span>
+        </div>
+      </div>
+
+      <p>
+        Los 34 controles tecnológicos son los que más directamente ocupan al equipo de operaciones de seguridad. Cubren desde la gestión de endpoints hasta la seguridad en el ciclo de vida del software, pasando por criptografía, redes, monitorización y gestión de vulnerabilidades.
+      </p>
+
+      <div class="deep-section" id="l007">
+        <div class="deep-section-header">
+          <span class="ctrl-cat-pill cat-tec" style="font-size:0.75rem; padding:4px 12px;">8.1 – 8.8</span>
+          <div><p style="font-weight:600; color:var(--navy);">Endpoints, acceso privilegiado y gestión de vulnerabilidades</p></div>
+        </div>
+        <div class="deep-section-body">
+          <table class="control-table">
+            <thead><tr><th>Ref.</th><th>Control</th><th>Puntos clave</th></tr></thead>
+            <tbody>
+              <tr><td class="ctrl-ref">8.1</td><td class="ctrl-name">Dispositivos de usuario final</td><td>Política de seguridad de endpoints. MDM/EMM para gestión centralizada. Cifrado de disco completo. EDR. Gestión de BYOD.</td></tr>
+              <tr><td class="ctrl-ref">8.2</td><td class="ctrl-name">Derechos de acceso privilegiado</td><td>Inventario de cuentas privilegiadas. PAM (Privileged Access Management). Just-in-time access. Separación de cuentas privilegiadas y cuentas de uso diario. Registro de actividad de cuentas privilegiadas.</td></tr>
+              <tr><td class="ctrl-ref">8.3</td><td class="ctrl-name">Restricción del acceso a la información</td><td>Control de acceso basado en roles (RBAC). Mínimo privilegio. Revisión periódica de permisos. Controles en bases de datos y aplicaciones críticas.</td></tr>
+              <tr><td class="ctrl-ref">8.4</td><td class="ctrl-name">Acceso al código fuente</td><td>Control de acceso al repositorio de código. Branch protections. Code signing. Separación de entornos (dev/test/prod). Gestión de dependencias de terceros.</td></tr>
+              <tr><td class="ctrl-ref">8.5</td><td class="ctrl-name">Autenticación segura</td><td>MFA obligatorio para accesos críticos y remotos. Políticas de contraseña alineadas con NIST SP 800-63B. SSO con gestión centralizada. Protocolos modernos (OAuth 2.0, SAML, FIDO2).</td></tr>
+              <tr><td class="ctrl-ref">8.6</td><td class="ctrl-name">Gestión de la capacidad</td><td>Monitorización de uso de recursos. Previsión de capacidad. Alertas de umbral. Especialmente crítico para servicios cloud (costes y disponibilidad).</td></tr>
+              <tr><td class="ctrl-ref">8.7</td><td class="ctrl-name">Protección contra malware</td><td>Antimalware/EDR en todos los endpoints y servidores. Actualización automática de firmas. Escaneo de ficheros entrantes. Gestión centralizada. Respuesta a detecciones.</td></tr>
+              <tr><td class="ctrl-ref">8.8</td><td class="ctrl-name">Gestión de vulnerabilidades técnicas</td><td>Proceso de gestión de vulnerabilidades: descubrimiento, evaluación (CVSS), priorización, remediación, verificación. SLA de parcheo según criticidad. Herramientas: Tenable, Qualys, OpenVAS.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="deep-section" style="margin-top:1.5rem;">
+        <div class="deep-section-header">
+          <span class="ctrl-cat-pill cat-tec" style="font-size:0.75rem; padding:4px 12px;">8.9 – 8.16</span>
+          <div><p style="font-weight:600; color:var(--navy);">Configuración, datos, auditoría y monitorización</p><p style="font-size:0.8rem; color:var(--text-muted);">Incluye 4 controles nuevos: 8.9, 8.10, 8.11, 8.12, 8.16</p></div>
+        </div>
+        <div class="deep-section-body">
+          <table class="control-table">
+            <thead><tr><th>Ref.</th><th>Control</th><th>Nuevo</th><th>Puntos clave</th></tr></thead>
+            <tbody>
+              <tr><td class="ctrl-ref">8.9</td><td class="ctrl-name">Gestión de la configuración</td><td><span class="nuevo-badge">NUEVO</span></td><td>CMDB. CIS Benchmarks como baseline. Infrastructure as Code (IaC) para configuración reproducible. Detección de configuration drift. Herramientas: Ansible, Puppet, Chef.</td></tr>
+              <tr><td class="ctrl-ref">8.10</td><td class="ctrl-name">Eliminación de información</td><td><span class="nuevo-badge">NUEVO</span></td><td>Política de retención y destrucción. Borrado seguro (NIST 800-88). Destrucción física certificada para soportes con información muy sensible. Aplica también a entornos cloud (verificación de borrado al dar de baja servicios).</td></tr>
+              <tr><td class="ctrl-ref">8.11</td><td class="ctrl-name">Enmascaramiento de datos</td><td><span class="nuevo-badge">NUEVO</span></td><td>Obligatorio en entornos no productivos. Técnicas: seudonimización (RGPD), tokenización (PCI-DSS), anonimización. Verificación de que el enmascaramiento es irreversible cuando se requiere.</td></tr>
+              <tr><td class="ctrl-ref">8.12</td><td class="ctrl-name">Prevención de fuga de datos</td><td><span class="nuevo-badge">NUEVO</span></td><td>DLP en correo, endpoints y red. Integración con clasificación de información. Alertas y bloqueos según política. Revisión de falsos positivos. Entrenamiento del motor de políticas.</td></tr>
+              <tr><td class="ctrl-ref">8.13</td><td class="ctrl-name">Copia de respaldo de la información</td><td></td><td>Política de backup: qué, con qué frecuencia, dónde, durante cuánto tiempo. Regla 3-2-1-1-0 (3 copias, 2 medios, 1 offsite, 1 offline/inmutable, 0 errores en prueba de restauración). Pruebas de restauración periódicas.</td></tr>
+              <tr><td class="ctrl-ref">8.14</td><td class="ctrl-name">Redundancia de las instalaciones de procesamiento de información</td><td></td><td>Alta disponibilidad para sistemas críticos. Clústeres activo-activo o activo-pasivo. Failover automático. Pruebas de failover. Alineado con RTO definido en 5.30.</td></tr>
+              <tr><td class="ctrl-ref">8.15</td><td class="ctrl-name">Registro de actividad (logging)</td><td></td><td>Logs de sistemas, aplicaciones y seguridad. Centralización en SIEM. Protección de la integridad de logs. Retención mínima 12 meses (NIS2). Sincronización de tiempo (NTP). Qué registrar: autenticaciones, cambios de privilegios, acceso a datos sensibles, eventos de seguridad.</td></tr>
+              <tr><td class="ctrl-ref">8.16</td><td class="ctrl-name">Actividades de monitorización</td><td><span class="nuevo-badge">NUEVO</span></td><td>Monitorización activa con casos de uso definidos. SIEM + SOAR para automatización de respuesta. Alertas con umbrales calibrados para minimizar fatiga de alertas. SOC interno o MSSP. Revisión periódica de la cobertura de monitorización.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="deep-section" style="margin-top:1.5rem;">
+        <div class="deep-section-header">
+          <span class="ctrl-cat-pill cat-tec" style="font-size:0.75rem; padding:4px 12px;">8.17 – 8.34</span>
+          <div><p style="font-weight:600; color:var(--navy);">Relojes, redes, aplicaciones, criptografía y ciclo de vida</p><p style="font-size:0.8rem; color:var(--text-muted);">Incluye 8.23 (filtrado web), 8.28 (codificación segura)</p></div>
+        </div>
+        <div class="deep-section-body">
+          <table class="control-table">
+            <thead><tr><th>Ref.</th><th>Control</th><th>Nuevo</th><th>Puntos clave</th></tr></thead>
+            <tbody>
+              <tr><td class="ctrl-ref">8.17</td><td class="ctrl-name">Sincronización de relojes</td><td></td><td>NTP centralizado para todos los sistemas. Sincronización con fuentes fiables (RIPE NCC, pool.ntp.org). Crítico para correlación forense de eventos.</td></tr>
+              <tr><td class="ctrl-ref">8.18</td><td class="ctrl-name">Uso de programas de utilidades con privilegios</td><td></td><td>Control del uso de herramientas administrativas (sysinternals, network scanners, herramientas de diagnóstico). Inventario y restricción de acceso. Registro de uso.</td></tr>
+              <tr><td class="ctrl-ref">8.19</td><td class="ctrl-name">Instalación de software en sistemas operativos</td><td></td><td>Whitelist de software autorizado. Proceso de aprobación para nuevas instalaciones. Restricción de derechos de instalación a usuarios estándar. Control de software no autorizado.</td></tr>
+              <tr><td class="ctrl-ref">8.20</td><td class="ctrl-name">Seguridad en las redes</td><td></td><td>Segmentación de red (VLANs, microsegmentación). Firewalls con política de denegación por defecto. Gestión de reglas con proceso de revisión. Diagrama de red actualizado.</td></tr>
+              <tr><td class="ctrl-ref">8.21</td><td class="ctrl-name">Seguridad de los servicios de red</td><td></td><td>SLAs de seguridad con proveedores de red. Características de seguridad de servicios de red gestionados. IDS/IPS. Inspección de tráfico cifrado donde sea legal y proporcionado.</td></tr>
+              <tr><td class="ctrl-ref">8.22</td><td class="ctrl-name">Segregación en las redes</td><td></td><td>Separación de redes por función y sensibilidad: corporativa, producción, DMZ, gestión, invitados. Zero Trust como enfoque moderno. Network Access Control (NAC).</td></tr>
+              <tr><td class="ctrl-ref">8.23</td><td class="ctrl-name">Filtrado web</td><td><span class="nuevo-badge">NUEVO</span></td><td>Proxy web con categorización. DNS filtering. Bloqueo de dominios maliciosos (threat feeds). Política de internet alineada. Cobertura también fuera de la red corporativa (agente en endpoint).</td></tr>
+              <tr><td class="ctrl-ref">8.24</td><td class="ctrl-name">Uso de criptografía</td><td></td><td>Política criptográfica: algoritmos aprobados, longitudes de clave mínimas, gestión del ciclo de vida de claves y certificados. Ver lección específica <a href="#l009" style="color:var(--accent);">L09</a>.</td></tr>
+              <tr><td class="ctrl-ref">8.25</td><td class="ctrl-name">Ciclo de vida del desarrollo seguro</td><td></td><td>Security integrada en SDLC: modelado de amenazas en diseño, SAST en desarrollo, DAST en testing, pentesting antes de producción. DevSecOps como modelo operativo.</td></tr>
+              <tr><td class="ctrl-ref">8.26</td><td class="ctrl-name">Requisitos de seguridad de las aplicaciones</td><td></td><td>Requisitos de seguridad definidos antes del desarrollo. Revisión de seguridad en diseño. OWASP ASVS como marco de requisitos. Revisión de contratos con desarrolladores externos.</td></tr>
+              <tr><td class="ctrl-ref">8.27</td><td class="ctrl-name">Principios de ingeniería de sistemas seguros</td><td></td><td>Defense in depth. Fail secure. Mínimo privilegio. Separación de privilegios. Aplicación de principios de arquitectura segura en nuevos sistemas y modificaciones significativas.</td></tr>
+              <tr><td class="ctrl-ref">8.28</td><td class="ctrl-name">Codificación segura</td><td><span class="nuevo-badge">NUEVO</span></td><td>Formación en secure coding. OWASP Top 10 como referencia mínima. Code review de seguridad. SAST (Semgrep, SonarQube, Checkmarx). Gestión de dependencias vulnerables (SCA). Ver lección <a href="#l011" style="color:var(--accent);">L11</a>.</td></tr>
+              <tr><td class="ctrl-ref">8.29</td><td class="ctrl-name">Pruebas de seguridad en el desarrollo y aceptación</td><td></td><td>Testing de seguridad en pipeline CI/CD. DAST (OWASP ZAP, Burp Suite). Pruebas de aceptación de seguridad antes de paso a producción. Pentesting periódico.</td></tr>
+              <tr><td class="ctrl-ref">8.30</td><td class="ctrl-name">Desarrollo externalizado</td><td></td><td>Requisitos de seguridad en contratos de desarrollo externo. Revisión de código de terceros. Gestión de la propiedad del código. Cláusulas de escrow si procede.</td></tr>
+              <tr><td class="ctrl-ref">8.31</td><td class="ctrl-name">Separación de los entornos de desarrollo, prueba y producción</td><td></td><td>Entornos separados con accesos independientes. No uso de datos reales en testing (→ control 8.11). Proceso formal de paso a producción con aprobaciones. Diferente equipo para cada entorno donde sea posible.</td></tr>
+              <tr><td class="ctrl-ref">8.32</td><td class="ctrl-name">Gestión de cambios</td><td></td><td>CAB (Change Advisory Board) o proceso equivalente. Clasificación de cambios (estándar, normal, urgente). Análisis de impacto de seguridad. Plan de rollback. Registro de cambios trazable.</td></tr>
+              <tr><td class="ctrl-ref">8.33</td><td class="ctrl-name">Información de prueba</td><td></td><td>Selección cuidadosa de datos de prueba. Protección de datos de prueba con la misma rigurosidad que los de producción cuando no puedan anonimizarse. Eliminación segura tras las pruebas.</td></tr>
+              <tr><td class="ctrl-ref">8.34</td><td class="ctrl-name">Protección de los sistemas de información durante las pruebas de auditoría</td><td></td><td>Coordinación previa con IT para pruebas de auditoría. Alcance definido y aprobado. Minimización del impacto en producción. Registro de actividades de auditoría.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L08 — ATRIBUTOS DE LOS CONTROLES
+         ==================================================== -->
+    <article id="l008">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lección 8 de 12</p>
+        <h1 class="lesson-title">Atributos de los controles: la nueva dimensión de análisis</h1>
+        <div class="lesson-meta">
+          <span>⏱ 12 min</span>
+          <span><span class="badge badge--27001">ISO 27002:2022</span></span>
+        </div>
+      </div>
+
+      <p>Una de las innovaciones más prácticas de ISO 27002:2022 es la introducción de <strong>atributos</strong> para cada control. Cada uno de los 93 controles tiene asociado un conjunto de atributos que permiten construir vistas multidimensionales del Anexo A según el contexto o la necesidad de análisis.</p>
+
+      <table class="control-table" style="margin-top:1.5rem;">
+        <thead><tr><th>Atributo</th><th>Valores</th><th>Utilidad práctica</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;">Tipo de control</td>
+            <td>Preventivo · Detectivo · Correctivo</td>
+            <td>Verificar el equilibrio de la cartera de controles. Un SGSI solo con controles preventivos es vulnerable a amenazas desconocidas.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Propiedades de SI</td>
+            <td>Confidencialidad · Integridad · Disponibilidad</td>
+            <td>Filtrar controles por dimensión de seguridad afectada. Útil para analizar cobertura de activos según sus propiedades críticas.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Conceptos de ciberseguridad</td>
+            <td>Identificar · Proteger · Detectar · Responder · Recuperar</td>
+            <td>Mapeo con NIST CSF 2.0. Permite ver qué función del framework cubre cada control.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Capacidades operativas</td>
+            <td>13 capacidades (gobernanza, gestión de activos, seguridad física, gestión de identidades, gestión de vulnerabilidades...)</td>
+            <td>Asignar responsabilidades operativas por equipo o función. Ver qué capacidades están maduras y cuáles tienen gaps.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Dominios de seguridad</td>
+            <td>Gobernanza y ecosistema · Protección · Defensa · Resiliencia</td>
+            <td>Visión estratégica de alto nivel. Útil para presentaciones a la dirección.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--norm" style="margin-top:1.5rem;">
+        <p class="callout__title">Uso práctico: vista "controles detectivos"</p>
+        <p>Filtrando el Anexo A por atributo "Tipo: Detectivo" se obtiene la vista de todos los controles orientados a la detección de incidentes. Esta vista es útil para evaluar la madurez de las capacidades de detección de la organización y para construir el caso de negocio de inversión en SIEM u otras tecnologías de detección.</p>
+      </div>
+
+      <!-- REFERENCIA INTERACTIVA COMPLETA -->
+      <h2 style="margin-top:3rem; margin-bottom:1rem;" id="l009">Referencia interactiva: los 93 controles con buscador y filtros</h2>
+      <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem;">Filtra por categoría, tipo de control o busca por nombre/referencia. Herramienta de consulta rápida para uso durante implementación y auditoría.</p>
+
+      <div class="filter-bar">
+        <span style="font-size:0.72rem; font-weight:700; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.08em; align-self:center;">Categoría:</span>
+        <button class="filter-btn active" onclick="filterControls('all', this)">Todos (93)</button>
+        <button class="filter-btn" onclick="filterControls('org', this)">Organizativos (37)</button>
+        <button class="filter-btn" onclick="filterControls('per', this)">Personas (8)</button>
+        <button class="filter-btn" onclick="filterControls('fis', this)">Físicos (14)</button>
+        <button class="filter-btn" onclick="filterControls('tec', this)">Tecnológicos (34)</button>
+        <span style="font-size:0.72rem; font-weight:700; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.08em; align-self:center; margin-left:0.5rem;">Tipo:</span>
+        <button class="filter-btn" onclick="filterByType('prev', this)">Preventivo</button>
+        <button class="filter-btn" onclick="filterByType('det', this)">Detectivo</button>
+        <button class="filter-btn" onclick="filterByType('cor', this)">Correctivo</button>
+        <button class="filter-btn" onclick="filterByNew(this)">Solo nuevos 2022 (11)</button>
+      </div>
+
+      <input type="text" class="ctrl-search" id="ctrl-search-input" placeholder="Buscar por número o nombre (ej: 8.12, DLP, backup, acceso...)" oninput="searchControls(this.value)">
+      <p class="filter-stats" id="filter-stats">Mostrando 93 de 93 controles</p>
+
+      <div class="controls-table-wrap">
+        <table class="controls-full-table" id="controls-table">
+          <thead>
+            <tr>
+              <th style="width:70px;">Ref.</th>
+              <th>Control</th>
+              <th style="width:100px;">Categoría</th>
+              <th style="width:90px;">Tipo</th>
+              <th style="width:50px;">Nuevo</th>
+            </tr>
+          </thead>
+          <tbody id="controls-tbody">
+            <!-- Generado por JS -->
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L09 — CIFRADO Y CRIPTOGRAFÍA
+         ==================================================== -->
+    <article id="l009">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lección 9 de 12</p>
+        <h1 class="lesson-title">Controles de cifrado y criptografía</h1>
+        <div class="lesson-meta">
+          <span>⏱ 16 min</span>
+          <span><span class="badge badge--27001">Control 8.24</span></span>
+        </div>
+      </div>
+
+      <p>El control 8.24 (Uso de criptografía) es el control central del Anexo A para la gestión criptográfica. En la versión 2013, este tema tenía su propio dominio (A.10 Criptografía). En 2022 se consolida en un único control tecnológico, pero su importancia no ha disminuido — si acaso, ha aumentado con la proliferación de datos en la nube y el trabajo remoto.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">La política criptográfica: qué debe contener</h2>
+
+      <p>El control 8.24 exige una <strong>política de uso de criptografía</strong> documentada. Una política criptográfica robusta debe cubrir:</p>
+
+      <table class="control-table" style="margin-top:1.25rem;">
+        <thead><tr><th>Elemento</th><th>Contenido recomendado</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500;">Algoritmos aprobados</td><td>Cifrado simétrico: AES-256. Cifrado asimétrico: RSA-3072+, ECDSA P-384. Hash: SHA-256 mínimo (SHA-1 prohibido). TLS: 1.2 mínimo, 1.3 preferido. Algoritmos prohibidos: MD5, SHA-1, DES, RC4, SSL.</td></tr>
+          <tr><td style="font-weight:500;">Casos de uso obligatorios</td><td>Cifrado en reposo: discos de portátiles, soportes extraíbles, datos sensibles en BBD. Cifrado en tránsito: TLS para toda comunicación externa, VPN para acceso remoto. Firma digital: documentos contractuales, código fuente.</td></tr>
+          <tr><td style="font-weight:500;">Gestión de claves</td><td>Ciclo de vida: generación, distribución, almacenamiento, rotación, revocación, destrucción. KMS (Key Management System). Separación de funciones: quien cifra no debe ser el único custodio de la clave.</td></tr>
+          <tr><td style="font-weight:500;">Certificados digitales</td><td>Inventario de certificados con fecha de expiración. Alertas de renovación (90 días antes). Autoridades de certificación aprobadas. Gestión de certificados de cliente y servidor.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">Criptografía cuántica: prepararse ahora</p>
+        <p>Los algoritmos RSA y ECDSA basados en curvas elípticas serán vulnerables a computadoras cuánticas suficientemente potentes. El NIST publicó en 2024 los primeros estándares de criptografía post-cuántica (CRYSTALS-Kyber, CRYSTALS-Dilithium). Las organizaciones con activos de alta sensibilidad y largo ciclo de vida deben iniciar ya la evaluación de la migración a algoritmos post-cuánticos. La amenaza "harvest now, decrypt later" es real.</p>
+      </div>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Una organización usa TLS 1.0 para su portal web de clientes alegando compatibilidad con navegadores antiguos. ¿Qué controles del Anexo A se ven afectados y cuál sería la recomendación?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l09"> Solo el control 8.24, y TLS 1.0 es aceptable si está documentado en la política criptográfica.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m04-l09"> Los controles 8.24 (política criptográfica), 8.20 (seguridad de red) y potencialmente 5.31 (cumplimiento legal — PCI-DSS prohíbe TLS 1.0 en entornos de pago). Recomendación: migrar a TLS 1.2 mínimo (1.3 preferido) y documentar un plan de eliminación de TLS 1.0/1.1.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l09"> TLS 1.0 sigue siendo seguro para datos no financieros, por lo que no hay incumplimiento.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l09"> Solo aplica si la organización está en alcance PCI-DSS.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>TLS 1.0 tiene vulnerabilidades conocidas (BEAST, POODLE) y ha sido oficialmente desaconsejado por el IETF (RFC 8996, 2021). Una política criptográfica robusta debe prohibir su uso. Adicionalmente, PCI-DSS 4.0 prohíbe TLS 1.0 para entornos en alcance, y muchos requisitos regulatorios europeos exigen protocolos modernos. La "compatibilidad con navegadores antiguos" no es una justificación aceptable para mantener protocolos inseguros en un SGSI certificado.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L10 — IDENTIDAD Y CONTROL DE ACCESO
+         ==================================================== -->
+    <article id="l010">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lección 10 de 12</p>
+        <h1 class="lesson-title">Gestión de identidad y control de acceso</h1>
+        <div class="lesson-meta">
+          <span>⏱ 16 min</span>
+          <span><span class="badge badge--27001">Controles 5.15–5.18 · 8.2–8.5</span></span>
+        </div>
+      </div>
+
+      <p>
+        La gestión de identidades y el control de acceso concentran algunos de los controles más auditados del Anexo A. El compromiso de identidades es el vector de ataque número uno según el Verizon DBIR año tras año. Los controles de esta área son la primera línea de defensa.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">El modelo Zero Trust y su relación con el Anexo A</h2>
+
+      <p>
+        Zero Trust ("nunca confíes, siempre verifica") es el paradigma dominante en gestión de acceso moderno. No es una tecnología sino un conjunto de principios que se materializan en controles del Anexo A:
+      </p>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Principio Zero Trust</th><th>Controles del Anexo A relacionados</th></tr></thead>
+        <tbody>
+          <tr><td>Verificar explícitamente siempre</td><td>8.5 (autenticación segura), 5.17 (información de autenticación), 8.2 (acceso privilegiado)</td></tr>
+          <tr><td>Usar mínimo privilegio</td><td>5.15 (control de acceso), 5.18 (derechos de acceso), 5.3 (segregación de funciones)</td></tr>
+          <tr><td>Asumir que la brecha ya ocurrió</td><td>8.16 (monitorización), 8.15 (logging), 5.25 (evaluación de eventos), 5.26 (respuesta)</td></tr>
+          <tr><td>Microsegmentación de red</td><td>8.22 (segregación de redes), 8.20 (seguridad de redes)</td></tr>
+          <tr><td>Verificación de integridad de dispositivos</td><td>8.1 (dispositivos de usuario final), 8.9 (gestión de configuración)</td></tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">User Access Review: el proceso crítico de revisión de accesos</h2>
+
+      <p>El control 5.18 exige revisión periódica de los derechos de acceso. El User Access Review (UAR) es el proceso operativo que lo implementa:</p>
+
+      <ol style="margin:1rem 0 0 1.5rem; color:var(--text-muted); line-height:2.3; font-size:0.95rem;">
+        <li><strong>Inventario:</strong> exportar todos los accesos de todos los usuarios a todos los sistemas en alcance.</li>
+        <li><strong>Asignación a propietarios:</strong> enviar a cada propietario de sistema/aplicación la lista de usuarios con acceso.</li>
+        <li><strong>Revisión:</strong> el propietario certifica cada acceso como apropiado, o lo marca para revocación.</li>
+        <li><strong>Revocación:</strong> IT ejecuta las revocaciones aprobadas en plazo definido (ej: 5 días hábiles).</li>
+        <li><strong>Documentación:</strong> registro del proceso, decisiones y acciones para evidencia de auditoría.</li>
+      </ol>
+
+      <div class="callout callout--info" style="margin-top:1.5rem;">
+        <p class="callout__title">Frecuencia recomendada del UAR</p>
+        <p>Para sistemas críticos (directorio activo, ERP, aplicaciones financieras, sistemas de producción): <strong>trimestral</strong>. Para sistemas de sensibilidad media: <strong>semestral</strong>. Para sistemas de baja sensibilidad: <strong>anual</strong>. Adicionalmente, siempre que ocurra un cambio de rol, un cese o una baja temporal prolongada.</p>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L11 — SEGURIDAD EN SOFTWARE
+         ==================================================== -->
+    <article id="l011">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lección 11 de 12</p>
+        <h1 class="lesson-title">Seguridad en el ciclo de vida del software</h1>
+        <div class="lesson-meta">
+          <span>⏱ 16 min</span>
+          <span><span class="badge badge--27001">Controles 8.25–8.31</span></span>
+        </div>
+      </div>
+
+      <p>
+        Los controles de seguridad en el desarrollo de software (8.25–8.31) forman el núcleo del Secure Software Development Lifecycle (SSDLC). Para organizaciones que desarrollan software propio o gestionan desarrollos externos, estos controles son críticos y frecuentemente deficientes.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">El SSDLC: seguridad en cada fase</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Fase SDLC</th><th>Actividades de seguridad</th><th>Controles Anexo A</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;">Requisitos</td>
+            <td>Definir requisitos de seguridad y privacidad. Clasificar el sistema según sensibilidad.</td>
+            <td>8.26, 5.34</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Diseño</td>
+            <td>Modelado de amenazas (STRIDE, PASTA). Aplicar principios de arquitectura segura. Privacy by Design.</td>
+            <td>8.27, 5.8</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Desarrollo</td>
+            <td>Secure coding. Code review de seguridad. SAST. Gestión de dependencias vulnerables (SCA).</td>
+            <td>8.28, 8.4</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Testing</td>
+            <td>DAST. Pruebas de penetración. Análisis de composición de software. Datos de prueba enmascarados.</td>
+            <td>8.29, 8.11, 8.33</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Despliegue</td>
+            <td>Proceso de pase a producción con checklist de seguridad. Separación de entornos. Gestión de cambios.</td>
+            <td>8.31, 8.32</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Operación y mantenimiento</td>
+            <td>Gestión de vulnerabilidades en producción. Parcheo. Monitorización de seguridad de la aplicación.</td>
+            <td>8.8, 8.16</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Retiro</td>
+            <td>Eliminación segura de datos. Baja en inventario. Comunicación a usuarios.</td>
+            <td>8.10</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--norm" style="margin-top:1.5rem;">
+        <p class="callout__title">DevSecOps: la implementación moderna del SSDLC</p>
+        <p>DevSecOps integra la seguridad en el pipeline de CI/CD de forma automatizada. En la práctica: SAST en cada commit, SCA en la gestión de dependencias, DAST en staging, IaC security scanning, container image scanning, y pruebas de seguridad como gates obligatorios antes del merge a main. No reemplaza las revisiones manuales de arquitectura y código — las complementa con automatización que escala.</p>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L12 — GESTIÓN DE INCIDENTES
+         ==================================================== -->
+    <article id="l012">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 04 · Lección 12 de 12</p>
+        <h1 class="lesson-title">Gestión de incidentes de seguridad</h1>
+        <div class="lesson-meta">
+          <span>⏱ 16 min</span>
+          <span><span class="badge badge--27001">Controles 5.24–5.28</span></span>
+        </div>
+      </div>
+
+      <p>
+        Los controles de gestión de incidentes (5.24–5.28) forman el proceso de respuesta ante eventos de seguridad. Un incidente mal gestionado puede convertir un problema técnico manejable en una crisis reputacional, regulatoria y operativa de primera magnitud.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">El ciclo de gestión de incidentes</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Fase</th><th>Control</th><th>Actividades clave</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;">1. Preparación</td>
+            <td class="ctrl-ref">5.24</td>
+            <td>Playbooks documentados por tipo de incidente. Roles y responsabilidades del equipo de respuesta. Herramientas preparadas (SIEM, EDR, forense). Contactos de emergencia. Ejercicios y simulacros.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">2. Detección y clasificación</td>
+            <td class="ctrl-ref">5.25</td>
+            <td>Criterios documentados para distinguir evento de incidente. Niveles de severidad (P1-P4 o equivalente). Proceso de triage. Escalado según severidad. SLA de tiempo de respuesta.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">3. Respuesta</td>
+            <td class="ctrl-ref">5.26</td>
+            <td>Contención (aislar sistemas afectados). Erradicación (eliminar la causa). Recuperación (restaurar servicios). Comunicación interna y externa (AEPD si hay brechas de datos personales en &lt;72h). Cadena de custodia de evidencias.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">4. Aprendizaje</td>
+            <td class="ctrl-ref">5.27</td>
+            <td>Post-incident review (PIR) obligatorio. Informe de incidente completo. Lecciones aprendidas. Actualización de controles y procedimientos. Alimentación del proceso de gestión del riesgo.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">5. Preservación de evidencias</td>
+            <td class="ctrl-ref">5.28</td>
+            <td>Protocolo de cadena de custodia. Imágenes forenses de sistemas afectados antes de cualquier acción. Integridad de logs. Coordinación con asesoría jurídica. Admisibilidad legal de evidencias.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">Obligaciones de notificación bajo RGPD y NIS2</p>
+        <p>Una brecha de datos personales debe notificarse a la AEPD en un plazo máximo de <strong>72 horas</strong> desde que se tenga conocimiento de ella (Art. 33 RGPD), salvo que sea improbable que suponga un riesgo para los derechos de los interesados. Si el riesgo es alto para los interesados, también deben ser notificados sin dilación indebida (Art. 34 RGPD). NIS2 establece plazos aún más estrictos para entidades esenciales e importantes: alerta temprana en 24h, notificación en 72h, informe final en 1 mes.</p>
+      </div>
+
+      <!-- Quiz final del módulo -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Evaluación final — Módulo M04</p>
+        <p class="quiz-question">Una organización detecta el lunes a las 9:00 que un servidor con datos de clientes fue comprometido el viernes anterior. Los datos incluyen nombres, emails y contraseñas hasheadas de 50.000 clientes. ¿Qué obligaciones normativas inmediatas tiene bajo RGPD, y qué controles del Anexo A deberían haber mitigado este incidente?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l12"> Notificar a la AEPD en 30 días; los controles 8.7 (antimalware) y 8.20 (redes) son los únicos relevantes.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m04-l12"> Notificar a la AEPD antes del miércoles a las 9:00 (72h desde conocimiento). Controles relevantes: 8.16 (monitorización — debería haber detectado el viernes), 8.15 (logs para investigación), 8.3 (control de acceso — cómo fue comprometido), 5.24 (preparación de respuesta), y 5.28 (preservación de evidencias forenses).</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l12"> No hay obligación de notificar si las contraseñas están hasheadas; el hashing protege suficientemente los datos.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m04-l12"> Notificar en 72h solo si hay más de 100.000 afectados; 50.000 está por debajo del umbral.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Módulo completado</p>
+          <p>El plazo de 72h del Art. 33 RGPD se cuenta desde que la organización <em>tiene conocimiento</em> de la brecha — el lunes a las 9:00, no desde el viernes cuando ocurrió. Las contraseñas hasheadas no eliminan la obligación de notificación si el riesgo para los interesados es significativo. El hashing puede ser un factor mitigador en la evaluación del riesgo, pero 50.000 registros comprometidos con datos identificativos (nombre, email) constituyen una brecha que normalmente debe notificarse.</p>
+        </div>
+      </div>
+
+      <div class="nav-lesson" style="margin-top:3rem;">
+        <a href="m03-gestion-riesgos.html" class="nav-lesson__btn">← M03 · Gestión de riesgos</a>
+        <a href="m05-declaracion-aplicabilidad.html" class="nav-lesson__btn">M05 · Declaración de Aplicabilidad →</a>
+      </div>
+
+    </article>
+
+  </main>
+</div>
+
+<footer class="footer" style="margin-top:0;">
+  <div class="footer__bottom" style="max-width:100%; padding:1.5rem 2rem;">
+    <span style="color:var(--text-faint); font-size:0.8rem;">© 2025 ISOTECNIA · <a href="../index.html" style="color:var(--text-faint);">Volver al índice</a></span>
+    <div class="footer__norm-logos">
+      <span class="norm-logo">ISO/IEC 27001:2022</span>
+      <span class="norm-logo">ISO/IEC 27701:2019</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/isotecnia.js"></script>
+<script>
+// ============================================================
+// REFERENCIA INTERACTIVA DE CONTROLES
+// ============================================================
+const controls = [
+  // ORGANIZATIVOS
+  {ref:'5.1',name:'Políticas de seguridad de la información',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.2',name:'Roles y responsabilidades de seguridad de la información',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.3',name:'Segregación de funciones',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.4',name:'Responsabilidades de la dirección',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.5',name:'Contacto con autoridades',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.6',name:'Contacto con grupos de interés especiales',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.7',name:'Inteligencia sobre amenazas (Threat Intelligence)',cat:'org',tipo:'prev',nuevo:true},
+  {ref:'5.8',name:'Seguridad de la información en la gestión de proyectos',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.9',name:'Inventario de información y otros activos asociados',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.10',name:'Uso aceptable de la información y otros activos asociados',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.11',name:'Devolución de activos',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.12',name:'Clasificación de la información',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.13',name:'Etiquetado de la información',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.14',name:'Transferencia de información',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.15',name:'Control de acceso',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.16',name:'Gestión de identidades',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.17',name:'Información de autenticación',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.18',name:'Derechos de acceso',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.19',name:'Seguridad de la información en las relaciones con proveedores',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.20',name:'Requisitos de seguridad en los acuerdos con proveedores',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.21',name:'Gestión de la SI en la cadena de suministro de TIC',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.22',name:'Seguimiento, revisión y gestión de cambios de los servicios de proveedores',cat:'org',tipo:'det',nuevo:false},
+  {ref:'5.23',name:'Seguridad de la información para el uso de servicios en la nube',cat:'org',tipo:'prev',nuevo:true},
+  {ref:'5.24',name:'Planificación y preparación de la gestión de incidentes de SI',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.25',name:'Evaluación y decisión sobre eventos de SI',cat:'org',tipo:'det',nuevo:false},
+  {ref:'5.26',name:'Respuesta a incidentes de SI',cat:'org',tipo:'cor',nuevo:false},
+  {ref:'5.27',name:'Aprendizaje de los incidentes de SI',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.28',name:'Recopilación de evidencias',cat:'org',tipo:'det',nuevo:false},
+  {ref:'5.29',name:'Seguridad de la información durante la interrupción',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.30',name:'Preparación de las TIC para la continuidad del negocio',cat:'org',tipo:'prev',nuevo:true},
+  {ref:'5.31',name:'Requisitos legales, estatutarios, reglamentarios y contractuales',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.32',name:'Derechos de propiedad intelectual',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.33',name:'Protección de registros',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.34',name:'Privacidad y protección de la PII',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.35',name:'Revisión independiente de la seguridad de la información',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.36',name:'Cumplimiento de las políticas, reglas y normas de SI',cat:'org',tipo:'prev',nuevo:false},
+  {ref:'5.37',name:'Procedimientos de operación documentados',cat:'org',tipo:'prev',nuevo:false},
+  // PERSONAS
+  {ref:'6.1',name:'Selección',cat:'per',tipo:'prev',nuevo:false},
+  {ref:'6.2',name:'Términos y condiciones del empleo',cat:'per',tipo:'prev',nuevo:false},
+  {ref:'6.3',name:'Toma de conciencia, educación y formación en SI',cat:'per',tipo:'prev',nuevo:false},
+  {ref:'6.4',name:'Proceso disciplinario',cat:'per',tipo:'cor',nuevo:false},
+  {ref:'6.5',name:'Responsabilidades tras el cese o cambio de empleo',cat:'per',tipo:'prev',nuevo:false},
+  {ref:'6.6',name:'Acuerdos de confidencialidad o no divulgación',cat:'per',tipo:'prev',nuevo:false},
+  {ref:'6.7',name:'Trabajo a distancia',cat:'per',tipo:'prev',nuevo:false},
+  {ref:'6.8',name:'Notificación de eventos de SI',cat:'per',tipo:'det',nuevo:false},
+  // FÍSICOS
+  {ref:'7.1',name:'Perímetros de seguridad física',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.2',name:'Controles de entrada física',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.3',name:'Seguridad de oficinas, despachos e instalaciones',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.4',name:'Monitorización de la seguridad física',cat:'fis',tipo:'det',nuevo:true},
+  {ref:'7.5',name:'Protección contra amenazas físicas y ambientales',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.6',name:'Trabajo en áreas seguras',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.7',name:'Escritorio limpio y pantalla limpia',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.8',name:'Ubicación y protección de los equipos',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.9',name:'Seguridad de los activos fuera de las instalaciones',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.10',name:'Medios de almacenamiento',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.11',name:'Servicios de suministro',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.12',name:'Seguridad del cableado',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.13',name:'Mantenimiento de los equipos',cat:'fis',tipo:'prev',nuevo:false},
+  {ref:'7.14',name:'Eliminación o reutilización segura de los equipos',cat:'fis',tipo:'prev',nuevo:false},
+  // TECNOLÓGICOS
+  {ref:'8.1',name:'Dispositivos de usuario final',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.2',name:'Derechos de acceso privilegiado',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.3',name:'Restricción del acceso a la información',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.4',name:'Acceso al código fuente',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.5',name:'Autenticación segura',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.6',name:'Gestión de la capacidad',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.7',name:'Protección contra malware',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.8',name:'Gestión de vulnerabilidades técnicas',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.9',name:'Gestión de la configuración',cat:'tec',tipo:'prev',nuevo:true},
+  {ref:'8.10',name:'Eliminación de información',cat:'tec',tipo:'prev',nuevo:true},
+  {ref:'8.11',name:'Enmascaramiento de datos (Data Masking)',cat:'tec',tipo:'prev',nuevo:true},
+  {ref:'8.12',name:'Prevención de fuga de datos (DLP)',cat:'tec',tipo:'prev',nuevo:true},
+  {ref:'8.13',name:'Copia de respaldo de la información',cat:'tec',tipo:'cor',nuevo:false},
+  {ref:'8.14',name:'Redundancia de las instalaciones de procesamiento',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.15',name:'Registro de actividad (logging)',cat:'tec',tipo:'det',nuevo:false},
+  {ref:'8.16',name:'Actividades de monitorización',cat:'tec',tipo:'det',nuevo:true},
+  {ref:'8.17',name:'Sincronización de relojes',cat:'tec',tipo:'det',nuevo:false},
+  {ref:'8.18',name:'Uso de programas de utilidades con privilegios',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.19',name:'Instalación de software en sistemas operativos',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.20',name:'Seguridad en las redes',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.21',name:'Seguridad de los servicios de red',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.22',name:'Segregación en las redes',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.23',name:'Filtrado web',cat:'tec',tipo:'prev',nuevo:true},
+  {ref:'8.24',name:'Uso de criptografía',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.25',name:'Ciclo de vida del desarrollo seguro',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.26',name:'Requisitos de seguridad de las aplicaciones',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.27',name:'Principios de ingeniería de sistemas seguros',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.28',name:'Codificación segura',cat:'tec',tipo:'prev',nuevo:true},
+  {ref:'8.29',name:'Pruebas de seguridad en el desarrollo y aceptación',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.30',name:'Desarrollo externalizado',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.31',name:'Separación de los entornos de desarrollo, prueba y producción',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.32',name:'Gestión de cambios',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.33',name:'Información de prueba',cat:'tec',tipo:'prev',nuevo:false},
+  {ref:'8.34',name:'Protección de los sistemas de información durante las pruebas de auditoría',cat:'tec',tipo:'prev',nuevo:false}
+];
+
+const catLabels = {org:'Organizativo',per:'Personas',fis:'Físico',tec:'Tecnológico'};
+const catPills  = {org:'cat-org',per:'cat-per',fis:'cat-fis',tec:'cat-tec'};
+const tipoLabels= {prev:'Preventivo',det:'Detectivo',cor:'Correctivo'};
+const tipoPills = {prev:'tipo-prev',det:'tipo-det',cor:'tipo-cor'};
+
+let currentCatFilter = 'all';
+let currentTypeFilter = 'all';
+let currentNewFilter  = false;
+let currentSearch     = '';
+
+function renderTable(list) {
+  const tbody = document.getElementById('controls-tbody');
+  tbody.innerHTML = '';
+  list.forEach(c => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td class="ctrl-ref">${c.ref}</td>
+      <td class="ctrl-name">${c.name}</td>
+      <td><span class="ctrl-cat-pill ${catPills[c.cat]}">${catLabels[c.cat]}</span></td>
+      <td><span class="tipo-pill ${tipoPills[c.tipo]}">${tipoLabels[c.tipo]}</span></td>
+      <td style="text-align:center;">${c.nuevo ? '<span class="nuevo-badge">NUEVO</span>' : ''}</td>
+    `;
+    tbody.appendChild(row);
+  });
+  document.getElementById('filter-stats').textContent = `Mostrando ${list.length} de 93 controles`;
+}
+
+function applyFilters() {
+  let list = controls;
+  if (currentCatFilter !== 'all') list = list.filter(c => c.cat === currentCatFilter);
+  if (currentTypeFilter !== 'all') list = list.filter(c => c.tipo === currentTypeFilter);
+  if (currentNewFilter) list = list.filter(c => c.nuevo);
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    list = list.filter(c => c.ref.toLowerCase().includes(q) || c.name.toLowerCase().includes(q));
+  }
+  renderTable(list);
+}
+
+function filterControls(cat, btn) {
+  currentCatFilter = cat;
+  currentTypeFilter = 'all';
+  currentNewFilter = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active','active-cat'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function filterByType(tipo, btn) {
+  currentTypeFilter = currentTypeFilter === tipo ? 'all' : tipo;
+  currentNewFilter = false;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active','active-cat'));
+  if (currentTypeFilter !== 'all') btn.classList.add('active-cat');
+  applyFilters();
+}
+
+function filterByNew(btn) {
+  currentNewFilter = !currentNewFilter;
+  currentTypeFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active','active-cat'));
+  if (currentNewFilter) btn.classList.add('active-cat');
+  applyFilters();
+}
+
+function searchControls(val) {
+  currentSearch = val;
+  applyFilters();
+}
+
+document.addEventListener('DOMContentLoaded', () => { renderTable(controls); });
+</script>
+</body>
+</html>

@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M02 — SGSI: Fundamentos y Requisitos (Cláusulas 4–10) | ISOTECNIA</title>
+  <link rel="stylesheet" href="../css/isotecnia.css">
+</head>
+<body>
+
+<div class="progress-bar-track"><div class="progress-bar-fill" id="readingProgress"></div></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar__inner">
+    <a href="../index.html" class="navbar__logo">
+      <div class="navbar__logo-mark">IT</div>
+      <div>
+        <span class="navbar__logo-text">ISOTECNIA</span>
+        <span class="navbar__logo-sub">ISO 27001 + ISO 27701</span>
+      </div>
+    </a>
+    <ul class="navbar__nav">
+      <li><a href="../index.html#modulos">Módulos</a></li>
+      <li><a href="../recursos/glosario.html">Glosario</a></li>
+      <li><a href="../recursos/plantillas.html">Plantillas</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="lesson-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <p class="sidebar__module-title" style="margin-top:1rem;">M02 · Cláusulas 4–10</p>
+    <ul class="sidebar__nav">
+      <li><a href="#l001" data-lesson-id="m02-l001"><span class="lesson-icon">○</span> L01 · Cláusula 4 — Contexto</a></li>
+      <li><a href="#l002" data-lesson-id="m02-l002"><span class="lesson-icon">○</span> L02 · Cláusula 5 — Liderazgo</a></li>
+      <li><a href="#l003" data-lesson-id="m02-l003"><span class="lesson-icon">○</span> L03 · Cláusula 6 — Planificación</a></li>
+      <li><a href="#l004" data-lesson-id="m02-l004"><span class="lesson-icon">○</span> L04 · Cláusula 7 — Soporte</a></li>
+      <li><a href="#l005" data-lesson-id="m02-l005"><span class="lesson-icon">○</span> L05 · Cláusula 8 — Operación</a></li>
+      <li><a href="#l006" data-lesson-id="m02-l006"><span class="lesson-icon">○</span> L06 · Cláusula 9 — Evaluación</a></li>
+      <li><a href="#l007" data-lesson-id="m02-l007"><span class="lesson-icon">○</span> L07 · Cláusula 10 — Mejora</a></li>
+      <li><a href="#l008" data-lesson-id="m02-l008"><span class="lesson-icon">○</span> L08 · Revisión por la dirección</a></li>
+    </ul>
+
+    <p class="sidebar__module-title" style="margin-top:2rem;">Navegación</p>
+    <ul class="sidebar__nav">
+      <li><a href="m01-marco-normativo.html"><span class="lesson-icon">←</span> M01 · Marco normativo</a></li>
+      <li><a href="m03-gestion-riesgos.html"><span class="lesson-icon">→</span> M03 · Gestión de riesgos</a></li>
+      <li><a href="m04-anexo-a.html"><span class="lesson-icon">→</span> M04 · Anexo A — 93 controles</a></li>
+      <li><a href="m05-declaracion-aplicabilidad.html"><span class="lesson-icon">→</span> M05 · SoA</a></li>
+      <li><a href="m06-iso27701-sgpi.html"><span class="lesson-icon">→</span> M06 · ISO 27701</a></li>
+      <li><a href="m07-integracion-27001-27701.html"><span class="lesson-icon">→</span> M07 · Sistema integrado</a></li>
+    </ul>
+
+    <div style="padding:1.5rem; margin-top:2rem; border-top:1px solid var(--navy-light);">
+      <p style="font-size:0.7rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem;">Recursos del módulo</p>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+        <li><a href="../recursos/plantillas.html#alcance" style="font-size:0.8rem; color:var(--ice);">📄 Plantilla de alcance del SGSI</a></li>
+        <li><a href="../recursos/plantillas.html#partes-interesadas" style="font-size:0.8rem; color:var(--ice);">📄 Registro de partes interesadas</a></li>
+        <li><a href="../recursos/plantillas.html#politica" style="font-size:0.8rem; color:var(--ice);">📄 Política de seguridad (modelo)</a></li>
+        <li><a href="../recursos/plantillas.html#revision-direccion" style="font-size:0.8rem; color:var(--ice);">📄 Acta de revisión por la dirección</a></li>
+        <li><a href="../recursos/referencias.html#iso27001" style="font-size:0.8rem; color:var(--ice);">🔗 Texto oficial ISO 27001:2022</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="lesson-content">
+
+    <!-- CABECERA DEL MÓDULO -->
+    <div style="background:var(--navy); border-radius:var(--radius-lg); padding:2rem 2.5rem; margin-bottom:3rem;">
+      <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem;">Módulo 02 · 8 lecciones</p>
+      <h1 style="color:var(--white); margin-bottom:0.75rem; font-size:1.7rem;">SGSI: Fundamentos y Requisitos</h1>
+      <p style="color:var(--ice); font-size:0.95rem; line-height:1.75; max-width:580px;">
+        Las cláusulas 4 a 10 de ISO/IEC 27001:2022 son el núcleo normativo del estándar. Este módulo las analiza con profundidad, explicando qué exige cada requisito, cómo se evidencia su cumplimiento y los errores más frecuentes en auditoría.
+      </p>
+      <div style="display:flex; gap:0.75rem; margin-top:1.25rem; flex-wrap:wrap;">
+        <span class="tag tag--norm">ISO/IEC 27001:2022</span>
+        <span class="tag tag--level">8 lecciones · ~2h 30min</span>
+        <span class="tag tag--cert">Certificación preparatoria</span>
+      </div>
+    </div>
+
+    <!-- ====================================================
+         LECCIÓN 01 — CLÁUSULA 4
+         ==================================================== -->
+    <article id="l001">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 02 · Lección 1 de 8</p>
+        <h1 class="lesson-title">Cláusula 4 — Contexto de la organización</h1>
+        <div class="lesson-meta">
+          <span>⏱ 18 min</span>
+          <span><span class="badge badge--27001">27001 §4</span></span>
+        </div>
+      </div>
+
+      <p>
+        La cláusula 4 establece la base sobre la que se construye todo el SGSI. No es un trámite documental — es el análisis estratégico que determina el alcance, los límites y la orientación de todo el sistema de seguridad. Un SGSI cuya cláusula 4 está mal construida es un SGSI que no refleja la realidad de la organización.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">4.1 — Comprensión de la organización y su contexto</h2>
+
+      <p>
+        La organización debe determinar los <strong>factores externos e internos</strong> que son pertinentes para su propósito y que afectan a su capacidad para lograr los resultados previstos del SGSI.
+      </p>
+
+      <div class="callout callout--info" style="margin-top:1.25rem;">
+        <p class="callout__title">Herramienta recomendada: análisis PESTEL + DAFO</p>
+        <p>ISO 27001 no prescribe ninguna herramienta, pero la combinación de un análisis <strong>PESTEL</strong> (factores políticos, económicos, sociales, tecnológicos, legales y ambientales) para el contexto externo y un <strong>DAFO</strong> para el interno es la aproximación más habitual y la que mejor satisface el espíritu de la cláusula.</p>
+      </div>
+
+      <p style="margin-top:1.25rem;"><strong>Factores externos</strong> relevantes para la seguridad de la información incluyen:</p>
+      <ul style="margin:0.75rem 0 0 1.5rem; color:var(--text-muted); line-height:2; font-size:0.95rem;">
+        <li>El entorno legal y regulatorio (RGPD, NIS2, ENS, normativa sectorial).</li>
+        <li>El panorama de amenazas del sector (grupos APT, ransomware, cadena de suministro).</li>
+        <li>Las expectativas de clientes y socios sobre seguridad y privacidad.</li>
+        <li>Los requisitos contractuales con terceras partes.</li>
+        <li>La situación geopolítica que puede afectar a la continuidad del negocio.</li>
+      </ul>
+
+      <p style="margin-top:1.25rem;"><strong>Factores internos</strong> incluyen:</p>
+      <ul style="margin:0.75rem 0 0 1.5rem; color:var(--text-muted); line-height:2; font-size:0.95rem;">
+        <li>La estructura organizativa, roles y cadena de mando.</li>
+        <li>Los activos de información críticos y los sistemas que los gestionan.</li>
+        <li>La cultura de seguridad existente.</li>
+        <li>Las capacidades tecnológicas y la deuda técnica.</li>
+        <li>Los objetivos estratégicos de negocio y cómo la seguridad los habilita o limita.</li>
+      </ul>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">Error frecuente en auditoría</p>
+        <p>El error más común es elaborar el análisis de contexto como un ejercicio puntual de inicio, sin actualizarlo cuando cambia el entorno. La norma requiere que este análisis sea <em>vivo</em> — debe revisarse cuando haya cambios relevantes y, como mínimo, en la revisión anual por la dirección. Los auditores buscan evidencia de que el contexto se mantiene actualizado.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">4.2 — Comprensión de las necesidades y expectativas de las partes interesadas</h2>
+
+      <p>
+        La organización debe identificar las partes interesadas pertinentes para el SGSI y sus requisitos relevantes. Esto no significa gestionar a <em>todas</em> las partes interesadas de la organización — solo las pertinentes para la seguridad de la información.
+      </p>
+
+      <table class="control-table" style="margin-top:1.25rem;">
+        <thead>
+          <tr><th>Parte interesada</th><th>Necesidades/requisitos típicos</th><th>Fuente del requisito</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:500;">Clientes</td>
+            <td>Confidencialidad de sus datos, continuidad del servicio, notificación de incidentes</td>
+            <td>Contratos, pliegos, SLAs</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Reguladores (AEPD, CNMC...)</td>
+            <td>Cumplimiento RGPD, NIS2, normativa sectorial</td>
+            <td>Legislación aplicable</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Accionistas / Consejo</td>
+            <td>Gestión del riesgo reputacional y financiero asociado a incidentes</td>
+            <td>Gobierno corporativo</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Empleados</td>
+            <td>Privacidad de datos personales, formación en seguridad</td>
+            <td>RGPD, convenios colectivos</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Proveedores críticos</td>
+            <td>Requisitos de seguridad en la cadena de suministro</td>
+            <td>Contratos, cuestionarios de seguridad</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Organismos de certificación</td>
+            <td>Cumplimiento de ISO 27001 y mantenimiento del certificado</td>
+            <td>ISO/IEC 27001, IAF MD 26</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">4.3 — Determinación del alcance del SGSI</h2>
+
+      <p>
+        El alcance define los límites del SGSI — qué activos, procesos, ubicaciones y partes de la organización están dentro del sistema. Es uno de los documentos más críticos del SGSI y el primero que revisa un auditor de certificación.
+      </p>
+
+      <div class="clause-box" style="margin-top:1.5rem;">
+        <p class="clause-box__ref">ISO/IEC 27001:2022 — Cláusula 4.3</p>
+        <p class="clause-box__title">Requisito literal (parafraseado)</p>
+        <p style="font-size:0.9rem; color:var(--text-muted);">
+          La organización debe determinar los límites y la aplicabilidad del SGSI para establecer su alcance, teniendo en cuenta los factores externos e internos del 4.1, los requisitos de las partes interesadas del 4.2, y las interfaces y dependencias entre las actividades realizadas por la organización y las que realizan otras organizaciones.
+        </p>
+      </div>
+
+      <p style="margin-top:1.25rem;">El alcance debe:</p>
+      <ul style="margin:0.75rem 0 0 1.5rem; color:var(--text-muted); line-height:2; font-size:0.95rem;">
+        <li>Estar disponible como <strong>información documentada</strong> (obligatorio).</li>
+        <li>Ser coherente con el análisis de contexto y partes interesadas.</li>
+        <li>Justificar explícitamente cualquier <strong>exclusión</strong>. Si algo se excluye, debe argumentarse por qué y demostrar que no afecta al logro de los resultados previstos.</li>
+        <li>Describir las interfaces con actividades externas al alcance.</li>
+      </ul>
+
+      <div class="callout callout--norm" style="margin-top:1.5rem;">
+        <p class="callout__title">Alcance y certificación</p>
+        <p>El certificado ISO 27001 que emite el organismo de certificación <strong>refleja literalmente el alcance definido</strong>. Una empresa que certifica solo su departamento de TI tendrá un certificado que lo indica explícitamente. Los clientes que lean el certificado deben poder entender qué está cubierto y qué no. La definición del alcance es, en última instancia, una decisión de negocio con implicaciones de marketing y cumplimiento contractual.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">4.4 — Sistema de gestión de la seguridad de la información</h2>
+
+      <p>
+        La cláusula 4.4 es breve pero fundamental: exige que la organización establezca, implemente, mantenga y <strong>mejore continuamente</strong> el SGSI conforme a los requisitos de la norma. Es la declaración de intención que sostiene todo lo demás. El "mejore continuamente" no es opcional ni retórico — está directamente vinculado a la cláusula 10.
+      </p>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Durante una auditoría de etapa 1, el auditor solicita el documento de alcance del SGSI. La organización presenta un documento que incluye todos los sistemas de TI pero excluye explícitamente los procesos de desarrollo de software. ¿Qué debe verificar el auditor respecto a esa exclusión?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l01"> Que el desarrollo de software no genere ingresos para la organización.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m02-l01"> Que la exclusión esté justificada y que no afecte al logro de los resultados previstos del SGSI, y que se hayan identificado las interfaces entre desarrollo y los sistemas en alcance.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l01"> Que el desarrollo de software sea un proceso subcontratado a un tercero.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l01"> No es necesario justificar exclusiones; el alcance es una decisión unilateral de la organización.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>ISO 27001 permite exclusiones, pero exige que estén justificadas y que no comprometan el logro de los resultados del SGSI. Si el desarrollo de software crea vulnerabilidades en sistemas en alcance, la exclusión sería cuestionable. El auditor también buscará evidencia de que las interfaces entre ambos entornos están identificadas y gestionadas.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         LECCIÓN 02 — CLÁUSULA 5
+         ==================================================== -->
+    <article id="l002">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 02 · Lección 2 de 8</p>
+        <h1 class="lesson-title">Cláusula 5 — Liderazgo y compromiso de la dirección</h1>
+        <div class="lesson-meta">
+          <span>⏱ 16 min</span>
+          <span><span class="badge badge--27001">27001 §5</span></span>
+        </div>
+      </div>
+
+      <p>
+        La cláusula 5 aborda el papel de la alta dirección en el SGSI. Este es uno de los aspectos más frecuentemente identificados como no conformidad en auditorías: no por falta de documentación, sino por falta de evidencia real de implicación directiva. La norma no se satisface con que la dirección firme documentos — exige implicación activa y demostrable.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">5.1 — Liderazgo y compromiso</h2>
+
+      <p>La alta dirección debe demostrar liderazgo y compromiso con respecto al SGSI. La norma es específica sobre lo que esto significa en la práctica:</p>
+
+      <table class="control-table" style="margin-top:1.25rem;">
+        <thead><tr><th>Requisito</th><th>Evidencia que busca el auditor</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Asegurarse de que la política y los objetivos de seguridad se establecen</td>
+            <td>Política aprobada y firmada por la dirección. Objetivos medibles documentados.</td>
+          </tr>
+          <tr>
+            <td>Asegurarse de que los requisitos del SGSI se integran en los procesos de negocio</td>
+            <td>Evidencia de que la seguridad forma parte de proyectos, decisiones y contratos — no es un proceso paralelo.</td>
+          </tr>
+          <tr>
+            <td>Asegurarse de que los recursos necesarios están disponibles</td>
+            <td>Presupuesto asignado. Personas con roles formalmente designados.</td>
+          </tr>
+          <tr>
+            <td>Comunicar la importancia de una gestión eficaz de la seguridad</td>
+            <td>Actas de reunión, comunicaciones internas, sesiones de formación con presencia directiva.</td>
+          </tr>
+          <tr>
+            <td>Asegurarse de que el SGSI logra los resultados previstos</td>
+            <td>Revisiones periódicas. Métricas de desempeño. Seguimiento de objetivos.</td>
+          </tr>
+          <tr>
+            <td>Dirigir y apoyar a las personas para que contribuyan a la eficacia del SGSI</td>
+            <td>Estructura de gobernanza. Comité de seguridad. Roles y responsabilidades asignados.</td>
+          </tr>
+          <tr>
+            <td>Promover la mejora continua</td>
+            <td>Acciones correctivas implementadas. Revisión de no conformidades. Evolución de métricas.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">5.2 — Política de seguridad de la información</h2>
+
+      <p>La política de seguridad de la información es el documento de referencia de más alto nivel del SGSI. La norma establece requisitos precisos sobre su contenido:</p>
+
+      <div class="clause-box" style="margin-top:1.25rem;">
+        <p class="clause-box__ref">ISO/IEC 27001:2022 — Cláusula 5.2</p>
+        <p class="clause-box__title">Contenido obligatorio de la política</p>
+        <ul style="font-size:0.9rem; color:var(--text-muted); line-height:2; padding-left:1.25rem; margin-top:0.5rem;">
+          <li>Ser apropiada para el propósito de la organización.</li>
+          <li>Incluir los <strong>objetivos de seguridad</strong> o proporcionar el marco para establecerlos.</li>
+          <li>Incluir el compromiso de satisfacer los requisitos aplicables.</li>
+          <li>Incluir el compromiso de mejora continua del SGSI.</li>
+        </ul>
+      </div>
+
+      <p style="margin-top:1.25rem;">Además, la política debe:</p>
+      <ul style="margin:0.75rem 0 0 1.5rem; color:var(--text-muted); line-height:2; font-size:0.95rem;">
+        <li>Estar disponible como <strong>información documentada</strong>.</li>
+        <li>Estar <strong>comunicada</strong> dentro de la organización.</li>
+        <li>Estar disponible para las partes interesadas cuando sea apropiado.</li>
+      </ul>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">La política no es el manual del SGSI</p>
+        <p>Un error frecuente es confundir la política de seguridad con la documentación completa del SGSI. La política debe ser un documento estratégico, conciso (2–4 páginas máximo), comprensible para toda la organización, y que exprese el <em>compromiso</em> de la dirección. Los procedimientos técnicos y operativos son documentos separados de nivel inferior.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">5.3 — Roles, responsabilidades y autoridades</h2>
+
+      <p>
+        La alta dirección debe asegurarse de que las responsabilidades y autoridades para los roles pertinentes a la seguridad de la información se asignan y comunican dentro de la organización.
+      </p>
+
+      <p style="margin-top:1rem;">
+        En concreto, la dirección debe asignar la responsabilidad y autoridad para dos funciones críticas:
+      </p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-top:1.5rem;">
+        <div class="clause-box">
+          <p class="clause-box__ref">Función A</p>
+          <p class="clause-box__title">Asegurar conformidad</p>
+          <p style="font-size:0.875rem; color:var(--text-muted);">Garantizar que el SGSI se establece, implementa y mantiene conforme a los requisitos de ISO 27001. Típicamente: CISO, Director de Seguridad, o el rol equivalente.</p>
+        </div>
+        <div class="clause-box">
+          <p class="clause-box__ref">Función B</p>
+          <p class="clause-box__title">Informar del desempeño</p>
+          <p style="font-size:0.875rem; color:var(--text-muted);">Informar a la alta dirección sobre el desempeño del SGSI. Puede ser la misma persona que la función A o distinta, dependiendo de la estructura organizativa.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--norm" style="margin-top:1.5rem;">
+        <p class="callout__title">ISO 27001 no exige un CISO dedicado</p>
+        <p>A diferencia de lo que creen muchas organizaciones, ISO 27001 no exige que exista un CISO o que los roles de seguridad sean a tiempo completo. Lo que sí exige es que alguien tenga formalmente asignada la responsabilidad y la autoridad, y que eso esté documentado. En organizaciones pequeñas, estos roles pueden ser asumidos por la dirección general o por el responsable de TI.</p>
+      </div>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Un auditor revisa la política de seguridad de la información de una empresa. El documento está firmado por el CISO, tiene 40 páginas, incluye procedimientos técnicos detallados y fue aprobado hace 3 años sin revisión. ¿Qué observaciones levantaría el auditor?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l02"> Solo que no está firmada por la alta dirección; el resto es aceptable.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m02-l02"> Al menos tres: la firma debería ser de la alta dirección (no solo del CISO), es excesivamente larga y mezcla niveles documentales, y no hay evidencia de revisión periódica.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l02"> Ninguna, porque el CISO tiene autoridad delegada por la dirección para aprobar políticas de seguridad.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l02"> Solo que necesita revisión; la extensión y firma son decisiones internas de la organización.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>La política debe reflejar el compromiso de la <strong>alta dirección</strong>, lo que requiere su aprobación y firma (no solo del CISO). Una política de 40 páginas con procedimientos técnicos mezcla niveles documentales y dificulta su comprensión por toda la organización. Y la ausencia de revisión en 3 años incumple el principio de mejora continua — los cambios en el contexto, amenazas y regulación exigen revisiones periódicas.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         LECCIÓN 03 — CLÁUSULA 6
+         ==================================================== -->
+    <article id="l003">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 02 · Lección 3 de 8</p>
+        <h1 class="lesson-title">Cláusula 6 — Planificación</h1>
+        <div class="lesson-meta">
+          <span>⏱ 22 min</span>
+          <span><span class="badge badge--27001">27001 §6</span></span>
+        </div>
+      </div>
+
+      <p>
+        La cláusula 6 es la que más trabajo práctico genera en la implementación del SGSI. Aquí se define el proceso de gestión de riesgos, se seleccionan los controles, se elabora la Declaración de Aplicabilidad y se fijan los objetivos de seguridad. Es el corazón planificador del sistema.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">6.1 — Acciones para abordar riesgos y oportunidades</h2>
+
+      <p>
+        La organización debe planificar acciones para abordar los riesgos y oportunidades determinados en el análisis de contexto (cláusula 4.1). El propósito es triple: asegurar que el SGSI logra sus resultados, prevenir o reducir los efectos no deseados, y lograr la mejora continua.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">6.1.2 — Evaluación del riesgo de seguridad de la información</h2>
+
+      <p>La organización debe definir y aplicar un proceso de evaluación del riesgo que:</p>
+
+      <div class="clause-box" style="margin-top:1.25rem;">
+        <p class="clause-box__ref">ISO/IEC 27001:2022 — Cláusula 6.1.2</p>
+        <p class="clause-box__title">Requisitos del proceso de evaluación del riesgo</p>
+        <ul style="font-size:0.9rem; color:var(--text-muted); line-height:2.2; padding-left:1.25rem; margin-top:0.5rem;">
+          <li>Establezca y mantenga criterios de riesgo, incluidos los criterios de aceptación del riesgo.</li>
+          <li>Asegure que las evaluaciones repetidas producen resultados consistentes, válidos y comparables.</li>
+          <li>Identifique los riesgos asociados a la pérdida de confidencialidad, integridad y disponibilidad de la información.</li>
+          <li>Identifique a los propietarios de los riesgos.</li>
+          <li>Analice y evalúe los riesgos (probabilidad, impacto, nivel de riesgo).</li>
+          <li>Priorice los riesgos analizados para su tratamiento.</li>
+        </ul>
+      </div>
+
+      <div class="callout callout--info" style="margin-top:1.5rem;">
+        <p class="callout__title">Consistencia y repetibilidad del proceso</p>
+        <p>El requisito de que evaluaciones repetidas produzcan resultados "consistentes, válidos y comparables" es exigente. Significa que si dos analistas diferentes aplican el mismo proceso al mismo activo, deben llegar a resultados similares. Esto requiere una metodología documentada con criterios de valoración definidos — no es aceptable una evaluación basada puramente en criterio subjetivo sin parámetros establecidos.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">6.1.3 — Tratamiento del riesgo de seguridad de la información</h2>
+
+      <p>La organización debe definir y aplicar un proceso de tratamiento del riesgo que:</p>
+
+      <table class="control-table" style="margin-top:1.25rem;">
+        <thead><tr><th>Opción de tratamiento</th><th>Descripción</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Modificar</td>
+            <td>Implementar controles para reducir el riesgo a un nivel aceptable</td>
+            <td>Implantar autenticación multifactor para reducir el riesgo de acceso no autorizado</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Retener</td>
+            <td>Aceptar conscientemente el riesgo cuando está dentro del nivel de tolerancia</td>
+            <td>Aceptar el riesgo residual de un sistema legacy que no puede parchearse y cuyo reemplazo está planificado</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Evitar</td>
+            <td>Eliminar la actividad que genera el riesgo</td>
+            <td>Dejar de utilizar un proveedor cloud sin cifrado en reposo</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Compartir</td>
+            <td>Transferir o compartir el riesgo con terceros</td>
+            <td>Contratar un seguro de ciberriesgo o subcontratar la gestión de un sistema crítico</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top:1.5rem;">
+        Una vez seleccionada la opción de tratamiento, la organización debe seleccionar los controles del <strong>Anexo A</strong> que correspondan (u otros controles justificados). A continuación, debe elaborar la <strong>Declaración de Aplicabilidad (SoA)</strong>.
+      </p>
+
+      <div class="callout callout--key" style="margin-top:1.5rem;">
+        <p class="callout__title">La SoA: el documento más auditado del SGSI</p>
+        <p>La Declaración de Aplicabilidad (Statement of Applicability) lista los 93 controles del Anexo A, indica si cada uno está incluido o excluido, y justifica cada decisión. Para los incluidos, describe también el estado de implementación. Es el documento que conecta el tratamiento del riesgo con los controles implementados, y el auditor de certificación lo examina en profundidad. Tiene su propio módulo en este curso: <a href="m05-declaracion-aplicabilidad.html" style="color:var(--accent);">M05 — Declaración de Aplicabilidad</a>.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">6.2 — Objetivos de seguridad de la información</h2>
+
+      <p>
+        Los objetivos de seguridad son los resultados concretos y medibles que el SGSI debe lograr. La norma exige que sean:
+      </p>
+
+      <ul style="margin:1rem 0 0 1.5rem; color:var(--text-muted); line-height:2.2; font-size:0.95rem;">
+        <li>Coherentes con la política de seguridad de la información.</li>
+        <li>Medibles (cuando sea factible).</li>
+        <li>Considerar los requisitos aplicables de seguridad y los resultados de la evaluación y tratamiento del riesgo.</li>
+        <li>Comunicados en la organización.</li>
+        <li>Actualizados cuando sea apropiado.</li>
+        <li>Disponibles como información documentada.</li>
+      </ul>
+
+      <p style="margin-top:1.25rem;">Además, la organización debe determinar: <em>quién</em> es responsable, <em>qué</em> se hará, <em>qué recursos</em> se necesitan, <em>cuándo</em> se completará y <em>cómo</em> se evaluarán los resultados.</p>
+
+      <div class="callout callout--warn" style="margin-top:1.25rem;">
+        <p class="callout__title">Objetivos vagos = no conformidad</p>
+        <p>"Mejorar la seguridad de la información" <strong>no es un objetivo válido</strong> según la norma. Un objetivo válido sería: "Reducir el tiempo medio de detección de incidentes de seguridad de 72 a 24 horas antes del 31/12/2025, medido mediante el SIEM". Cuantificable, con responsable asignado y plazo concreto.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">6.3 — Planificación de cambios (nuevo en 2022)</h2>
+
+      <p>
+        Esta subcláusula es nueva en la versión 2022. Cuando la organización determina la necesidad de cambios en el SGSI, estos deben realizarse de manera planificada. La organización debe considerar el propósito de los cambios y sus posibles consecuencias, la integridad continua del SGSI, la disponibilidad de recursos y la asignación o reasignación de responsabilidades.
+      </p>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Durante la revisión de la SoA, un auditor detecta que el control 8.12 (Data Loss Prevention) está marcado como "no aplicable" con la justificación "la organización no maneja datos sensibles". Sin embargo, la empresa procesa datos de tarjetas de crédito PCI-DSS. ¿Cuál sería la conclusión del auditor?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l03"> La exclusión es aceptable si está documentada, independientemente de la justificación.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m02-l03"> La justificación es inconsistente con la realidad del negocio. Los datos de tarjetas son altamente sensibles. Probablemente levantaría una no conformidad al no haber considerado adecuadamente el contexto en la evaluación de riesgos.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l03"> PCI-DSS y ISO 27001 son marcos independientes; lo que aplica a uno no necesariamente aplica al otro.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l03"> El control 8.12 es nuevo en 2022 y tiene un período de gracia para su implementación.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>La justificación contradice directamente la realidad operativa. Los datos de tarjetas de crédito son datos altamente sensibles. Esta inconsistencia indica que el análisis de contexto (4.1) y la evaluación de riesgos (6.1.2) no han considerado adecuadamente los activos de información reales. Es una no conformidad de la cláusula 6 con impacto en la integridad de la SoA.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         LECCIÓN 04 — CLÁUSULA 7
+         ==================================================== -->
+    <article id="l004">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 02 · Lección 4 de 8</p>
+        <h1 class="lesson-title">Cláusula 7 — Soporte</h1>
+        <div class="lesson-meta">
+          <span>⏱ 16 min</span>
+          <span><span class="badge badge--27001">27001 §7</span></span>
+        </div>
+      </div>
+
+      <p>La cláusula 7 agrupa los recursos, capacidades y mecanismos de comunicación que sustentan el funcionamiento del SGSI. Cinco subcláusulas que, en conjunto, aseguran que el sistema tiene los medios para operar.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">7.1 — Recursos</h2>
+      <p>La organización debe determinar y proporcionar los recursos necesarios para el establecimiento, implementación, mantenimiento y mejora continua del SGSI. Recursos incluye: personas, infraestructura, tecnología y presupuesto. La evidencia clave: presupuesto aprobado, plantilla de seguridad definida, herramientas implementadas.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">7.2 — Competencia</h2>
+      <p>Las personas que realizan trabajo bajo el control de la organización que afecta al desempeño de seguridad de la información deben ser competentes. La norma exige:</p>
+      <ul style="margin:0.75rem 0 0 1.5rem; color:var(--text-muted); line-height:2; font-size:0.95rem;">
+        <li>Determinar la competencia necesaria para cada rol.</li>
+        <li>Asegurarse de que las personas son competentes (educación, formación o experiencia apropiadas).</li>
+        <li>Tomar acciones para adquirir la competencia necesaria cuando no se tenga.</li>
+        <li>Conservar información documentada como evidencia de competencia.</li>
+      </ul>
+
+      <div class="callout callout--info" style="margin-top:1.25rem;">
+        <p class="callout__title">Evidencia de competencia en auditoría</p>
+        <p>El auditor solicitará registros que demuestren competencia: CVs, certificaciones profesionales (CISSP, CISM, ISO 27001 Lead Auditor...), registros de asistencia a formación, resultados de evaluaciones. La competencia no solo aplica al equipo de seguridad — también a los propietarios de activos, administradores de sistemas y cualquier persona con responsabilidad en el SGSI.</p>
+      </div>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">7.3 — Toma de conciencia</h2>
+      <p>Las personas que trabajan bajo el control de la organización deben tomar conciencia de:</p>
+      <ul style="margin:0.75rem 0 0 1.5rem; color:var(--text-muted); line-height:2; font-size:0.95rem;">
+        <li>La política de seguridad de la información.</li>
+        <li>Su contribución a la eficacia del SGSI y los beneficios de una mejora del desempeño de la seguridad.</li>
+        <li>Las implicaciones del incumplimiento de los requisitos del SGSI.</li>
+      </ul>
+      <p style="margin-top:1rem;">La toma de conciencia es distinta de la competencia: no se exige que todos los empleados sean expertos en seguridad, sino que sean <em>conscientes</em> de su papel y responsabilidades. Programas de concienciación, phishing simulado, comunicaciones periódicas y formación obligatoria son los medios habituales.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">7.4 — Comunicación</h2>
+      <p>La organización debe determinar la necesidad de comunicaciones internas y externas relevantes para el SGSI: <em>qué</em> comunicar, <em>cuándo</em>, <em>a quién</em>, <em>cómo</em> y <em>quién</em> comunica. Esto incluye tanto la comunicación de métricas e incidentes hacia la dirección, como la comunicación de requisitos de seguridad a proveedores.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">7.5 — Información documentada</h2>
+      <p>La cláusula 7.5 regula toda la documentación del SGSI. La norma distingue entre documentos <strong>obligatorios</strong> (información documentada que "debe mantenerse") y registros <strong>obligatorios</strong> (información documentada que "debe conservarse").</p>
+
+      <div class="clause-box" style="margin-top:1.25rem;">
+        <p class="clause-box__ref">Documentos obligatorios ISO 27001:2022 — Lista completa</p>
+        <p class="clause-box__title">Información documentada que DEBE mantenerse</p>
+        <ul style="font-size:0.85rem; color:var(--text-muted); line-height:2; padding-left:1.25rem; margin-top:0.5rem; column-count:2; column-gap:2rem;">
+          <li>Alcance del SGSI (4.3)</li>
+          <li>Política de seguridad (5.2)</li>
+          <li>Proceso de evaluación del riesgo (6.1.2)</li>
+          <li>Proceso de tratamiento del riesgo (6.1.3)</li>
+          <li>Objetivos de seguridad (6.2)</li>
+          <li>Competencias (7.2)</li>
+          <li>Declaración de Aplicabilidad — SoA (6.1.3 d)</li>
+          <li>Plan de tratamiento del riesgo (6.1.3 e)</li>
+          <li>Programa de auditoría interna (9.2)</li>
+          <li>Procedimiento de revisión por la dirección (9.3)</li>
+          <li>No conformidades y acciones correctivas (10.1)</li>
+        </ul>
+      </div>
+
+      <div class="callout callout--norm" style="margin-top:1.5rem;">
+        <p class="callout__title">Formato libre para la documentación</p>
+        <p>ISO 27001 no prescribe formatos, plantillas ni sistemas específicos para la documentación. Puede estar en papel, en un SharePoint, en Confluence, en una herramienta GRC o en cualquier otro formato. Lo que sí exige es que sea identificable, legible, protegida adecuadamente, controlada en cuanto a distribución, y sujeta a controles de versión y retención.</p>
+      </div>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Una organización realiza formación anual de concienciación en seguridad para todos los empleados, pero no conserva registros de asistencia ni resultados. ¿Qué problema plantea esto en una auditoría?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l04"> Ninguno, la formación es voluntaria según ISO 27001.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m02-l04"> Incumple las cláusulas 7.2 y 7.3. Sin registros de asistencia no hay evidencia de que la formación se realizó ni de que los empleados han adquirido la conciencia requerida.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l04"> Solo es un problema si la formación es específica para personal de seguridad.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l04"> Es aceptable si la organización puede demostrar que todos los empleados firmaron el código de conducta.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>La cláusula 7.2 exige "conservar información documentada como evidencia de competencia" y la cláusula 7.3 requiere que las personas tomen conciencia. Sin registros, el auditor no tiene evidencia objetiva de cumplimiento. En auditoría, si no está documentado, se considera que no ocurrió. Esta es una no conformidad típica, especialmente en organizaciones donde la formación se realiza de forma informal.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         LECCIÓN 05 — CLÁUSULA 8
+         ==================================================== -->
+    <article id="l005">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 02 · Lección 5 de 8</p>
+        <h1 class="lesson-title">Cláusula 8 — Operación</h1>
+        <div class="lesson-meta">
+          <span>⏱ 14 min</span>
+          <span><span class="badge badge--27001">27001 §8</span></span>
+        </div>
+      </div>
+
+      <p>
+        La cláusula 8 trata la ejecución operacional del SGSI — no el diseño ni la planificación, sino el hacer día a día. Es relativamente breve en la norma, pero sus implicaciones son amplias: aquí se ejecutan los procesos planificados en la cláusula 6.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">8.1 — Planificación y control operacional</h2>
+      <p>La organización debe planificar, implementar, controlar, monitorizar y revisar los procesos necesarios para cumplir los requisitos de seguridad y las acciones del plan de tratamiento del riesgo. Esto incluye:</p>
+      <ul style="margin:0.75rem 0 0 1.5rem; color:var(--text-muted); line-height:2; font-size:0.95rem;">
+        <li>Establecer criterios para los procesos.</li>
+        <li>Implementar el control de los procesos de acuerdo con los criterios.</li>
+        <li>Conservar información documentada para tener confianza en que los procesos se han llevado a cabo según lo planificado.</li>
+        <li>Controlar los cambios planificados y revisar las consecuencias de los cambios no previstos.</li>
+        <li>Asegurarse de que los procesos subcontratados están controlados.</li>
+      </ul>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">Procesos subcontratados y cadena de suministro</p>
+        <p>El requisito de controlar los procesos subcontratados es especialmente relevante hoy. Un proveedor cloud, un socio de desarrollo de software o un servicio gestionado de seguridad (MSSP) son todos procesos subcontratados que deben estar bajo control. Esto no significa que la organización deba implementar controles técnicos en los sistemas del proveedor, sino que debe existir un marco contractual y de auditoría que garantice niveles de seguridad adecuados. Los controles 5.19 a 5.22 del Anexo A desarrollan este aspecto.</p>
+      </div>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">8.2 — Evaluación del riesgo de seguridad de la información</h2>
+      <p>
+        La evaluación del riesgo debe realizarse a intervalos planificados o cuando se produzcan u propongan cambios significativos. No es un ejercicio puntual — debe ser un proceso recurrente. La norma exige conservar los resultados como información documentada.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">8.3 — Tratamiento del riesgo de seguridad de la información</h2>
+      <p>
+        La organización debe implementar el plan de tratamiento del riesgo y conservar los resultados como información documentada. Este es el punto donde los controles del Anexo A (y de la SoA) se implementan realmente en la organización.
+      </p>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Una empresa migra su sistema ERP a la nube durante el año. La migración no estaba planificada en el plan de tratamiento del riesgo. ¿Qué exige ISO 27001 en este escenario?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l05"> Nada específico; los cambios tecnológicos no afectan al SGSI si el proveedor cloud tiene certificación ISO 27001.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m02-l05"> La organización debe revisar las consecuencias del cambio no previsto (8.1), actualizar la evaluación del riesgo (8.2), actualizar el plan de tratamiento si es necesario (8.3), y verificar que el proveedor cloud está bajo control como proceso subcontratado.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l05"> Debe retrasar la migración hasta completar un nuevo ciclo de evaluación de riesgos.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l05"> Solo debe notificar el cambio al organismo de certificación.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>ISO 27001 no prohíbe los cambios no planificados, pero exige gestionarlos. La cláusula 8.1 requiere revisar las consecuencias de cambios no previstos y tomar acciones para mitigar efectos negativos. Una migración cloud es un cambio significativo que altera el perfil de riesgo, los activos en alcance y los controles aplicables, y debe desencadenar una revisión del análisis de riesgos.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         LECCIÓN 06 — CLÁUSULA 9
+         ==================================================== -->
+    <article id="l006">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 02 · Lección 6 de 8</p>
+        <h1 class="lesson-title">Cláusula 9 — Evaluación del desempeño</h1>
+        <div class="lesson-meta">
+          <span>⏱ 18 min</span>
+          <span><span class="badge badge--27001">27001 §9</span></span>
+        </div>
+      </div>
+
+      <p>La cláusula 9 cierra el ciclo PDCA (Plan-Do-Check-Act) con la fase de verificación. Tres mecanismos de evaluación: monitorización y medición, auditoría interna y revisión por la dirección.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">9.1 — Monitorización, medición, análisis y evaluación</h2>
+
+      <p>La organización debe evaluar el desempeño de la seguridad de la información y la eficacia del SGSI. Para ello debe determinar:</p>
+
+      <table class="control-table" style="margin-top:1.25rem;">
+        <thead><tr><th>Elemento</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500;">Qué necesita monitorizarse y medirse</td><td>Procesos, controles, objetivos de seguridad, indicadores clave.</td></tr>
+          <tr><td style="font-weight:500;">Métodos de análisis</td><td>Los métodos deben producir resultados válidos y comparables.</td></tr>
+          <tr><td style="font-weight:500;">Cuándo se realiza</td><td>Frecuencia de las mediciones — diaria, semanal, mensual, trimestral.</td></tr>
+          <tr><td style="font-weight:500;">Quién mide</td><td>Responsable de cada medición.</td></tr>
+          <tr><td style="font-weight:500;">Cuándo se analiza</td><td>Puede ser distinto del momento de medición.</td></tr>
+          <tr><td style="font-weight:500;">Quién analiza</td><td>Puede ser distinto de quien mide.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--norm" style="margin-top:1.5rem;">
+        <p class="callout__title">ISO 27004: la guía de métricas</p>
+        <p>ISO/IEC 27004:2016 proporciona orientación detallada sobre cómo medir el desempeño del SGSI. Define un modelo de medición que incluye: objeto de medición, atributo, indicador, método de medición y resultado. Es la referencia para construir un cuadro de mando de seguridad robusto. Ver <a href="../recursos/referencias.html" style="color:var(--accent);">referencias oficiales</a>.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">9.2 — Auditoría interna</h2>
+
+      <p>La organización debe llevar a cabo auditorías internas a intervalos planificados para proporcionar información sobre si el SGSI es conforme con los requisitos propios y con los de la norma, y si está implementado y mantenido eficazmente.</p>
+
+      <div class="clause-box" style="margin-top:1.25rem;">
+        <p class="clause-box__ref">ISO/IEC 27001:2022 — Cláusula 9.2</p>
+        <p class="clause-box__title">Requisitos del programa de auditoría interna</p>
+        <ul style="font-size:0.9rem; color:var(--text-muted); line-height:2; padding-left:1.25rem; margin-top:0.5rem;">
+          <li>Planificar, establecer, implementar y mantener un programa de auditoría.</li>
+          <li>El programa debe considerar la importancia de los procesos y los resultados de auditorías previas.</li>
+          <li>Definir criterios de auditoría y alcance de cada auditoría.</li>
+          <li>Seleccionar auditores que aseguren la objetividad e imparcialidad del proceso.</li>
+          <li>Asegurarse de que los resultados se informan a la dirección pertinente.</li>
+          <li>Conservar información documentada como evidencia del programa y resultados.</li>
+        </ul>
+      </div>
+
+      <div class="callout callout--info" style="margin-top:1.5rem;">
+        <p class="callout__title">Independencia del auditor interno</p>
+        <p>La norma exige "objetividad e imparcialidad" — esto significa que los auditores no deben auditar su propio trabajo. Un CISO no puede auditar los controles que él mismo ha implementado y gestiona. En organizaciones pequeñas, esto puede resolverse mediante auditoría cruzada entre departamentos, contratación de auditores externos para algunas áreas, o rotación de auditores.</p>
+      </div>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Una organización realiza una auditoría interna del SGSI. El auditor líder es el propio CISO, que audita todos los controles del Anexo A incluidos los que él diseñó e implementó. ¿Es aceptable según ISO 27001?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l06"> Sí, porque el CISO es quien mejor conoce los controles y puede evaluarlos con mayor profundidad.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m02-l06"> No. La cláusula 9.2 exige objetividad e imparcialidad. El CISO no puede auditar su propio trabajo — esto compromete la independencia del proceso de auditoría.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l06"> Es aceptable si la dirección aprueba explícitamente esta situación.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l06"> Depende del tamaño de la organización; en empresas pequeñas está permitido por defecto.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>La independencia del auditor interno es un requisito explícito de ISO 27001. El CISO que ha diseñado e implementado controles no puede auditarlos con imparcialidad. Esto no es una recomendación — es un requisito normativo. Un auditor de certificación que detecte esta situación levantará una no conformidad.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         LECCIÓN 07 — CLÁUSULA 10
+         ==================================================== -->
+    <article id="l007">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 02 · Lección 7 de 8</p>
+        <h1 class="lesson-title">Cláusula 10 — Mejora continua</h1>
+        <div class="lesson-meta">
+          <span>⏱ 14 min</span>
+          <span><span class="badge badge--27001">27001 §10</span></span>
+        </div>
+      </div>
+
+      <p>
+        La cláusula 10 cierra el ciclo normativo con la fase de acción. Dos subcláusulas: gestión de no conformidades y acciones correctivas, y mejora continua. Es la que transforma el SGSI de un sistema estático en un sistema que evoluciona.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">10.1 — No conformidades y acciones correctivas</h2>
+
+      <p>Cuando se produce una no conformidad, la organización debe:</p>
+
+      <table class="control-table" style="margin-top:1.25rem;">
+        <thead><tr><th>Paso</th><th>Acción requerida</th></tr></thead>
+        <tbody>
+          <tr><td class="ctrl-id">1</td><td>Reaccionar ante la no conformidad: tomar acciones para controlarla, corregirla y hacer frente a sus consecuencias.</td></tr>
+          <tr><td class="ctrl-id">2</td><td>Evaluar la necesidad de acciones para eliminar las <strong>causas</strong> de la no conformidad (no solo el síntoma).</td></tr>
+          <tr><td class="ctrl-id">3</td><td>Implementar las acciones correctivas necesarias.</td></tr>
+          <tr><td class="ctrl-id">4</td><td>Revisar la eficacia de las acciones correctivas tomadas.</td></tr>
+          <tr><td class="ctrl-id">5</td><td>Hacer cambios en el SGSI si es necesario.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">Corrección ≠ Acción correctiva</p>
+        <p>Una <strong>corrección</strong> elimina el síntoma (ej: restablecer el sistema caído). Una <strong>acción correctiva</strong> elimina la causa raíz (ej: implementar alta disponibilidad para que el sistema no vuelva a caer). ISO 27001 exige ambas, pero el valor del SGSI está en la acción correctiva: sin análisis de causa raíz, los mismos problemas recurren indefinidamente. Las técnicas como los "5 porqués" o el diagrama de Ishikawa son herramientas útiles para este análisis.</p>
+      </div>
+
+      <div class="callout callout--info" style="margin-top:1.25rem;">
+        <p class="callout__title">¿Qué es una no conformidad en ISO 27001?</p>
+        <p>Un incumplimiento de un requisito. Los requisitos pueden ser de la propia norma ISO 27001, de los documentos internos del SGSI, de requisitos legales o contractuales. Las no conformidades pueden identificarse en auditorías internas, externas, revisiones por la dirección, incidentes de seguridad o incluso feedback de clientes. No son solo "infracciones graves" — cualquier desviación de un requisito establecido es una no conformidad.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">10.2 — Mejora continua</h2>
+      <p>
+        La organización debe mejorar continuamente la idoneidad, adecuación y eficacia del SGSI. Este requisito general se satisface a través del conjunto del sistema: los objetivos de seguridad orientan la mejora, las métricas miden el progreso, las auditorías identifican desviaciones, la revisión por la dirección fija prioridades y las acciones correctivas eliminan causas raíz.
+      </p>
+      <p style="margin-top:1rem;">La mejora continua no es un evento anual — es el resultado acumulado de todos los mecanismos del SGSI funcionando coherentemente.</p>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Tras un incidente de ransomware, la organización restaura los sistemas desde backup y declara el incidente resuelto. No se realiza análisis de causa raíz ni se documenta acción correctiva. ¿Qué no conformidad existe?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l07"> Ninguna; restablecer los sistemas es suficiente para cumplir con ISO 27001.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l07"> No conformidad de la cláusula 8, porque el incidente demuestra que los controles operacionales fallaron.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m02-l07"> No conformidad de la cláusula 10.1: se realizó la corrección (restauración) pero no se evaluó la causa raíz ni se implementó acción correctiva documentada.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l07"> No conformidad de la cláusula 9, porque no se monitorizó adecuadamente el entorno.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>La cláusula 10.1 es explícita: ante una no conformidad (y un incidente de ransomware lo es), debe evaluarse la causa raíz, implementarse acciones correctivas y revisarse su eficacia. Restaurar desde backup es solo la corrección del síntoma. Sin análisis de causa raíz, la organización no puede prevenir que el mismo vector de ataque sea utilizado de nuevo.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         LECCIÓN 08 — REVISIÓN POR LA DIRECCIÓN
+         ==================================================== -->
+    <article id="l008">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 02 · Lección 8 de 8</p>
+        <h1 class="lesson-title">La revisión por la dirección: qué es y cómo hacerla bien</h1>
+        <div class="lesson-meta">
+          <span>⏱ 16 min</span>
+          <span><span class="badge badge--27001">27001 §9.3</span></span>
+        </div>
+      </div>
+
+      <p>
+        La revisión por la dirección (Management Review) es el mecanismo formal mediante el cual la alta dirección evalúa el estado del SGSI y toma decisiones sobre su evolución. Es uno de los requisitos más importantes de la cláusula 9 y, a la vez, uno de los peor ejecutados en la práctica.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Entradas obligatorias de la revisión</h2>
+
+      <p>ISO 27001 especifica qué información debe incluirse como entrada en la revisión por la dirección:</p>
+
+      <table class="control-table" style="margin-top:1.25rem;">
+        <thead><tr><th>Entrada obligatoria</th><th>Qué debe presentarse</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500;">Estado de acciones de revisiones anteriores</td><td>Seguimiento de compromisos y decisiones de la revisión previa.</td></tr>
+          <tr><td style="font-weight:500;">Cambios en el contexto externo e interno</td><td>Cambios relevantes en amenazas, regulación, negocio, tecnología.</td></tr>
+          <tr><td style="font-weight:500;">Retroalimentación sobre el desempeño de SI</td><td>Incluye: no conformidades, acciones correctivas, monitorización, resultados de auditorías, logro de objetivos de SI, y feedback de partes interesadas.</td></tr>
+          <tr><td style="font-weight:500;">Oportunidades de mejora continua</td><td>Propuestas de mejora identificadas durante el período.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Salidas obligatorias de la revisión</h2>
+
+      <p>La revisión debe producir decisiones y acciones relacionadas con:</p>
+      <ul style="margin:0.75rem 0 0 1.5rem; color:var(--text-muted); line-height:2; font-size:0.95rem;">
+        <li>Oportunidades de mejora continua.</li>
+        <li>Necesidades de cambio en el SGSI (incluyendo recursos, política, objetivos).</li>
+      </ul>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">Los errores más frecuentes en la revisión por la dirección</p>
+        <p>
+          <strong>1. Falta de asistencia real de la alta dirección.</strong> Que asista el CISO no es suficiente — debe asistir quien tenga autoridad para tomar decisiones sobre recursos y dirección estratégica.<br><br>
+          <strong>2. Acta sin decisiones.</strong> Una revisión que solo "toma nota" sin generar compromisos, responsables y plazos no satisface el espíritu de la norma.<br><br>
+          <strong>3. No cubrir todas las entradas obligatorias.</strong> El auditor verificará que el acta refleja todas las entradas requeridas por la cláusula 9.3.<br><br>
+          <strong>4. Realizarla solo para la auditoría.</strong> La revisión debe ocurrir con la frecuencia necesaria — en entornos dinámicos, una vez al año puede ser insuficiente.
+        </p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Estructura recomendada del acta de revisión</h2>
+
+      <div class="clause-box">
+        <p class="clause-box__ref">Plantilla — Secciones del acta de revisión por la dirección</p>
+        <p class="clause-box__title">Índice tipo</p>
+        <ol style="font-size:0.9rem; color:var(--text-muted); line-height:2.2; padding-left:1.5rem; margin-top:0.5rem;">
+          <li>Asistentes y quórum de decisión</li>
+          <li>Estado de compromisos de la revisión anterior</li>
+          <li>Cambios relevantes en el contexto (externo e interno)</li>
+          <li>Resultados de auditorías internas y externas del período</li>
+          <li>Estado de no conformidades y acciones correctivas</li>
+          <li>Métricas de desempeño del SGSI (KPIs, objetivos de seguridad)</li>
+          <li>Incidentes de seguridad significativos del período</li>
+          <li>Retroalimentación de partes interesadas</li>
+          <li>Oportunidades de mejora identificadas</li>
+          <li>Decisiones y compromisos (con responsable y fecha)</li>
+          <li>Recursos aprobados para el siguiente período</li>
+        </ol>
+      </div>
+
+      <p style="margin-top:1.5rem;">La plantilla completa de acta de revisión está disponible en <a href="../recursos/plantillas.html#revision-direccion" style="color:var(--accent);">recursos del curso → plantillas descargables</a>.</p>
+
+      <!-- Quiz final del módulo -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Evaluación final — Módulo M02</p>
+        <p class="quiz-question">Una organización en proceso de certificación presenta al auditor el acta de su revisión por la dirección. El documento muestra que asistieron el CISO y el Director de TI, se revisaron los resultados de la auditoría interna y los incidentes del año, y se concluyó que "el SGSI funciona adecuadamente". No hay decisiones, compromisos ni plazos. ¿Cuál es la valoración del auditor?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l08"> Es aceptable; la revisión cubre los puntos principales y tiene documentación.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m02-l08"> Al menos dos no conformidades potenciales: (1) no se evidencia asistencia de alta dirección con autoridad real de decisión, y (2) la revisión no genera salidas obligatorias: decisiones, compromisos ni acciones de mejora.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l08"> Solo una observación menor por no incluir las oportunidades de mejora.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m02-l08"> Es aceptable si la organización puede demostrar verbalmente que tomó decisiones informales.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Módulo completado</p>
+          <p>La revisión por la dirección debe generar <strong>salidas documentadas</strong>: decisiones sobre mejora continua y necesidades de cambio. Una revisión sin compromisos formales no satisface la cláusula 9.3. Adicionalmente, el auditor evaluará si los asistentes tienen la autoridad necesaria para tomar decisiones sobre recursos y dirección estratégica del SGSI.</p>
+        </div>
+      </div>
+
+      <!-- Navegación -->
+      <div class="nav-lesson">
+        <a href="m01-marco-normativo.html" class="nav-lesson__btn">← M01 · Marco normativo</a>
+        <a href="m03-gestion-riesgos.html" class="nav-lesson__btn">M03 · Gestión de riesgos →</a>
+      </div>
+
+    </article>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer" style="margin-top:0;">
+  <div class="footer__bottom" style="max-width:100%; padding:1.5rem 2rem;">
+    <span style="color:var(--text-faint); font-size:0.8rem;">© 2025 ISOTECNIA · <a href="../index.html" style="color:var(--text-faint);">Volver al índice</a></span>
+    <div class="footer__norm-logos">
+      <span class="norm-logo">ISO/IEC 27001:2022</span>
+      <span class="norm-logo">ISO/IEC 27701:2019</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/isotecnia.js"></script>
+</body>
+</html>

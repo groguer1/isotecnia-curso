@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M10 — Documentación del Sistema | ISOTECNIA</title>
+  <link rel="stylesheet" href="../css/isotecnia.css">
+  <style>
+    .doc-level {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-lg);
+      margin-bottom: 1rem;
+      border: 1px solid;
+    }
+    .doc-level--1 { background: rgba(13,27,42,0.04); border-color: var(--navy); }
+    .doc-level--2 { background: rgba(46,92,138,0.05); border-color: var(--steel-mid); }
+    .doc-level--3 { background: rgba(0,200,150,0.04); border-color: rgba(0,200,150,0.25); }
+    .doc-level--4 { background: var(--off-white); border-color: rgba(46,92,138,0.1); }
+    .doc-level-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .doc-level--1 .doc-level-num { background: var(--navy); color: var(--white); }
+    .doc-level--2 .doc-level-num { background: var(--steel-mid); color: var(--white); }
+    .doc-level--3 .doc-level-num { background: var(--accent); color: var(--navy); }
+    .doc-level--4 .doc-level-num { background: var(--off-white); color: var(--text-muted); border: 1px solid rgba(46,92,138,0.2); }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar-track"><div class="progress-bar-fill"></div></div>
+
+<nav class="navbar">
+  <div class="navbar__inner">
+    <a href="../index.html" class="navbar__logo">
+      <div class="navbar__logo-mark">IT</div>
+      <div><span class="navbar__logo-text">ISOTECNIA</span><span class="navbar__logo-sub">ISO 27001 + ISO 27701</span></div>
+    </a>
+    <ul class="navbar__nav">
+      <li><a href="../index.html#modulos">Módulos</a></li>
+      <li><a href="../recursos/glosario.html">Glosario</a></li>
+      <li><a href="../recursos/plantillas.html">Plantillas</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="lesson-layout">
+  <aside class="sidebar">
+    <p class="sidebar__module-title" style="margin-top:1rem;">M10 · Documentación</p>
+    <ul class="sidebar__nav">
+      <li><a href="#l001" data-lesson-id="m10-l001"><span class="lesson-icon">○</span> L01 · Información documentada obligatoria</a></li>
+      <li><a href="#l002" data-lesson-id="m10-l002"><span class="lesson-icon">○</span> L02 · Estructura documental</a></li>
+      <li><a href="#l003" data-lesson-id="m10-l003"><span class="lesson-icon">○</span> L03 · Políticas de seguridad</a></li>
+      <li><a href="#l004" data-lesson-id="m10-l004"><span class="lesson-icon">○</span> L04 · Procedimientos operativos</a></li>
+      <li><a href="#l005" data-lesson-id="m10-l005"><span class="lesson-icon">○</span> L05 · Registros y evidencias</a></li>
+      <li><a href="#l006" data-lesson-id="m10-l006"><span class="lesson-icon">○</span> L06 · Herramientas de gestión documental</a></li>
+    </ul>
+    <p class="sidebar__module-title" style="margin-top:2rem;">Navegación</p>
+    <ul class="sidebar__nav">
+      <li><a href="m09-implementacion.html"><span class="lesson-icon">←</span> M09 · Implementación</a></li>
+      <li><a href="m11-auditoria-interna.html"><span class="lesson-icon">→</span> M11 · Auditoría interna</a></li>
+    </ul>
+    <div style="padding:1.5rem; margin-top:2rem; border-top:1px solid var(--navy-light);">
+      <p style="font-size:0.7rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem;">Plantillas</p>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+        <li><a href="../recursos/plantillas.html#politica" style="font-size:0.8rem; color:var(--ice);">📄 Política integrada SI+Privacidad</a></li>
+        <li><a href="../recursos/plantillas.html#procedimientos" style="font-size:0.8rem; color:var(--ice);">📄 Plantillas de procedimientos</a></li>
+        <li><a href="../recursos/plantillas.html#registros" style="font-size:0.8rem; color:var(--ice);">📄 Registro maestro de documentos</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="lesson-content">
+
+    <div style="background:var(--navy); border-radius:var(--radius-lg); padding:2rem 2.5rem; margin-bottom:3rem;">
+      <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem;">Módulo 10 · 6 lecciones</p>
+      <h1 style="color:var(--white); margin-bottom:0.75rem; font-size:1.7rem;">Documentación del sistema SGSI+SGPI</h1>
+      <p style="color:var(--ice); font-size:0.95rem; line-height:1.75; max-width:580px;">La información documentada es la columna vertebral del SGSI+SGPI. Este módulo cubre qué documentos son obligatorios, cómo estructurar el sistema documental, y cómo gestionar el ciclo de vida de cada documento para que el sistema sea auditable y mantenible.</p>
+    </div>
+
+    <!-- L01 -->
+    <article id="l001">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 10 · Lección 1 de 6</p>
+        <h1 class="lesson-title">Información documentada obligatoria según ISO 27001 e ISO 27701</h1>
+        <div class="lesson-meta"><span>⏱ 16 min</span><span><span class="badge badge--27001">27001 §7.5</span></span></div>
+      </div>
+
+      <p>ISO 27001 usa los términos "información documentada que debe mantenerse" (documentos/políticas/procedimientos) e "información documentada que debe conservarse" (registros/evidencias). Ambas son obligatorias. La diferencia es que los documentos se actualizan con el tiempo, mientras que los registros son evidencias históricas que no se modifican.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Lista completa de información documentada obligatoria</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Documento/Registro</th><th>Cláusula</th><th>Tipo</th><th>Norma</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500;">Alcance del SGSI</td><td class="ctrl-ref">4.3</td><td>Mantener</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Política de seguridad de la información</td><td class="ctrl-ref">5.2</td><td>Mantener</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Proceso de evaluación del riesgo</td><td class="ctrl-ref">6.1.2</td><td>Mantener</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Proceso de tratamiento del riesgo</td><td class="ctrl-ref">6.1.3</td><td>Mantener</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Declaración de Aplicabilidad (SoA)</td><td class="ctrl-ref">6.1.3 d)</td><td>Mantener</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Objetivos de seguridad de la información</td><td class="ctrl-ref">6.2</td><td>Mantener</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Evidencia de competencia del personal</td><td class="ctrl-ref">7.2</td><td>Conservar</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Resultados de la evaluación de riesgos</td><td class="ctrl-ref">8.2</td><td>Conservar</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Plan de tratamiento del riesgo</td><td class="ctrl-ref">6.1.3 e) / 8.3</td><td>Conservar</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Resultados del seguimiento y medición</td><td class="ctrl-ref">9.1</td><td>Conservar</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Programa de auditoría interna</td><td class="ctrl-ref">9.2</td><td>Mantener</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Resultados de las auditorías internas</td><td class="ctrl-ref">9.2</td><td>Conservar</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Resultados de la revisión por la dirección</td><td class="ctrl-ref">9.3</td><td>Conservar</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">No conformidades y acciones correctivas</td><td class="ctrl-ref">10.1</td><td>Conservar</td><td><span class="badge badge--27001">27001</span></td></tr>
+          <tr><td style="font-weight:500;">Política de privacidad (interna)</td><td class="ctrl-ref">5 extensión</td><td>Mantener</td><td><span class="badge badge--27701">27701</span></td></tr>
+          <tr><td style="font-weight:500;">Registro de Actividades de Tratamiento (RAT)</td><td class="ctrl-ref">7.2.8 / Art.30 RGPD</td><td>Mantener</td><td><span class="badge badge--27701">27701</span></td></tr>
+          <tr><td style="font-weight:500;">DPIAs realizadas</td><td class="ctrl-ref">7.2.4 / Art.35 RGPD</td><td>Conservar</td><td><span class="badge badge--27701">27701</span></td></tr>
+          <tr><td style="font-weight:500;">Registro de brechas de datos personales</td><td class="ctrl-ref">Art.33.5 RGPD</td><td>Conservar</td><td><span class="badge badge--27701">27701</span></td></tr>
+          <tr><td style="font-weight:500;">Contratos Art. 28 con Processors</td><td class="ctrl-ref">7.2.5 / Art.28 RGPD</td><td>Conservar</td><td><span class="badge badge--27701">27701</span></td></tr>
+          <tr><td style="font-weight:500;">Registro de solicitudes de derechos de interesados</td><td class="ctrl-ref">7.3 / Arts.12-22 RGPD</td><td>Conservar</td><td><span class="badge badge--27701">27701</span></td></tr>
+          <tr><td style="font-weight:500;">Registro de consentimientos</td><td class="ctrl-ref">7.2.3 / Art.7 RGPD</td><td>Conservar</td><td><span class="badge badge--27701">27701</span></td></tr>
+          <tr><td style="font-weight:500;">Decisión de nombramiento del DPO</td><td class="ctrl-ref">Art.37 RGPD</td><td>Conservar</td><td><span class="badge badge--27701">27701</span></td></tr>
+        </tbody>
+      </table>
+
+      <div class="quiz-block" style="margin-top:2rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Un auditor solicita el registro de no conformidades y acciones correctivas del último año. La organización responde que gestiona las no conformidades verbalmente en reuniones semanales pero no las registra por escrito. ¿Cuál es el problema?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m10-l01"> Ninguno si el equipo recuerda las no conformidades tratadas.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m10-l01"> No conformidad directa de la cláusula 10.1. Las no conformidades y acciones correctivas son información documentada obligatoria que "debe conservarse". La gestión verbal no genera evidencia auditable. Sin registros, no hay evidencia de que el proceso de mejora continua funciona.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m10-l01"> Solo es un problema si hubo incidentes graves en el año.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m10-l01"> Es aceptable si las reuniones quedan grabadas en vídeo.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>La información documentada que "debe conservarse" son registros históricos que demuestran que el sistema funciona según lo previsto. La gestión verbal no es información documentada. Un auditor que no pueda revisar el registro de no conformidades y acciones correctivas levantará una no conformidad mayor, porque no puede verificar que el proceso de mejora continua del SGSI esté operando.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L02 -->
+    <article id="l002">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 10 · Lección 2 de 6</p>
+        <h1 class="lesson-title">Estructura documental del SGSI+SGPI: las 4 capas</h1>
+        <div class="lesson-meta"><span>⏱ 14 min</span><span><span class="badge badge--27001">27001 §7.5</span></span></div>
+      </div>
+
+      <p>La documentación del SGSI+SGPI se organiza típicamente en 4 niveles jerárquicos, desde los documentos más estratégicos y estables hasta los registros más operativos y específicos. Esta estructura facilita el mantenimiento, la comprensión y la auditoría del sistema.</p>
+
+      <div class="doc-level doc-level--1" style="margin-top:1.5rem;">
+        <div class="doc-level-num">1</div>
+        <div>
+          <p style="font-weight:700; color:var(--navy); font-size:1rem; margin-bottom:0.5rem;">Nivel 1 — Política</p>
+          <p style="font-size:0.875rem; color:var(--text-muted); line-height:1.7; margin-bottom:0.75rem;">El qué y el porqué. Documentos estratégicos que expresan el compromiso de la alta dirección y los principios del sistema. Aprobados por la Dirección General.</p>
+          <p style="font-size:0.82rem; color:var(--text-faint);"><strong>Documentos:</strong> Política integrada de seguridad y privacidad · Política de control de acceso · Política de clasificación de información · Política de uso aceptable · Política de gestión de riesgos · Política de privacidad (para interesados)</p>
+        </div>
+      </div>
+
+      <div class="doc-level doc-level--2">
+        <div class="doc-level-num">2</div>
+        <div>
+          <p style="font-weight:700; color:var(--navy); font-size:1rem; margin-bottom:0.5rem;">Nivel 2 — Procedimientos</p>
+          <p style="font-size:0.875rem; color:var(--text-muted); line-height:1.7; margin-bottom:0.75rem;">El cómo. Documentos que describen los procesos del SGSI+SGPI: quién hace qué, cuándo y cómo. Aprobados por el CISO o DPO según el ámbito.</p>
+          <p style="font-size:0.82rem; color:var(--text-faint);"><strong>Documentos:</strong> Procedimiento de gestión del riesgo · Procedimiento de gestión de incidentes (SI + brechas) · Procedimiento de auditoría interna · Procedimiento de revisión por la dirección · Procedimiento de gestión de derechos de interesados · Procedimiento de gestión de proveedores · Procedimiento de no conformidades y acciones correctivas</p>
+        </div>
+      </div>
+
+      <div class="doc-level doc-level--3">
+        <div class="doc-level-num">3</div>
+        <div>
+          <p style="font-weight:700; color:var(--navy); font-size:1rem; margin-bottom:0.5rem;">Nivel 3 — Guías técnicas e instrucciones de trabajo</p>
+          <p style="font-size:0.875rem; color:var(--text-muted); line-height:1.7; margin-bottom:0.75rem;">Instrucciones técnicas detalladas para actividades específicas. Aprobadas por el responsable técnico del área.</p>
+          <p style="font-size:0.82rem; color:var(--text-faint);"><strong>Documentos:</strong> Baseline de configuración segura (servidores, endpoints, red) · Guía de desarrollo seguro · Instrucción de backup y restauración · Guía de borrado seguro · Instrucción de respuesta a solicitudes de derechos · Guía de realización de DPIAs · Checklist de offboarding de empleados</p>
+        </div>
+      </div>
+
+      <div class="doc-level doc-level--4">
+        <div class="doc-level-num">4</div>
+        <div>
+          <p style="font-weight:700; color:var(--navy); font-size:1rem; margin-bottom:0.5rem;">Nivel 4 — Registros y evidencias</p>
+          <p style="font-size:0.875rem; color:var(--text-muted); line-height:1.7; margin-bottom:0.75rem;">Evidencia de que el sistema funciona según lo previsto. No se modifican (son registros históricos). Generados automáticamente por los procesos o manualmente por el responsable del proceso.</p>
+          <p style="font-size:0.82rem; color:var(--text-faint);"><strong>Registros:</strong> Resultados de evaluación de riesgos · SoA aprobada · Informe de auditoría interna · Acta de revisión por la dirección · Registro de incidentes · Registro de brechas de datos · Registro de solicitudes de derechos · Registro de formación · Registros de acceso a sistemas · RAT · DPIAs · Contratos Art. 28 firmados</p>
+        </div>
+      </div>
+
+      <div class="callout callout--info" style="margin-top:1.5rem;">
+        <p class="callout__title">Menos documentación, más calidad</p>
+        <p>Un SGSI con 200 documentos que nadie lee ni actualiza es menos efectivo que uno con 40 documentos bien mantenidos que la organización realmente usa. ISO 27001 no prescribe una cantidad mínima de documentos — exige que la información documentada sea "adecuada". El criterio es: si el documento no es necesario para demostrar conformidad o para operar el sistema, probablemente no necesitas crearlo.</p>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L03 -->
+    <article id="l003">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 10 · Lección 3 de 6</p>
+        <h1 class="lesson-title">Políticas de seguridad: estructura y contenido</h1>
+        <div class="lesson-meta"><span>⏱ 12 min</span><span><span class="badge badge--27001">27001 §5.1</span></span></div>
+      </div>
+
+      <p>Las políticas de nivel 1 son el marco normativo interno del SGSI. Deben ser suficientemente específicas para ser orientativas, pero suficientemente generales para no requerir actualización constante. El error más común es escribir políticas que son, en realidad, procedimientos operativos.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Políticas temáticas recomendadas</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Política</th><th>Controles Anexo A</th><th>Contenido mínimo</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600;">Política de control de acceso</td><td>5.15–5.18, 8.2–8.5</td><td>Principios (mínimo privilegio, necesidad de conocer, segregación), ciclo de vida de accesos, requisitos de autenticación, revisión periódica.</td></tr>
+          <tr><td style="font-weight:600;">Política de clasificación de información</td><td>5.12–5.13</td><td>Esquema de clasificación (niveles y definición), criterios de clasificación, responsabilidades de los propietarios, manejo por nivel.</td></tr>
+          <tr><td style="font-weight:600;">Política de uso aceptable</td><td>5.10, 6.7</td><td>Dispositivos corporativos y BYOD, uso de internet y correo, redes sociales, trabajo remoto, almacenamiento en nube personal, consecuencias del incumplimiento.</td></tr>
+          <tr><td style="font-weight:600;">Política criptográfica</td><td>8.24</td><td>Algoritmos aprobados, longitudes de clave mínimas, gestión del ciclo de vida de claves, casos de uso obligatorios, algoritmos prohibidos.</td></tr>
+          <tr><td style="font-weight:600;">Política de seguridad de proveedores</td><td>5.19–5.22</td><td>Clasificación de proveedores, requisitos mínimos por nivel, proceso de aprobación, revisión anual.</td></tr>
+          <tr><td style="font-weight:600;">Política de gestión de incidentes</td><td>5.24–5.28</td><td>Definición de incidente, canales de reporte, niveles de severidad, responsables, obligaciones de notificación (RGPD, NIS2).</td></tr>
+          <tr><td style="font-weight:600;">Política de retención y eliminación</td><td>5.33, 8.10</td><td>Plazos de retención por categoría, medios de eliminación segura, responsables, aplicación específica a PII.</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L04 -->
+    <article id="l004">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 10 · Lección 4 de 6</p>
+        <h1 class="lesson-title">Procedimientos operativos: estructura y redacción</h1>
+        <div class="lesson-meta"><span>⏱ 12 min</span><span><span class="badge badge--27001">27001 §5.37</span></span></div>
+      </div>
+
+      <p>Los procedimientos operativos son el nivel 2 del sistema documental. Describen cómo se ejecutan los procesos del SGSI+SGPI con suficiente detalle como para que cualquier persona competente pueda seguirlos. Un buen procedimiento responde siempre a las preguntas: ¿quién? ¿qué? ¿cuándo? ¿cómo? ¿con qué evidencia?</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Estructura estándar de un procedimiento</h2>
+
+      <div class="clause-box" style="margin-top:1rem;">
+        <p class="clause-box__ref">Plantilla de procedimiento — campos obligatorios</p>
+        <p class="clause-box__title">Encabezado de control del documento</p>
+        <table style="width:100%; font-size:0.82rem; color:var(--text-muted); margin-top:0.75rem;">
+          <tr>
+            <td style="padding:4px 8px; border:1px solid rgba(46,92,138,0.1);"><strong>Código:</strong> PROC-SI-001</td>
+            <td style="padding:4px 8px; border:1px solid rgba(46,92,138,0.1);"><strong>Versión:</strong> 2.1</td>
+            <td style="padding:4px 8px; border:1px solid rgba(46,92,138,0.1);"><strong>Fecha:</strong> 01/03/2025</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 8px; border:1px solid rgba(46,92,138,0.1);" colspan="2"><strong>Título:</strong> Procedimiento de gestión de incidentes de seguridad e información</td>
+            <td style="padding:4px 8px; border:1px solid rgba(46,92,138,0.1);"><strong>Aprobado por:</strong> CISO</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 8px; border:1px solid rgba(46,92,138,0.1);"><strong>Elaborado:</strong> Equipo de Seguridad</td>
+            <td style="padding:4px 8px; border:1px solid rgba(46,92,138,0.1);"><strong>Revisado:</strong> DPO</td>
+            <td style="padding:4px 8px; border:1px solid rgba(46,92,138,0.1);"><strong>Próxima revisión:</strong> 01/03/2026</td>
+          </tr>
+        </table>
+      </div>
+
+      <p style="margin-top:1.5rem; margin-bottom:0.75rem;">Secciones de contenido del procedimiento:</p>
+      <ol style="margin:0 0 0 1.5rem; color:var(--text-muted); line-height:2.3; font-size:0.9rem;">
+        <li><strong>Objeto:</strong> qué proceso describe y qué objetivo persigue.</li>
+        <li><strong>Alcance:</strong> a quién aplica y qué sistemas/actividades cubre.</li>
+        <li><strong>Referencias:</strong> políticas, normas y otros procedimientos relacionados.</li>
+        <li><strong>Definiciones:</strong> términos específicos usados en el procedimiento.</li>
+        <li><strong>Responsabilidades:</strong> quién es responsable de cada actividad.</li>
+        <li><strong>Descripción del procedimiento:</strong> pasos detallados, preferiblemente con diagrama de flujo.</li>
+        <li><strong>Registros generados:</strong> qué evidencias produce este procedimiento y dónde se conservan.</li>
+        <li><strong>Historial de cambios:</strong> versiones anteriores con descripción de cambios.</li>
+      </ol>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L05 -->
+    <article id="l005">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 10 · Lección 5 de 6</p>
+        <h1 class="lesson-title">Registros y evidencias: qué conservar y durante cuánto tiempo</h1>
+        <div class="lesson-meta"><span>⏱ 12 min</span><span><span class="badge badge--27001">27001 §7.5</span></span></div>
+      </div>
+
+      <p>Los registros son la evidencia de que el SGSI+SGPI funciona. Un auditor que no puede ver evidencias asume que el proceso no ocurrió. La gestión de registros es tanto una obligación normativa como una herramienta de defensa ante cualquier incidente, litigio o inspección regulatoria.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Plazos de conservación recomendados</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Tipo de registro</th><th>Plazo mínimo</th><th>Base legal/normativa</th></tr></thead>
+        <tbody>
+          <tr><td>Registros de auditoría interna</td><td>3 años (ciclo de certificación completo)</td><td>ISO 27001 §9.2</td></tr>
+          <tr><td>Actas de revisión por la dirección</td><td>3 años</td><td>ISO 27001 §9.3</td></tr>
+          <tr><td>Evaluaciones de riesgo</td><td>Vigente + 3 años de versiones anteriores</td><td>ISO 27001 §8.2</td></tr>
+          <tr><td>Registros de incidentes de seguridad</td><td>5 años</td><td>ISO 27001 §5.27</td></tr>
+          <tr><td>Registro de brechas de datos personales</td><td>3 años mínimo (recomendable indefinido)</td><td>Art. 33.5 RGPD</td></tr>
+          <tr><td>DPIAs</td><td>Vigente + hasta 3 años después de cesar el tratamiento</td><td>Art. 35 RGPD + directrices AEPD</td></tr>
+          <tr><td>Contratos Art. 28</td><td>Vigente + 5 años tras finalización de la relación</td><td>Art. 28 RGPD + prescripción civil</td></tr>
+          <tr><td>Registros de consentimiento</td><td>Hasta revocación + período de prescripción de acciones</td><td>Art. 7.1 RGPD</td></tr>
+          <tr><td>Registros de solicitudes de derechos</td><td>3 años</td><td>Arts. 12-22 RGPD</td></tr>
+          <tr><td>Logs de sistemas (NIS2 en alcance)</td><td>12 meses mínimo</td><td>NIS2 Art. 21 + directrices ENISA</td></tr>
+          <tr><td>Registros de formación y concienciación</td><td>3 años</td><td>ISO 27001 §7.2</td></tr>
+          <tr><td>Registros de no conformidades y acciones correctivas</td><td>3 años</td><td>ISO 27001 §10.1</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">Protección de la integridad de los registros</p>
+        <p>Los registros del SGSI+SGPI — especialmente los logs de sistemas, los registros de incidentes y el registro de brechas — deben estar protegidos frente a modificaciones no autorizadas. En entornos cloud, esto puede implementarse con almacenamiento WORM (Write Once Read Many), firma digital de logs, o integración con servicios de log inmutables (AWS CloudTrail con integridad habilitada, Azure Immutable Blob Storage). Un atacante que compromete un sistema y borra los logs elimina la evidencia forense del incidente.</p>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L06 -->
+    <article id="l006">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 10 · Lección 6 de 6</p>
+        <h1 class="lesson-title">Herramientas de gestión documental para el SGSI+SGPI</h1>
+        <div class="lesson-meta"><span>⏱ 10 min</span><span><span class="badge badge--tool">Herramientas</span></span></div>
+      </div>
+
+      <p>ISO 27001 no prescribe ningún sistema específico para gestionar la documentación. La elección depende del tamaño de la organización, el presupuesto y la infraestructura tecnológica existente. Lo que sí exige la norma es que el sistema permita: identificar, distribuir, controlar versiones, proteger y recuperar la información documentada.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Opciones por tamaño de organización</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Tamaño</th><th>Herramienta recomendada</th><th>Ventajas</th><th>Limitaciones</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;">Pequeña (&lt;50 empleados)</td>
+            <td>SharePoint Online / Confluence + Excel para registros</td>
+            <td>Bajo coste, control de versiones nativo, integrado con M365/Google. Sin costes adicionales si ya existe.</td>
+            <td>Requiere estructura de carpetas disciplinada. Sin automatización de recordatorios de revisión.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Mediana (50-500 empleados)</td>
+            <td>Confluence + Jira (para no conformidades) o herramientas GRC dedicadas (SimpleRisk, eramba)</td>
+            <td>Flujos de aprobación. Trazabilidad. Vinculación de documentos con controles. Gestión de no conformidades integrada.</td>
+            <td>Coste de licencias. Curva de aprendizaje.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Grande (&gt;500 empleados)</td>
+            <td>Plataformas GRC: OneTrust, ServiceNow GRC, Archer, MetaCompliance</td>
+            <td>Automatización completa: flujos de aprobación, recordatorios de revisión, mapeo de controles, reporting ejecutivo, gestión de DPIAs y derechos de interesados integrada.</td>
+            <td>Coste elevado. Implementación compleja. Sobredimensionado para organizaciones pequeñas.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--norm" style="margin-top:1.5rem;">
+        <p class="callout__title">Los requisitos mínimos del sistema documental</p>
+        <p>Independientemente de la herramienta, el sistema debe garantizar: identificación única de cada documento (código + versión + fecha), historial de versiones con descripción de cambios, estado del documento (borrador / en revisión / aprobado / obsoleto), distribución controlada (quién tiene acceso a qué documentos), y protección contra modificaciones no autorizadas. Un Google Drive sin estructura de permisos y sin control de versiones no cumple estos requisitos.</p>
+      </div>
+
+      <div class="nav-lesson" style="margin-top:3rem;">
+        <a href="m09-implementacion.html" class="nav-lesson__btn">← M09 · Implementación</a>
+        <a href="m11-auditoria-interna.html" class="nav-lesson__btn">M11 · Auditoría interna →</a>
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<footer class="footer" style="margin-top:0;">
+  <div class="footer__bottom" style="max-width:100%; padding:1.5rem 2rem;">
+    <span style="color:var(--text-faint); font-size:0.8rem;">© 2025 ISOTECNIA · <a href="../index.html" style="color:var(--text-faint);">Volver al índice</a></span>
+    <div class="footer__norm-logos"><span class="norm-logo">ISO/IEC 27001:2022</span><span class="norm-logo">ISO/IEC 27701:2019</span></div>
+  </div>
+</footer>
+<script src="../js/isotecnia.js"></script>
+</body>
+</html>

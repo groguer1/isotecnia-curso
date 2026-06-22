@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M03 — Gestión de Riesgos de Seguridad | ISOTECNIA</title>
+  <link rel="stylesheet" href="../css/isotecnia.css">
+  <style>
+    /* ---- Laboratorio interactivo ---- */
+    .lab-container {
+      background: var(--navy);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      margin: 2.5rem 0;
+    }
+    .lab-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--navy-light);
+    }
+    .lab-icon {
+      width: 44px; height: 44px;
+      background: rgba(0,200,150,0.12);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .lab-title { font-size: 1.1rem; font-weight: 700; color: var(--white); }
+    .lab-subtitle { font-size: 0.82rem; color: var(--text-faint); margin-top: 3px; }
+
+    .lab-step {
+      display: none;
+    }
+    .lab-step.active { display: block; }
+
+    .lab-step-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .lab-step-num {
+      font-size: 0.65rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      background: rgba(0,200,150,0.15);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .lab-step-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .lab-field {
+      margin-bottom: 1.25rem;
+    }
+    .lab-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ice);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .lab-input, .lab-select, .lab-textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(168,200,232,0.15);
+      border-radius: var(--radius-md);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      padding: 10px 14px;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .lab-input:focus, .lab-select:focus, .lab-textarea:focus {
+      border-color: var(--accent);
+    }
+    .lab-textarea { resize: vertical; min-height: 80px; }
+    .lab-select option { background: var(--navy-mid); color: var(--white); }
+
+    .lab-scale {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .lab-scale-btn {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(168,200,232,0.2);
+      background: transparent;
+      color: var(--ice);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: var(--font-sans);
+    }
+    .lab-scale-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .lab-scale-btn.selected-1, .lab-scale-btn.selected-2 { background: rgba(0,200,150,0.12); border-color: var(--accent); color: var(--accent); }
+    .lab-scale-btn.selected-3 { background: rgba(245,158,11,0.15); border-color: var(--warn); color: var(--warn); }
+    .lab-scale-btn.selected-4, .lab-scale-btn.selected-5 { background: rgba(239,68,68,0.12); border-color: var(--danger); color: #FCA5A5; }
+
+    .risk-matrix {
+      display: grid;
+      grid-template-columns: auto repeat(5, 1fr);
+      gap: 3px;
+      margin: 1.5rem 0;
+      font-size: 0.7rem;
+    }
+    .rm-cell {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.65rem;
+      letter-spacing: 0.04em;
+      transition: all 0.2s;
+    }
+    .rm-label { background: transparent; color: var(--text-faint); font-size: 0.65rem; }
+    .rm-header { background: rgba(168,200,232,0.08); color: var(--ice); font-size: 0.65rem; }
+    .rm-low { background: rgba(0,200,150,0.15); color: var(--accent); }
+    .rm-med { background: rgba(245,158,11,0.15); color: var(--warn); }
+    .rm-high { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+    .rm-cell.highlighted { box-shadow: 0 0 0 2px var(--accent); transform: scale(1.1); z-index: 1; position: relative; }
+
+    .result-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(168,200,232,0.1);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .result-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      margin-bottom: 0.25rem;
+    }
+    .result-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .risk-level-pill {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .risk-pill-low  { background: rgba(0,200,150,0.15); color: var(--accent); }
+    .risk-pill-med  { background: rgba(245,158,11,0.15); color: var(--warn); }
+    .risk-pill-high { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+    .risk-pill-crit { background: rgba(239,68,68,0.25); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.4); }
+
+    .lab-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--navy-light);
+      gap: 1rem;
+    }
+    .lab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      border: 1px solid rgba(168,200,232,0.2);
+      background: transparent;
+      color: var(--ice);
+      transition: all 0.2s;
+    }
+    .lab-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .lab-btn--primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--navy);
+    }
+    .lab-btn--primary:hover {
+      background: #00E5AE;
+      color: var(--navy);
+    }
+    .lab-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .lab-progress {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .lab-progress-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(168,200,232,0.2);
+      transition: background 0.2s;
+    }
+    .lab-progress-dot.done { background: var(--accent); }
+    .lab-progress-dot.current { background: var(--white); }
+
+    /* Resumen final */
+    .risk-summary-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+    }
+    .rsr-header {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+      margin-bottom: 0.5rem;
+    }
+    .rsr-data { background: rgba(255,255,255,0.04); }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar-track"><div class="progress-bar-fill"></div></div>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="navbar__inner">
+    <a href="../index.html" class="navbar__logo">
+      <div class="navbar__logo-mark">IT</div>
+      <div>
+        <span class="navbar__logo-text">ISOTECNIA</span>
+        <span class="navbar__logo-sub">ISO 27001 + ISO 27701</span>
+      </div>
+    </a>
+    <ul class="navbar__nav">
+      <li><a href="../index.html#modulos">Módulos</a></li>
+      <li><a href="../recursos/glosario.html">Glosario</a></li>
+      <li><a href="../recursos/plantillas.html">Plantillas</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="lesson-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <p class="sidebar__module-title" style="margin-top:1rem;">M03 · Gestión de Riesgos</p>
+    <ul class="sidebar__nav">
+      <li><a href="#l001" data-lesson-id="m03-l001"><span class="lesson-icon">○</span> L01 · Marco conceptual del riesgo</a></li>
+      <li><a href="#l002" data-lesson-id="m03-l002"><span class="lesson-icon">○</span> L02 · ISO 27005:2022</a></li>
+      <li><a href="#l003" data-lesson-id="m03-l003"><span class="lesson-icon">○</span> L03 · MAGERIT v3</a></li>
+      <li><a href="#l004" data-lesson-id="m03-l004"><span class="lesson-icon">○</span> L04 · Identificación de activos</a></li>
+      <li><a href="#l005" data-lesson-id="m03-l005"><span class="lesson-icon">○</span> L05 · Amenazas y vulnerabilidades</a></li>
+      <li><a href="#l006" data-lesson-id="m03-l006"><span class="lesson-icon">○</span> L06 · Opciones de tratamiento</a></li>
+      <li><a href="#l007" data-lesson-id="m03-l007"><span class="lesson-icon">○</span> L07 · 🔬 Laboratorio práctico</a></li>
+    </ul>
+
+    <p class="sidebar__module-title" style="margin-top:2rem;">Navegación</p>
+    <ul class="sidebar__nav">
+      <li><a href="m02-sgsi-fundamentos.html"><span class="lesson-icon">←</span> M02 · SGSI Fundamentos</a></li>
+      <li><a href="m04-anexo-a.html"><span class="lesson-icon">→</span> M04 · Anexo A — 93 controles</a></li>
+      <li><a href="m05-declaracion-aplicabilidad.html"><span class="lesson-icon">→</span> M05 · Declaración de Aplicabilidad</a></li>
+    </ul>
+
+    <div style="padding:1.5rem; margin-top:2rem; border-top:1px solid var(--navy-light);">
+      <p style="font-size:0.7rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem;">Recursos del módulo</p>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+        <li><a href="../recursos/plantillas.html#riesgos" style="font-size:0.8rem; color:var(--ice);">📄 Plantilla evaluación de riesgos</a></li>
+        <li><a href="../recursos/plantillas.html#activos" style="font-size:0.8rem; color:var(--ice);">📄 Inventario de activos</a></li>
+        <li><a href="../recursos/plantillas.html#tratamiento" style="font-size:0.8rem; color:var(--ice);">📄 Plan de tratamiento</a></li>
+        <li><a href="../recursos/referencias.html" style="font-size:0.8rem; color:var(--ice);">🔗 ISO 27005:2022 oficial</a></li>
+        <li><a href="https://www.ccn-cert.cni.es/es/herramientas/herramientas-de-auditoria-y-herramientas-ccn/magerit.html" target="_blank" rel="noopener noreferrer" style="font-size:0.8rem; color:var(--ice);">🔗 MAGERIT — CCN-CERT ↗</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- CONTENIDO -->
+  <main class="lesson-content">
+
+    <!-- Cabecera del módulo -->
+    <div style="background:var(--navy); border-radius:var(--radius-lg); padding:2rem 2.5rem; margin-bottom:3rem;">
+      <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem;">Módulo 03 · 7 lecciones + laboratorio</p>
+      <h1 style="color:var(--white); margin-bottom:0.75rem; font-size:1.7rem;">Gestión de riesgos de seguridad</h1>
+      <p style="color:var(--ice); font-size:0.95rem; line-height:1.75; max-width:580px;">
+        El análisis y tratamiento del riesgo es el motor del SGSI. Este módulo cubre la metodología completa — desde los fundamentos conceptuales hasta el laboratorio interactivo donde construirás tu primera evaluación de riesgos paso a paso.
+      </p>
+      <div style="display:flex; gap:0.75rem; margin-top:1.25rem; flex-wrap:wrap;">
+        <span class="tag tag--norm">ISO/IEC 27001:2022 §6</span>
+        <span class="tag tag--norm">ISO/IEC 27005:2022</span>
+        <span class="tag tag--level">MAGERIT v3</span>
+        <span class="tag tag--cert">7 lecciones · laboratorio interactivo</span>
+      </div>
+    </div>
+
+    <!-- ====================================================
+         L01 — MARCO CONCEPTUAL
+         ==================================================== -->
+    <article id="l001">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 03 · Lección 1 de 7</p>
+        <h1 class="lesson-title">Marco conceptual del riesgo de seguridad</h1>
+        <div class="lesson-meta">
+          <span>⏱ 16 min</span>
+          <span><span class="badge badge--27001">27001 §6.1</span></span>
+        </div>
+      </div>
+
+      <p>
+        La gestión del riesgo es el mecanismo central del SGSI. Todo lo demás — los controles, la documentación, las auditorías — existe para gestionar riesgos. Comprender el vocabulario y el modelo conceptual con precisión es imprescindible para implementar un proceso de riesgo que sea robusto y no solo formal.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Vocabulario fundamental (ISO 27000)</h2>
+
+      <table class="control-table" style="margin-top:0.75rem;">
+        <thead><tr><th>Término</th><th>Definición</th><th>Ejemplo en SI</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Activo</td>
+            <td>Cualquier cosa que tiene valor para la organización</td>
+            <td>Base de datos de clientes, servidor ERP, reputación de marca</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Amenaza</td>
+            <td>Causa potencial de un incidente no deseado que puede resultar en daño</td>
+            <td>Ransomware, phishing dirigido, empleado malicioso, desastre natural</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Vulnerabilidad</td>
+            <td>Debilidad de un activo que puede ser explotada por una amenaza</td>
+            <td>Software sin parchear, contraseñas débiles, ausencia de segmentación de red</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Riesgo</td>
+            <td>Efecto de la incertidumbre sobre los objetivos. Combinación de probabilidad de ocurrencia e impacto</td>
+            <td>Probabilidad de que ransomware cifre el ERP × impacto en operaciones</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Impacto</td>
+            <td>Consecuencia de un incidente de seguridad sobre los objetivos organizativos</td>
+            <td>Pérdida económica, daño reputacional, sanción regulatoria, interrupción operativa</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Riesgo inherente</td>
+            <td>Riesgo antes de aplicar controles</td>
+            <td>Nivel de exposición sin medidas de seguridad</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Riesgo residual</td>
+            <td>Riesgo que permanece después de aplicar controles</td>
+            <td>Nivel de exposición una vez implementados los controles seleccionados</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Apetito de riesgo</td>
+            <td>Nivel de riesgo que la organización está dispuesta a aceptar</td>
+            <td>Definido por la dirección como umbral de aceptación del riesgo residual</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Propietario del riesgo</td>
+            <td>Persona o entidad con responsabilidad y autoridad para gestionar el riesgo</td>
+            <td>El Director de Operaciones es propietario del riesgo de continuidad del ERP</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">El modelo Amenaza → Vulnerabilidad → Impacto</h2>
+
+      <p>
+        El riesgo de seguridad de la información se materializa cuando una <strong>amenaza</strong> explota una <strong>vulnerabilidad</strong> de un <strong>activo</strong>, generando un <strong>impacto</strong> sobre la organización. Este modelo es la base de cualquier metodología de análisis de riesgos.
+      </p>
+
+      <div class="callout callout--norm" style="margin-top:1.5rem;">
+        <p class="callout__title">La tríada CIA como eje del impacto</p>
+        <p>ISO 27001 evalúa el impacto de los riesgos en términos de las tres propiedades de la información: <strong>Confidencialidad</strong> (acceso solo a quienes están autorizados), <strong>Integridad</strong> (exactitud y completitud de la información) y <strong>Disponibilidad</strong> (accesible cuando se necesita). Un análisis de riesgos robusto valora el impacto potencial sobre las tres dimensiones para cada activo crítico.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">El proceso de gestión del riesgo según ISO 27005</h2>
+
+      <p>El proceso completo consta de estas fases, que se iteran continuamente:</p>
+      <ol style="margin:1rem 0 0 1.5rem; color:var(--text-muted); line-height:2.5; font-size:0.95rem;">
+        <li><strong>Establecimiento del contexto</strong> — Definir criterios, alcance y método.</li>
+        <li><strong>Identificación del riesgo</strong> — Qué puede ocurrir, dónde, cómo y por qué.</li>
+        <li><strong>Análisis del riesgo</strong> — Estimar probabilidad e impacto.</li>
+        <li><strong>Evaluación del riesgo</strong> — Comparar con criterios y priorizar.</li>
+        <li><strong>Tratamiento del riesgo</strong> — Seleccionar y aplicar opciones de tratamiento.</li>
+        <li><strong>Aceptación del riesgo</strong> — Decisión formal sobre el riesgo residual.</li>
+        <li><strong>Comunicación y consulta</strong> — Proceso transversal a todas las fases.</li>
+        <li><strong>Monitorización y revisión</strong> — Proceso continuo de supervisión.</li>
+      </ol>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Una empresa tiene un servidor web con una vulnerabilidad conocida (CVE sin parchear) que permite ejecución remota de código. El servidor aloja datos de clientes. ¿Cuál es la relación correcta entre los elementos del riesgo?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l01"> El servidor es la amenaza; el CVE es el activo; los datos de clientes son la vulnerabilidad.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m03-l01"> El servidor y los datos de clientes son activos; la vulnerabilidad es el CVE sin parchear; la amenaza es un atacante que explota ese CVE; el impacto es la pérdida de confidencialidad de los datos.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l01"> El CVE es la amenaza; el servidor es la vulnerabilidad; el impacto es la ejecución remota de código.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l01"> Los datos de clientes son la amenaza porque atraen a atacantes.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>La distinción entre amenaza, vulnerabilidad y activo es fundamental. El <strong>activo</strong> tiene valor (servidor + datos). La <strong>vulnerabilidad</strong> es la debilidad explotable (CVE sin parchear). La <strong>amenaza</strong> es el agente o evento que explota la vulnerabilidad (atacante). El <strong>impacto</strong> es la consecuencia si el riesgo se materializa (exposición de datos, interrupción del servicio).</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L02 — ISO 27005:2022
+         ==================================================== -->
+    <article id="l002">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 03 · Lección 2 de 7</p>
+        <h1 class="lesson-title">ISO/IEC 27005:2022 — metodología de gestión del riesgo</h1>
+        <div class="lesson-meta">
+          <span>⏱ 18 min</span>
+          <span><span class="badge badge--27001">ISO 27005</span></span>
+        </div>
+      </div>
+
+      <p>
+        ISO/IEC 27005:2022 es la guía metodológica oficial para la gestión del riesgo de seguridad de la información. La tercera edición (2022) introdujo cambios conceptuales importantes respecto a la versión anterior, especialmente la adopción del <strong>enfoque basado en escenarios de riesgo</strong> como alternativa al enfoque tradicional basado en activos.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Los dos enfoques de ISO 27005:2022</h2>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-top:1rem;">
+        <div class="clause-box">
+          <p class="clause-box__ref">Enfoque clásico</p>
+          <p class="clause-box__title">Basado en activos</p>
+          <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:0.75rem;">
+            Parte del inventario de activos. Para cada activo se identifican amenazas, vulnerabilidades y se estima el riesgo.
+          </p>
+          <p style="font-size:0.8rem; color:var(--text-faint);"><strong>Ventaja:</strong> muy exhaustivo y trazable.<br><strong>Limitación:</strong> puede ser extremadamente laborioso en organizaciones grandes.</p>
+        </div>
+        <div class="clause-box">
+          <p class="clause-box__ref">Enfoque moderno</p>
+          <p class="clause-box__title">Basado en escenarios</p>
+          <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:0.75rem;">
+            Parte de escenarios de riesgo plausibles (ej: "ransomware en sistemas productivos"). Se analiza su probabilidad e impacto sin enumerar todos los activos.
+          </p>
+          <p style="font-size:0.8rem; color:var(--text-faint);"><strong>Ventaja:</strong> más ágil y orientado a negocio.<br><strong>Limitación:</strong> requiere experiencia para definir escenarios representativos.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--info" style="margin-top:1.5rem;">
+        <p class="callout__title">¿Cuál usar en la práctica?</p>
+        <p>ISO 27001 no prescribe ninguno. La elección depende del contexto: organizaciones con infraestructuras complejas y equipos maduros suelen beneficiarse del enfoque basado en activos (más exhaustivo). Organizaciones ágiles o en fases iniciales de implementación suelen encontrar el enfoque por escenarios más manejable. La norma permite combinar ambos.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Criterios de riesgo: la base del proceso</h2>
+
+      <p>Antes de evaluar ningún riesgo, la organización debe establecer los <strong>criterios de riesgo</strong>. Sin criterios previos, la evaluación es subjetiva e inconsistente. Los criterios deben definir:</p>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Criterio</th><th>Descripción</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:500;">Escala de probabilidad</td>
+            <td>Cómo se mide la probabilidad de ocurrencia</td>
+            <td>1=Muy baja (&lt;1 vez en 10 años), 2=Baja (1 vez en 5 años), 3=Media (1 vez al año), 4=Alta (varias veces al año), 5=Muy alta (mensual o más)</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Escala de impacto</td>
+            <td>Cómo se mide la gravedad del impacto</td>
+            <td>1=Insignificante, 2=Menor, 3=Moderado, 4=Mayor, 5=Catastrófico</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Matriz de riesgo</td>
+            <td>Combinación de probabilidad × impacto</td>
+            <td>Niveles: bajo (1–4), medio (5–9), alto (10–16), crítico (17–25)</td>
+          </tr>
+          <tr>
+            <td style="font-weight:500;">Nivel de aceptación</td>
+            <td>Nivel de riesgo residual que la dirección acepta sin tratamiento adicional</td>
+            <td>Riesgos ≤6 se aceptan; riesgos 7–12 requieren plan de mejora; riesgos ≥13 requieren acción inmediata</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">Los criterios deben aprobarse antes del análisis</p>
+        <p>Un error frecuente: definir los criterios <em>después</em> de realizar el análisis, ajustándolos para que los resultados sean más convenientes. ISO 27001 exige que los criterios se establezcan <em>antes</em> de comenzar la evaluación y que sean aprobados por la dirección. Los auditores verifican la fecha de aprobación de los criterios vs la fecha del análisis.</p>
+      </div>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Una organización realiza su primera evaluación de riesgos. El analista valora la probabilidad de cada amenaza según su experiencia personal, sin una escala definida previamente. ¿Qué problema fundamental presenta este enfoque?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l02"> Ninguno, la experiencia del analista es una fuente válida de criterio.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m03-l02"> Viola el requisito de consistencia de ISO 27001 (6.1.2): sin escala definida, dos analistas diferentes producirán resultados incomparables, y la organización no puede demostrar que el proceso es reproducible.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l02"> Solo es un problema si la organización tiene más de un analista de riesgos.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l02"> El enfoque cualitativo siempre es aceptable según ISO 27005.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>La cláusula 6.1.2 de ISO 27001 exige que el proceso produzca resultados "consistentes, válidos y comparables". Sin criterios documentados y aprobados previamente, el proceso depende del criterio individual de quien lo ejecuta — lo que lo hace subjetivo, no reproducible y, por tanto, no conforme con la norma.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L03 — MAGERIT
+         ==================================================== -->
+    <article id="l003">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 03 · Lección 3 de 7</p>
+        <h1 class="lesson-title">MAGERIT v3 — la metodología nacional de referencia</h1>
+        <div class="lesson-meta">
+          <span>⏱ 16 min</span>
+          <span><span class="badge badge--27001">MAGERIT</span></span>
+        </div>
+      </div>
+
+      <p>
+        MAGERIT (Metodología de Análisis y Gestión de Riesgos de los Sistemas de Información) es la metodología oficial desarrollada por el Consejo Superior de Administración Electrónica de España. Es de libre acceso, está alineada con ISO 27005 y es la referencia metodológica principal en el contexto español, especialmente en el sector público y en organizaciones que deben cumplir con el Esquema Nacional de Seguridad (ENS).
+      </p>
+
+      <div class="callout callout--norm" style="margin-top:1rem;">
+        <p class="callout__title">MAGERIT y la herramienta PILAR</p>
+        <p>El CCN proporciona la herramienta <strong>PILAR</strong> (Procedimiento Informático-Lógico para el Análisis de Riesgos) que implementa la metodología MAGERIT. PILAR es gratuita para la Administración Pública y tiene versión comercial para el sector privado. Automatiza el análisis de riesgos, el catálogo de amenazas y la generación de informes. Ver: <a href="https://www.ccn-cert.cni.es/es/herramientas/herramientas-de-auditoria-y-herramientas-ccn/magerit.html" target="_blank" rel="noopener noreferrer" style="color:var(--accent);">CCN-CERT — MAGERIT ↗</a></p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Los tres libros de MAGERIT v3</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Libro</th><th>Contenido</th><th>Para quién</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Libro 1 — Método</td>
+            <td>El proceso de análisis y gestión de riesgos: pasos, artefactos y resultados esperados</td>
+            <td>Implementadores y gestores del proceso de riesgo</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Libro 2 — Catálogo de Elementos</td>
+            <td>Catálogo de tipos de activos, dimensiones de valoración, amenazas típicas y salvaguardas</td>
+            <td>Analistas que ejecutan el análisis de riesgos</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600; color:var(--navy);">Libro 3 — Guía de Técnicas</td>
+            <td>Técnicas concretas para el análisis: árboles de ataque, análisis Monte Carlo, tablas de riesgo</td>
+            <td>Analistas con necesidad de técnicas avanzadas</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Tipos de activos en MAGERIT</h2>
+
+      <p>MAGERIT clasifica los activos en una taxonomía jerárquica. Conocerla facilita enormemente la construcción del inventario:</p>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Tipo</th><th>Subtipo</th><th>Ejemplos</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500;" rowspan="3">[I] Información</td><td>Datos de carácter personal</td><td>Ficheros de empleados, clientes, pacientes</td></tr>
+          <tr><td>Datos clasificados</td><td>Secretos comerciales, propiedad intelectual</td></tr>
+          <tr><td>Credenciales</td><td>Contraseñas, certificados digitales, tokens</td></tr>
+          <tr><td style="font-weight:500;">[S] Servicios</td><td>Servicios internos y externos</td><td>ERP, correo electrónico, portal web, VPN</td></tr>
+          <tr><td style="font-weight:500;">[SW] Software</td><td>Aplicaciones, SO, middleware</td><td>SAP, Windows Server, Apache, bases de datos</td></tr>
+          <tr><td style="font-weight:500;">[HW] Hardware</td><td>Equipos físicos</td><td>Servidores, PCs, switches, firewalls, móviles</td></tr>
+          <tr><td style="font-weight:500;">[COM] Comunicaciones</td><td>Redes e infraestructura de comunicación</td><td>LAN corporativa, MPLS, conexiones cloud</td></tr>
+          <tr><td style="font-weight:500;">[SI] Soportes</td><td>Medios de almacenamiento</td><td>Discos, USB, cintas de backup, papel</td></tr>
+          <tr><td style="font-weight:500;">[AUX] Auxiliares</td><td>Infraestructura de soporte</td><td>SAI, generadores, climatización, cableado</td></tr>
+          <tr><td style="font-weight:500;">[L] Instalaciones</td><td>Locales y ubicaciones</td><td>CPD, oficinas, salas de reunión</td></tr>
+          <tr><td style="font-weight:500;">[P] Personal</td><td>Personas con roles en el sistema</td><td>Administradores, usuarios, proveedores externos</td></tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Dimensiones de valoración en MAGERIT</h2>
+
+      <p>MAGERIT valora los activos en cinco dimensiones que amplían la tríada CIA:</p>
+      <ul style="margin:0.75rem 0 0 1.5rem; color:var(--text-muted); line-height:2.2; font-size:0.95rem;">
+        <li><strong>[C] Confidencialidad</strong> — Daño si el activo es conocido por quien no debe.</li>
+        <li><strong>[I] Integridad</strong> — Daño si el activo es modificado de forma inapropiada.</li>
+        <li><strong>[D] Disponibilidad</strong> — Daño si el activo no está disponible cuando se necesita.</li>
+        <li><strong>[A] Autenticidad</strong> — Daño si el activo no acredita correctamente su origen.</li>
+        <li><strong>[T] Trazabilidad</strong> — Daño si no puede rastrearse quién accedió o modificó el activo.</li>
+      </ul>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Una organización pública española implementa un SGSI alineado con el ENS. El equipo de análisis de riesgos propone usar OCTAVE en lugar de MAGERIT. ¿Es esto aceptable según ISO 27001?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l03"> No, las organizaciones sujetas al ENS están obligadas a usar MAGERIT.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m03-l03"> Sí. ISO 27001 no prescribe ninguna metodología específica. Cualquier metodología documentada que satisfaga los requisitos de la cláusula 6.1.2 es aceptable. Para el ENS, sin embargo, el uso de MAGERIT/PILAR está recomendado y facilita el cumplimiento.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l03"> No, ISO 27005 obliga a usar MAGERIT en el contexto europeo.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l03"> Solo es aceptable si OCTAVE está homologada por el CCN-CERT.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>ISO 27001 es neutral respecto a metodologías. Lo que importa es que el proceso satisfaga los requisitos de la cláusula 6.1.2 (consistencia, validez, comparabilidad) y esté documentado. En el contexto ENS, MAGERIT/PILAR está fuertemente recomendado por el CCN y facilita el cumplimiento, pero no es obligatorio según ISO 27001.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L04 — IDENTIFICACIÓN Y VALORACIÓN DE ACTIVOS
+         ==================================================== -->
+    <article id="l004">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 03 · Lección 4 de 7</p>
+        <h1 class="lesson-title">Identificación y valoración de activos</h1>
+        <div class="lesson-meta">
+          <span>⏱ 14 min</span>
+          <span><span class="badge badge--27001">27001 §6</span></span>
+        </div>
+      </div>
+
+      <p>El inventario de activos es el punto de partida del análisis de riesgos basado en activos. Un inventario mal construido — incompleto, con activos mal valorados o sin propietarios asignados — compromete toda la evaluación de riesgos que se construya sobre él.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Qué debe contener el inventario de activos</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Campo</th><th>Descripción</th><th>Observaciones</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500;">ID único</td><td>Identificador del activo</td><td>Permite referencias cruzadas con la evaluación de riesgos</td></tr>
+          <tr><td style="font-weight:500;">Nombre</td><td>Denominación descriptiva</td><td>Suficientemente específico para identificar unívocamente el activo</td></tr>
+          <tr><td style="font-weight:500;">Tipo</td><td>Categoría (información, servicio, software, hardware...)</td><td>Usar la taxonomía MAGERIT o equivalente</td></tr>
+          <tr><td style="font-weight:500;">Propietario</td><td>Persona responsable del activo</td><td>Obligatorio según control 5.9 del Anexo A</td></tr>
+          <tr><td style="font-weight:500;">Clasificación</td><td>Nivel de sensibilidad de la información</td><td>Público, Interno, Confidencial, Secreto</td></tr>
+          <tr><td style="font-weight:500;">Valoración C/I/D</td><td>Valor para la organización en cada dimensión</td><td>Escala 1–5 según criterios aprobados</td></tr>
+          <tr><td style="font-weight:500;">Dependencias</td><td>Activos de los que depende este activo</td><td>Crítico para propagar valoraciones en cadena</td></tr>
+          <tr><td style="font-weight:500;">Ubicación</td><td>Dónde se encuentra físicamente o lógicamente</td><td>CPD propio, cloud AWS, oficina Madrid...</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--info" style="margin-top:1.5rem;">
+        <p class="callout__title">La valoración de activos: valor para el negocio, no coste de reposición</p>
+        <p>Un error frecuente es valorar los activos por su coste de adquisición o reposición. La valoración correcta mide el <strong>daño que causaría a la organización</strong> la pérdida de confidencialidad, integridad o disponibilidad de ese activo. Una base de datos de clientes que costó 5.000€ en desarrollo puede tener un valor de impacto de millones en caso de fuga — es el daño al negocio lo que debe valorarse.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Activos críticos vs activos de soporte</h2>
+      <p>No todos los activos tienen el mismo peso en el análisis. MAGERIT distingue entre:</p>
+      <ul style="margin:0.75rem 0 0 1.5rem; color:var(--text-muted); line-height:2.2; font-size:0.95rem;">
+        <li><strong>Activos esenciales</strong> (información y servicios): los que directamente sustentan la misión de la organización. Son el foco principal del análisis.</li>
+        <li><strong>Activos de soporte</strong> (hardware, software, redes, personas, instalaciones): los que soportan a los esenciales. Su valoración se deriva de los activos esenciales que sustentan.</li>
+      </ul>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L05 — AMENAZAS Y VULNERABILIDADES
+         ==================================================== -->
+    <article id="l005">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 03 · Lección 5 de 7</p>
+        <h1 class="lesson-title">Análisis de amenazas y vulnerabilidades</h1>
+        <div class="lesson-meta">
+          <span>⏱ 14 min</span>
+          <span><span class="badge badge--27001">ISO 27005</span></span>
+        </div>
+      </div>
+
+      <p>Una vez identificados y valorados los activos, el análisis de amenazas y vulnerabilidades determina <em>qué puede ocurrirle</em> a cada activo y <em>con qué facilidad</em>. Esta fase es donde el análisis de riesgos adquiere su dimensión práctica y operativa.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Catálogo de amenazas (extracto MAGERIT)</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Categoría</th><th>Amenaza</th><th>Afecta a</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:500;" rowspan="3">[N] Naturales</td><td>Fuego</td><td>HW, SI, L, AUX</td></tr>
+          <tr><td>Inundación</td><td>HW, SI, L, AUX</td></tr>
+          <tr><td>Terremoto / desastre natural</td><td>HW, SI, L, AUX, COM</td></tr>
+          <tr><td style="font-weight:500;" rowspan="3">[I] Industriales</td><td>Corte de suministro eléctrico</td><td>HW, AUX, COM</td></tr>
+          <tr><td>Fallo de comunicaciones</td><td>COM, S</td></tr>
+          <tr><td>Fallo de servicios de soporte</td><td>AUX, HW</td></tr>
+          <tr><td style="font-weight:500;" rowspan="4">[E] Errores y fallos no intencionados</td><td>Errores de usuarios</td><td>I, SW, S</td></tr>
+          <tr><td>Errores de administración</td><td>HW, SW, COM, S</td></tr>
+          <tr><td>Vulnerabilidades de software</td><td>SW, I</td></tr>
+          <tr><td>Destrucción de información</td><td>I, SI</td></tr>
+          <tr><td style="font-weight:500;" rowspan="5">[A] Ataques intencionados</td><td>Acceso no autorizado</td><td>I, S, SW</td></tr>
+          <tr><td>Suplantación de identidad</td><td>I, S, P</td></tr>
+          <tr><td>Ataques de denegación de servicio</td><td>S, COM</td></tr>
+          <tr><td>Infección por malware / ransomware</td><td>SW, I, HW</td></tr>
+          <tr><td>Fuga de información</td><td>I, P</td></tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Fuentes de información sobre amenazas (Threat Intelligence)</h2>
+
+      <p>El control <strong>5.7 del Anexo A 2022 (Threat Intelligence)</strong> — uno de los 11 nuevos — exige que la organización recopile y analice información sobre amenazas relevantes para su contexto. Fuentes recomendadas:</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-top:1rem;">
+        <div style="background:var(--off-white); border-radius:var(--radius-md); padding:1rem;">
+          <p style="font-size:0.75rem; font-weight:700; color:var(--navy); margin-bottom:0.5rem;">Fuentes institucionales</p>
+          <ul style="list-style:none; font-size:0.82rem; color:var(--text-muted); line-height:2;">
+            <li>→ <a href="https://www.ccn-cert.cni.es/es/informes/informes-ccn-cert-publicos.html" target="_blank" rel="noopener noreferrer" style="color:var(--steel-mid);">CCN-CERT Informes de Amenazas ↗</a></li>
+            <li>→ <a href="https://www.enisa.europa.eu/topics/threat-landscape" target="_blank" rel="noopener noreferrer" style="color:var(--steel-mid);">ENISA Threat Landscape ↗</a></li>
+            <li>→ <a href="https://nvd.nist.gov" target="_blank" rel="noopener noreferrer" style="color:var(--steel-mid);">NVD — NIST Vulnerabilidades ↗</a></li>
+          </ul>
+        </div>
+        <div style="background:var(--off-white); border-radius:var(--radius-md); padding:1rem;">
+          <p style="font-size:0.75rem; font-weight:700; color:var(--navy); margin-bottom:0.5rem;">Fuentes técnicas</p>
+          <ul style="list-style:none; font-size:0.82rem; color:var(--text-muted); line-height:2;">
+            <li>→ <a href="https://attack.mitre.org" target="_blank" rel="noopener noreferrer" style="color:var(--steel-mid);">MITRE ATT&amp;CK ↗</a></li>
+            <li>→ <a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer" style="color:var(--steel-mid);">OWASP Top 10 ↗</a></li>
+            <li>→ ISACs sectoriales (financiero, sanitario, energía)</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L06 — OPCIONES DE TRATAMIENTO
+         ==================================================== -->
+    <article id="l006">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 03 · Lección 6 de 7</p>
+        <h1 class="lesson-title">Opciones de tratamiento del riesgo</h1>
+        <div class="lesson-meta">
+          <span>⏱ 12 min</span>
+          <span><span class="badge badge--27001">27001 §6.1.3</span></span>
+        </div>
+      </div>
+
+      <p>
+        Una vez evaluados y priorizados los riesgos, la organización debe decidir qué hace con cada uno. ISO 27001 contempla cuatro opciones de tratamiento, que no son mutuamente excluyentes: un mismo riesgo puede ser tratado con una combinación de ellas.
+      </p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Las cuatro opciones en profundidad</h2>
+
+      <div class="clause-box" style="margin-top:1rem; border-left:4px solid var(--accent);">
+        <p class="clause-box__ref">Opción 1</p>
+        <p class="clause-box__title">Modificar el riesgo (mitigar)</p>
+        <p style="font-size:0.9rem; color:var(--text-muted);">Implementar controles para reducir la probabilidad de ocurrencia, el impacto o ambos. Es la opción más frecuente y la que genera la mayor parte del trabajo de implementación del SGSI. Los controles se seleccionan del Anexo A de ISO 27001, de ISO 27002, o de otras fuentes justificadas. La modificación nunca elimina completamente el riesgo — siempre queda un riesgo residual.</p>
+      </div>
+
+      <div class="clause-box" style="margin-top:0.75rem; border-left:4px solid var(--steel-mid);">
+        <p class="clause-box__ref">Opción 2</p>
+        <p class="clause-box__title">Retener el riesgo (aceptar)</p>
+        <p style="font-size:0.9rem; color:var(--text-muted);">Aceptar conscientemente el riesgo cuando está dentro del nivel de apetito de riesgo definido por la dirección, o cuando el coste del tratamiento supera el valor del activo protegido. La aceptación debe ser una <strong>decisión informada y documentada</strong>, aprobada por el propietario del riesgo y/o la alta dirección. No es "ignorar el riesgo" — es aceptarlo con pleno conocimiento de su existencia y magnitud.</p>
+      </div>
+
+      <div class="clause-box" style="margin-top:0.75rem; border-left:4px solid var(--warn);">
+        <p class="clause-box__ref">Opción 3</p>
+        <p class="clause-box__title">Evitar el riesgo (eliminar)</p>
+        <p style="font-size:0.9rem; color:var(--text-muted);">Eliminar la actividad, proceso o sistema que genera el riesgo. Es la opción más radical y la más efectiva — si la fuente del riesgo no existe, el riesgo tampoco. Sin embargo, suele tener un coste de negocio elevado (dejar de ofrecer un servicio, prescindir de un proveedor, abandonar una tecnología). Debe considerarse cuando el riesgo es tan elevado que no puede mitigarse a un nivel aceptable con controles razonables.</p>
+      </div>
+
+      <div class="clause-box" style="margin-top:0.75rem; border-left:4px solid var(--gold);">
+        <p class="clause-box__ref">Opción 4</p>
+        <p class="clause-box__title">Compartir el riesgo (transferir)</p>
+        <p style="font-size:0.9rem; color:var(--text-muted);">Transferir o compartir el impacto financiero del riesgo con terceros mediante seguros de ciberriesgo, contratos con proveedores que incluyan penalizaciones por incidentes, o subcontratación de servicios críticos a terceros especializados. <strong>Importante:</strong> compartir el riesgo no transfiere la responsabilidad legal ni regulatoria — si un proveedor subcontratado sufre una brecha que expone datos de clientes, la organización contratante sigue siendo responsable ante el RGPD.</p>
+      </div>
+
+      <div class="callout callout--key" style="margin-top:2rem;">
+        <p class="callout__title">El riesgo residual y la aceptación formal</p>
+        <p>Después de aplicar las opciones de tratamiento, siempre queda un riesgo residual. Este riesgo residual debe ser evaluado formalmente y aceptado por el propietario del riesgo y/o la alta dirección. ISO 27001 exige evidencia documentada de esta aceptación. Un plan de tratamiento sin proceso de aceptación formal del riesgo residual es una no conformidad típica.</p>
+      </div>
+
+      <!-- Quiz -->
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Una empresa contrata un seguro de ciberriesgo por 2M€ y considera que el riesgo de ransomware está tratado mediante "compartir". El CISO no implementa ningún control adicional. ¿Es este enfoque correcto?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l06"> Sí, si el seguro cubre el coste del incidente, el riesgo está adecuadamente tratado.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m03-l06"> No. Compartir el riesgo transfiere el impacto financiero pero no reduce la probabilidad ni protege los activos. La organización sigue expuesta al incidente. Además, la responsabilidad regulatoria (RGPD, NIS2) no se transfiere al asegurador. ISO 27001 esperaría también controles de modificación del riesgo.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l06"> Sí, si la cobertura del seguro supera el valor de los activos en riesgo.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m03-l06"> Depende de si el nivel de riesgo residual está dentro del apetito de riesgo aprobado por la dirección.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>El seguro de ciberriesgo es una herramienta financiera que mitiga el impacto económico de un incidente, pero no previene el incidente. Una organización certificada bajo ISO 27001 que depende exclusivamente de seguros sin controles preventivos difícilmente satisfaría los requisitos del Anexo A. Adicionalmente, las responsabilidades regulatorias (notificación a la AEPD, sanciones RGPD) no son asegurables en el sentido de que el seguro no exime de la responsabilidad legal.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- ====================================================
+         L07 — LABORATORIO INTERACTIVO
+         ==================================================== -->
+    <article id="l007">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 03 · Lección 7 de 7 — Laboratorio</p>
+        <h1 class="lesson-title">Laboratorio: construye tu primera evaluación de riesgos</h1>
+        <div class="lesson-meta">
+          <span>⏱ 30–45 min</span>
+          <span><span class="badge badge--lab">Laboratorio interactivo</span></span>
+        </div>
+      </div>
+
+      <p>
+        En este laboratorio construirás una evaluación de riesgos real paso a paso, aplicando la metodología vista en las lecciones anteriores. El ejercicio simula el análisis de riesgos de una empresa del sector servicios con infraestructura cloud y datos de clientes.
+      </p>
+      <p style="margin-top:0.75rem; font-size:0.9rem; color:var(--text-muted);">
+        Completa los 5 pasos del laboratorio. Al finalizar obtendrás el perfil de riesgo del activo analizado con su nivel de riesgo inherente, riesgo residual y la decisión de tratamiento recomendada.
+      </p>
+
+      <!-- LABORATORIO INTERACTIVO -->
+      <div class="lab-container" id="risk-lab">
+
+        <div class="lab-header">
+          <div class="lab-icon">🔬</div>
+          <div>
+            <p class="lab-title">Laboratorio de Evaluación de Riesgos</p>
+            <p class="lab-subtitle">ISO/IEC 27005:2022 · Metodología basada en activos</p>
+          </div>
+          <div class="lab-progress" id="lab-progress" style="margin-left:auto;">
+            <div class="lab-progress-dot current" id="dot-0"></div>
+            <div class="lab-progress-dot" id="dot-1"></div>
+            <div class="lab-progress-dot" id="dot-2"></div>
+            <div class="lab-progress-dot" id="dot-3"></div>
+            <div class="lab-progress-dot" id="dot-4"></div>
+          </div>
+        </div>
+
+        <!-- PASO 1: Identificación del activo -->
+        <div class="lab-step active" id="step-0">
+          <div class="lab-step-header">
+            <span class="lab-step-num">PASO 1 DE 5</span>
+            <span class="lab-step-title">Identificación del activo</span>
+          </div>
+
+          <div class="lab-field">
+            <label class="lab-label">Nombre del activo *</label>
+            <input class="lab-input" id="asset-name" type="text" placeholder="Ej: Base de datos de clientes (CRM)" value="Base de datos de clientes (CRM)">
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+            <div class="lab-field">
+              <label class="lab-label">Tipo de activo (MAGERIT)</label>
+              <select class="lab-select" id="asset-type">
+                <option value="I">Información [I]</option>
+                <option value="S">Servicio [S]</option>
+                <option value="SW">Software [SW]</option>
+                <option value="HW">Hardware [HW]</option>
+                <option value="COM">Comunicaciones [COM]</option>
+                <option value="SI">Soporte de información [SI]</option>
+                <option value="P">Personal [P]</option>
+              </select>
+            </div>
+            <div class="lab-field">
+              <label class="lab-label">Propietario del activo</label>
+              <input class="lab-input" id="asset-owner" type="text" placeholder="Ej: Director Comercial" value="Director Comercial">
+            </div>
+          </div>
+          <div class="lab-field">
+            <label class="lab-label">Descripción breve</label>
+            <textarea class="lab-textarea" id="asset-desc" placeholder="Qué contiene, para qué se usa y por qué es importante para el negocio">Base de datos que almacena datos personales y comerciales de 45.000 clientes activos. Alimenta el sistema de facturación y las campañas de marketing. Reside en servidor cloud AWS (RDS). Acceso desde la red corporativa y VPN.</textarea>
+          </div>
+
+          <div class="lab-nav">
+            <span style="font-size:0.8rem; color:var(--text-faint);">Los campos tienen valores de ejemplo — puedes modificarlos</span>
+            <button class="lab-btn lab-btn--primary" onclick="labNext(0)">Siguiente: Valorar el activo →</button>
+          </div>
+        </div>
+
+        <!-- PASO 2: Valoración del activo -->
+        <div class="lab-step" id="step-1">
+          <div class="lab-step-header">
+            <span class="lab-step-num">PASO 2 DE 5</span>
+            <span class="lab-step-title">Valoración del activo (CIA)</span>
+          </div>
+
+          <p style="color:var(--ice); font-size:0.9rem; margin-bottom:1.5rem; line-height:1.7;">
+            Valora el daño que causaría a la organización la pérdida de cada dimensión de seguridad para este activo. Escala: <span style="color:var(--accent);">1=Insignificante</span> · 2=Menor · <span style="color:var(--warn);">3=Moderado</span> · 4=Mayor · <span style="color:#FCA5A5;">5=Catastrófico</span>
+          </p>
+
+          <div class="lab-field">
+            <label class="lab-label">Confidencialidad — ¿Qué daño causaría que personas no autorizadas accedieran a este activo?</label>
+            <div class="lab-scale" id="scale-c">
+              <button class="lab-scale-btn" onclick="setScale('c',1,this)">1</button>
+              <button class="lab-scale-btn" onclick="setScale('c',2,this)">2</button>
+              <button class="lab-scale-btn" onclick="setScale('c',3,this)">3</button>
+              <button class="lab-scale-btn selected-4" onclick="setScale('c',4,this)">4</button>
+              <button class="lab-scale-btn" onclick="setScale('c',5,this)">5</button>
+            </div>
+          </div>
+
+          <div class="lab-field">
+            <label class="lab-label">Integridad — ¿Qué daño causaría que este activo fuera modificado de forma no autorizada?</label>
+            <div class="lab-scale" id="scale-i">
+              <button class="lab-scale-btn" onclick="setScale('i',1,this)">1</button>
+              <button class="lab-scale-btn" onclick="setScale('i',2,this)">2</button>
+              <button class="lab-scale-btn selected-4" onclick="setScale('i',3,this)">3</button>
+              <button class="lab-scale-btn" onclick="setScale('i',4,this)">4</button>
+              <button class="lab-scale-btn" onclick="setScale('i',5,this)">5</button>
+            </div>
+          </div>
+
+          <div class="lab-field">
+            <label class="lab-label">Disponibilidad — ¿Qué daño causaría que este activo no estuviera accesible cuando se necesita?</label>
+            <div class="lab-scale" id="scale-d">
+              <button class="lab-scale-btn" onclick="setScale('d',1,this)">1</button>
+              <button class="lab-scale-btn" onclick="setScale('d',2,this)">2</button>
+              <button class="lab-scale-btn" onclick="setScale('d',3,this)">3</button>
+              <button class="lab-scale-btn selected-4" onclick="setScale('d',4,this)">4</button>
+              <button class="lab-scale-btn" onclick="setScale('d',5,this)">5</button>
+            </div>
+          </div>
+
+          <div class="result-card" id="asset-value-card" style="margin-top:1rem;">
+            <div class="result-grid">
+              <div><p class="result-label">Valor máximo del activo</p><p class="result-value" id="asset-max-val">4</p></div>
+              <div><p class="result-label">Clasificación</p><p class="result-value" id="asset-class">Confidencial</p></div>
+            </div>
+          </div>
+
+          <div class="lab-nav">
+            <button class="lab-btn" onclick="labPrev(1)">← Volver</button>
+            <button class="lab-btn lab-btn--primary" onclick="labNext(1)">Siguiente: Amenaza y vulnerabilidad →</button>
+          </div>
+        </div>
+
+        <!-- PASO 3: Amenaza y vulnerabilidad -->
+        <div class="lab-step" id="step-2">
+          <div class="lab-step-header">
+            <span class="lab-step-num">PASO 3 DE 5</span>
+            <span class="lab-step-title">Identificación de amenaza y vulnerabilidad</span>
+          </div>
+
+          <div class="lab-field">
+            <label class="lab-label">Amenaza identificada</label>
+            <select class="lab-select" id="threat-select" onchange="updateThreatHelp()">
+              <option value="ransomware">Infección por ransomware</option>
+              <option value="acceso_no_auth">Acceso no autorizado (externo)</option>
+              <option value="empleado_mal">Empleado malicioso / insider threat</option>
+              <option value="fuga">Fuga de información accidental</option>
+              <option value="phishing">Phishing dirigido (spear phishing)</option>
+              <option value="dos">Ataque de denegación de servicio</option>
+              <option value="fallo_hw">Fallo de hardware / proveedor cloud</option>
+              <option value="error_config">Error de configuración</option>
+            </select>
+          </div>
+
+          <div class="lab-field">
+            <label class="lab-label">Vulnerabilidad explotada por esta amenaza</label>
+            <input class="lab-input" id="vuln-input" type="text" value="Ausencia de copias de seguridad offline y tiempo de recuperación (RTO) no definido">
+          </div>
+
+          <div id="threat-help" style="background:rgba(0,200,150,0.06); border:1px solid rgba(0,200,150,0.15); border-radius:var(--radius-md); padding:1rem; margin-bottom:1rem;">
+            <p style="font-size:0.75rem; font-weight:600; color:var(--accent); margin-bottom:0.4rem;">💡 Controles relevantes del Anexo A</p>
+            <p id="threat-controls" style="font-size:0.82rem; color:var(--ice); line-height:1.7;">8.13 (Backup), 8.14 (Redundancia), 5.30 (Continuidad TIC), 8.8 (Gestión de vulnerabilidades técnicas)</p>
+          </div>
+
+          <div class="lab-nav">
+            <button class="lab-btn" onclick="labPrev(2)">← Volver</button>
+            <button class="lab-btn lab-btn--primary" onclick="labNext(2)">Siguiente: Estimar el riesgo →</button>
+          </div>
+        </div>
+
+        <!-- PASO 4: Estimación del riesgo -->
+        <div class="lab-step" id="step-3">
+          <div class="lab-step-header">
+            <span class="lab-step-num">PASO 4 DE 5</span>
+            <span class="lab-step-title">Estimación del riesgo inherente y residual</span>
+          </div>
+
+          <p style="color:var(--ice); font-size:0.9rem; margin-bottom:1.5rem; line-height:1.7;">
+            Estima la <strong>probabilidad</strong> de que la amenaza se materialice y el <strong>impacto</strong> resultante. El riesgo inherente es el nivel sin controles. El riesgo residual es el nivel después de los controles existentes.
+          </p>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem;">
+            <div>
+              <p style="font-size:0.8rem; font-weight:600; color:var(--ice); margin-bottom:1rem; text-transform:uppercase; letter-spacing:0.08em;">Riesgo Inherente (sin controles)</p>
+
+              <div class="lab-field">
+                <label class="lab-label">Probabilidad</label>
+                <div class="lab-scale" id="scale-prob-inh">
+                  <button class="lab-scale-btn" onclick="setRisk('prob_inh',1,this)" title="Muy baja">1</button>
+                  <button class="lab-scale-btn" onclick="setRisk('prob_inh',2,this)" title="Baja">2</button>
+                  <button class="lab-scale-btn selected-3" onclick="setRisk('prob_inh',3,this)" title="Media">3</button>
+                  <button class="lab-scale-btn" onclick="setRisk('prob_inh',4,this)" title="Alta">4</button>
+                  <button class="lab-scale-btn" onclick="setRisk('prob_inh',5,this)" title="Muy alta">5</button>
+                </div>
+              </div>
+              <div class="lab-field">
+                <label class="lab-label">Impacto</label>
+                <div class="lab-scale" id="scale-imp-inh">
+                  <button class="lab-scale-btn" onclick="setRisk('imp_inh',1,this)">1</button>
+                  <button class="lab-scale-btn" onclick="setRisk('imp_inh',2,this)">2</button>
+                  <button class="lab-scale-btn" onclick="setRisk('imp_inh',3,this)">3</button>
+                  <button class="lab-scale-btn selected-4" onclick="setRisk('imp_inh',4,this)">4</button>
+                  <button class="lab-scale-btn" onclick="setRisk('imp_inh',5,this)">5</button>
+                </div>
+              </div>
+              <div class="result-card">
+                <p class="result-label">Nivel de riesgo inherente</p>
+                <p class="result-value" id="inh-risk-val">12</p>
+                <p id="inh-risk-label" style="margin-top:6px;"><span class="risk-level-pill risk-pill-high">Alto</span></p>
+              </div>
+            </div>
+
+            <div>
+              <p style="font-size:0.8rem; font-weight:600; color:var(--ice); margin-bottom:1rem; text-transform:uppercase; letter-spacing:0.08em;">Riesgo Residual (con controles)</p>
+
+              <div class="lab-field">
+                <label class="lab-label">Probabilidad residual</label>
+                <div class="lab-scale" id="scale-prob-res">
+                  <button class="lab-scale-btn" onclick="setRisk('prob_res',1,this)">1</button>
+                  <button class="lab-scale-btn selected-1" onclick="setRisk('prob_res',2,this)">2</button>
+                  <button class="lab-scale-btn" onclick="setRisk('prob_res',3,this)">3</button>
+                  <button class="lab-scale-btn" onclick="setRisk('prob_res',4,this)">4</button>
+                  <button class="lab-scale-btn" onclick="setRisk('prob_res',5,this)">5</button>
+                </div>
+              </div>
+              <div class="lab-field">
+                <label class="lab-label">Impacto residual</label>
+                <div class="lab-scale" id="scale-imp-res">
+                  <button class="lab-scale-btn" onclick="setRisk('imp_res',1,this)">1</button>
+                  <button class="lab-scale-btn" onclick="setRisk('imp_res',2,this)">2</button>
+                  <button class="lab-scale-btn selected-3" onclick="setRisk('imp_res',3,this)">3</button>
+                  <button class="lab-scale-btn" onclick="setRisk('imp_res',4,this)">4</button>
+                  <button class="lab-scale-btn" onclick="setRisk('imp_res',5,this)">5</button>
+                </div>
+              </div>
+              <div class="result-card">
+                <p class="result-label">Nivel de riesgo residual</p>
+                <p class="result-value" id="res-risk-val">6</p>
+                <p id="res-risk-label" style="margin-top:6px;"><span class="risk-level-pill risk-pill-med">Medio</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:1.5rem;">
+            <p style="font-size:0.75rem; font-weight:600; color:var(--ice); margin-bottom:0.75rem; text-transform:uppercase; letter-spacing:0.08em;">Matriz de riesgo — visualización</p>
+            <div class="risk-matrix" id="risk-matrix-viz">
+              <div class="rm-cell rm-label"></div>
+              <div class="rm-cell rm-header">P=1</div>
+              <div class="rm-cell rm-header">P=2</div>
+              <div class="rm-cell rm-header">P=3</div>
+              <div class="rm-cell rm-header">P=4</div>
+              <div class="rm-cell rm-header">P=5</div>
+              <!-- fila I=5 -->
+              <div class="rm-cell rm-header">I=5</div>
+              <div class="rm-cell rm-med" data-p="1" data-i="5">5</div>
+              <div class="rm-cell rm-high" data-p="2" data-i="5">10</div>
+              <div class="rm-cell rm-high" data-p="3" data-i="5">15</div>
+              <div class="rm-cell rm-high" data-p="4" data-i="5">20</div>
+              <div class="rm-cell rm-high" data-p="5" data-i="5">25</div>
+              <!-- I=4 -->
+              <div class="rm-cell rm-header">I=4</div>
+              <div class="rm-cell rm-low" data-p="1" data-i="4">4</div>
+              <div class="rm-cell rm-med" data-p="2" data-i="4">8</div>
+              <div class="rm-cell rm-high" data-p="3" data-i="4">12</div>
+              <div class="rm-cell rm-high" data-p="4" data-i="4">16</div>
+              <div class="rm-cell rm-high" data-p="5" data-i="4">20</div>
+              <!-- I=3 -->
+              <div class="rm-cell rm-header">I=3</div>
+              <div class="rm-cell rm-low" data-p="1" data-i="3">3</div>
+              <div class="rm-cell rm-med" data-p="2" data-i="3">6</div>
+              <div class="rm-cell rm-med" data-p="3" data-i="3">9</div>
+              <div class="rm-cell rm-high" data-p="4" data-i="3">12</div>
+              <div class="rm-cell rm-high" data-p="5" data-i="3">15</div>
+              <!-- I=2 -->
+              <div class="rm-cell rm-header">I=2</div>
+              <div class="rm-cell rm-low" data-p="1" data-i="2">2</div>
+              <div class="rm-cell rm-low" data-p="2" data-i="2">4</div>
+              <div class="rm-cell rm-med" data-p="3" data-i="2">6</div>
+              <div class="rm-cell rm-med" data-p="4" data-i="2">8</div>
+              <div class="rm-cell rm-high" data-p="5" data-i="2">10</div>
+              <!-- I=1 -->
+              <div class="rm-cell rm-header">I=1</div>
+              <div class="rm-cell rm-low" data-p="1" data-i="1">1</div>
+              <div class="rm-cell rm-low" data-p="2" data-i="1">2</div>
+              <div class="rm-cell rm-low" data-p="3" data-i="1">3</div>
+              <div class="rm-cell rm-med" data-p="4" data-i="1">4</div>
+              <div class="rm-cell rm-med" data-p="5" data-i="1">5</div>
+            </div>
+            <p style="font-size:0.7rem; color:var(--text-faint); margin-top:0.5rem;">🟢 Bajo (1–4) &nbsp;&nbsp; 🟡 Medio (5–9) &nbsp;&nbsp; 🔴 Alto (10–25)</p>
+          </div>
+
+          <div class="lab-nav">
+            <button class="lab-btn" onclick="labPrev(3)">← Volver</button>
+            <button class="lab-btn lab-btn--primary" onclick="labNext(3)">Siguiente: Decisión de tratamiento →</button>
+          </div>
+        </div>
+
+        <!-- PASO 5: Tratamiento y resumen -->
+        <div class="lab-step" id="step-4">
+          <div class="lab-step-header">
+            <span class="lab-step-num">PASO 5 DE 5</span>
+            <span class="lab-step-title">Decisión de tratamiento y ficha de riesgo</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem;">
+            <div class="lab-field">
+              <label class="lab-label">Opción de tratamiento</label>
+              <select class="lab-select" id="treatment-select">
+                <option value="modificar">Modificar (implementar controles)</option>
+                <option value="retener">Retener (aceptar riesgo residual)</option>
+                <option value="evitar">Evitar (eliminar la actividad)</option>
+                <option value="compartir">Compartir (transferir/seguro)</option>
+              </select>
+            </div>
+            <div class="lab-field">
+              <label class="lab-label">Propietario del riesgo</label>
+              <input class="lab-input" id="risk-owner" type="text" value="Director Comercial / CISO">
+            </div>
+          </div>
+
+          <div class="lab-field">
+            <label class="lab-label">Controles seleccionados (Anexo A)</label>
+            <input class="lab-input" id="controls-selected" type="text" value="8.13 (Backup), 8.14 (Redundancia TIC), 5.30 (Continuidad), 8.8 (Gestión vulnerabilidades)">
+          </div>
+
+          <div class="lab-field">
+            <label class="lab-label">Fecha de revisión del riesgo</label>
+            <input class="lab-input" id="review-date" type="date" value="2025-12-31">
+          </div>
+
+          <!-- FICHA DE RIESGO GENERADA -->
+          <div id="risk-card-output" style="background:rgba(255,255,255,0.04); border:1px solid rgba(0,200,150,0.2); border-radius:var(--radius-lg); padding:1.75rem; margin-top:1.5rem;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem; padding-bottom:1rem; border-bottom:1px solid rgba(168,200,232,0.1);">
+              <div>
+                <p style="font-size:0.65rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px;">Ficha de Riesgo</p>
+                <p style="font-size:1rem; font-weight:700; color:var(--white);" id="rc-asset-name">Base de datos de clientes (CRM)</p>
+              </div>
+              <span id="rc-residual-pill" class="risk-level-pill risk-pill-med">Residual: Medio</span>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin-bottom:1.25rem;">
+              <div><p class="result-label">Amenaza</p><p style="font-size:0.85rem; color:var(--ice); font-weight:500;" id="rc-threat">Ransomware</p></div>
+              <div><p class="result-label">Riesgo inherente</p><p style="font-size:0.85rem; color:#FCA5A5; font-weight:700;" id="rc-inh">12 — Alto</p></div>
+              <div><p class="result-label">Riesgo residual</p><p style="font-size:0.85rem; color:var(--warn); font-weight:700;" id="rc-res">6 — Medio</p></div>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+              <div><p class="result-label">Tratamiento</p><p style="font-size:0.85rem; color:var(--ice); font-weight:500;" id="rc-treatment">Modificar</p></div>
+              <div><p class="result-label">Propietario</p><p style="font-size:0.85rem; color:var(--ice); font-weight:500;" id="rc-owner">Director Comercial / CISO</p></div>
+            </div>
+            <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid rgba(168,200,232,0.1);">
+              <p class="result-label">Controles aplicados</p>
+              <p style="font-size:0.82rem; color:var(--ice);" id="rc-controls">8.13 (Backup), 8.14 (Redundancia TIC), 5.30 (Continuidad), 8.8 (Gestión vulnerabilidades)</p>
+            </div>
+          </div>
+
+          <div class="lab-nav">
+            <button class="lab-btn" onclick="labPrev(4)">← Volver</button>
+            <button class="lab-btn lab-btn--primary" onclick="generateFinalCard()">✓ Generar ficha de riesgo</button>
+          </div>
+        </div>
+
+      </div><!-- /lab-container -->
+
+      <!-- Navegación de módulo -->
+      <div class="nav-lesson" style="margin-top:3rem;">
+        <a href="m02-sgsi-fundamentos.html" class="nav-lesson__btn">← M02 · SGSI Fundamentos</a>
+        <a href="m04-anexo-a.html" class="nav-lesson__btn">M04 · Anexo A — 93 controles →</a>
+      </div>
+
+    </article>
+
+  </main>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer" style="margin-top:0;">
+  <div class="footer__bottom" style="max-width:100%; padding:1.5rem 2rem;">
+    <span style="color:var(--text-faint); font-size:0.8rem;">© 2025 ISOTECNIA · <a href="../index.html" style="color:var(--text-faint);">Volver al índice</a></span>
+    <div class="footer__norm-logos">
+      <span class="norm-logo">ISO/IEC 27001:2022</span>
+      <span class="norm-logo">ISO/IEC 27701:2019</span>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/isotecnia.js"></script>
+<script>
+// ============================================================
+// LABORATORIO INTERACTIVO — lógica de estado
+// ============================================================
+const labState = {
+  step: 0,
+  c: 4, i: 3, d: 4,
+  prob_inh: 3, imp_inh: 4,
+  prob_res: 2, imp_res: 3
+};
+
+const threatControls = {
+  ransomware: '8.13 (Backup), 8.14 (Redundancia TIC), 5.30 (Continuidad TIC), 8.8 (Vulnerabilidades técnicas)',
+  acceso_no_auth: '8.2 (Gestión acceso privilegiado), 8.3 (Restricción acceso), 8.5 (Autenticación segura), 5.17 (Autenticación MFA)',
+  empleado_mal: '6.3 (Concienciación seguridad), 6.4 (Proceso disciplinario), 5.11 (Devolución activos), 8.16 (Monitorización actividades)',
+  fuga: '5.12 (Clasificación información), 8.11 (Enmascaramiento datos), 8.12 (Prevención DLP), 7.7 (Escritorio limpio)',
+  phishing: '8.23 (Filtrado web), 6.3 (Concienciación), 5.7 (Threat intelligence), 8.20 (Seguridad redes)',
+  dos: '8.20 (Seguridad redes), 8.21 (Seguridad servicios red), 8.14 (Redundancia), 5.30 (Continuidad TIC)',
+  fallo_hw: '8.14 (Redundancia), 5.30 (Continuidad TIC), 8.13 (Backup), 5.23 (Seguridad servicios cloud)',
+  error_config: '8.9 (Gestión configuración), 8.8 (Vulnerabilidades técnicas), 8.32 (Gestión cambios), 5.37 (Procedimientos operación)'
+};
+
+const threatNames = {
+  ransomware: 'Infección por ransomware',
+  acceso_no_auth: 'Acceso no autorizado externo',
+  empleado_mal: 'Insider threat / empleado malicioso',
+  fuga: 'Fuga de información accidental',
+  phishing: 'Spear phishing dirigido',
+  dos: 'Denegación de servicio',
+  fallo_hw: 'Fallo hardware / proveedor cloud',
+  error_config: 'Error de configuración'
+};
+
+function labNext(current) {
+  document.getElementById('step-' + current).classList.remove('active');
+  document.getElementById('step-' + (current + 1)).classList.add('active');
+  updateDots(current + 1);
+  updateMatrixHighlight();
+  syncFinalCard();
+  labState.step = current + 1;
+  document.getElementById('risk-lab').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function labPrev(current) {
+  document.getElementById('step-' + current).classList.remove('active');
+  document.getElementById('step-' + (current - 1)).classList.add('active');
+  updateDots(current - 1);
+  labState.step = current - 1;
+  document.getElementById('risk-lab').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function updateDots(active) {
+  for (let i = 0; i < 5; i++) {
+    const d = document.getElementById('dot-' + i);
+    d.className = 'lab-progress-dot';
+    if (i < active) d.classList.add('done');
+    else if (i === active) d.classList.add('current');
+  }
+}
+
+function setScale(dim, val, btn) {
+  labState[dim] = val;
+  const container = document.getElementById('scale-' + dim);
+  container.querySelectorAll('.lab-scale-btn').forEach(b => {
+    b.className = 'lab-scale-btn';
+    if (parseInt(b.textContent) === val) {
+      b.classList.add('selected-' + val);
+    }
+  });
+  updateAssetValue();
+}
+
+function updateAssetValue() {
+  const max = Math.max(labState.c, labState.i, labState.d);
+  document.getElementById('asset-max-val').textContent = max;
+  const cls = max >= 5 ? 'Secreto' : max >= 4 ? 'Confidencial' : max >= 3 ? 'Interno' : 'Público';
+  document.getElementById('asset-class').textContent = cls;
+}
+
+function setRisk(dim, val, btn) {
+  labState[dim] = val;
+  const scaleId = dim === 'prob_inh' ? 'scale-prob-inh' : dim === 'imp_inh' ? 'scale-imp-inh' : dim === 'prob_res' ? 'scale-prob-res' : 'scale-imp-res';
+  const container = document.getElementById(scaleId);
+  container.querySelectorAll('.lab-scale-btn').forEach(b => {
+    b.className = 'lab-scale-btn';
+    if (parseInt(b.textContent) === val) b.classList.add('selected-' + val);
+  });
+  updateRiskValues();
+  updateMatrixHighlight();
+}
+
+function updateRiskValues() {
+  const inh = labState.prob_inh * labState.imp_inh;
+  const res = labState.prob_res * labState.imp_res;
+  document.getElementById('inh-risk-val').textContent = inh;
+  document.getElementById('res-risk-val').textContent = res;
+  document.getElementById('inh-risk-label').innerHTML = '<span class="risk-level-pill ' + getRiskClass(inh) + '">' + getRiskLabel(inh) + '</span>';
+  document.getElementById('res-risk-label').innerHTML = '<span class="risk-level-pill ' + getRiskClass(res) + '">' + getRiskLabel(res) + '</span>';
+}
+
+function getRiskClass(val) {
+  if (val <= 4) return 'risk-pill-low';
+  if (val <= 9) return 'risk-pill-med';
+  if (val <= 16) return 'risk-pill-high';
+  return 'risk-pill-crit';
+}
+function getRiskLabel(val) {
+  if (val <= 4) return 'Bajo';
+  if (val <= 9) return 'Medio';
+  if (val <= 16) return 'Alto';
+  return 'Crítico';
+}
+
+function updateMatrixHighlight() {
+  document.querySelectorAll('.rm-cell[data-p]').forEach(cell => {
+    cell.classList.remove('highlighted');
+  });
+  const inhCell = document.querySelector(`.rm-cell[data-p="${labState.prob_inh}"][data-i="${labState.imp_inh}"]`);
+  if (inhCell) inhCell.classList.add('highlighted');
+}
+
+function updateThreatHelp() {
+  const sel = document.getElementById('threat-select').value;
+  document.getElementById('threat-controls').textContent = threatControls[sel] || '';
+  document.getElementById('vuln-input').value = getDefaultVuln(sel);
+}
+
+function getDefaultVuln(threat) {
+  const vulns = {
+    ransomware: 'Ausencia de copias de seguridad offline y RTO no definido',
+    acceso_no_auth: 'Contraseñas débiles y ausencia de autenticación multifactor',
+    empleado_mal: 'Exceso de privilegios y ausencia de monitorización de actividad',
+    fuga: 'Ausencia de clasificación de información y controles DLP',
+    phishing: 'Baja concienciación del personal y ausencia de filtrado de correo avanzado',
+    dos: 'Ausencia de balanceadores de carga y protección anti-DDoS',
+    fallo_hw: 'Sin acuerdo de nivel de servicio (SLA) de recuperación con el proveedor cloud',
+    error_config: 'Ausencia de gestión de configuración y control de cambios'
+  };
+  return vulns[threat] || '';
+}
+
+function syncFinalCard() {
+  const assetName = document.getElementById('asset-name')?.value || 'Activo';
+  const inh = labState.prob_inh * labState.imp_inh;
+  const res = labState.prob_res * labState.imp_res;
+  const threat = document.getElementById('threat-select')?.value || 'ransomware';
+
+  document.getElementById('rc-asset-name').textContent = assetName;
+  document.getElementById('rc-threat').textContent = threatNames[threat] || threat;
+  document.getElementById('rc-inh').textContent = inh + ' — ' + getRiskLabel(inh);
+  document.getElementById('rc-res').textContent = res + ' — ' + getRiskLabel(res);
+  document.getElementById('rc-residual-pill').className = 'risk-level-pill ' + getRiskClass(res);
+  document.getElementById('rc-residual-pill').textContent = 'Residual: ' + getRiskLabel(res);
+}
+
+function generateFinalCard() {
+  syncFinalCard();
+  const treatment = document.getElementById('treatment-select').value;
+  const owner = document.getElementById('risk-owner').value;
+  const controls = document.getElementById('controls-selected').value;
+
+  document.getElementById('rc-treatment').textContent = treatment.charAt(0).toUpperCase() + treatment.slice(1);
+  document.getElementById('rc-owner').textContent = owner;
+  document.getElementById('rc-controls').textContent = controls;
+
+  const card = document.getElementById('risk-card-output');
+  card.style.borderColor = 'var(--accent)';
+  card.style.background = 'rgba(0,200,150,0.06)';
+
+  const btn = document.querySelector('#step-4 .lab-btn--primary');
+  btn.textContent = '✓ Ficha generada';
+  btn.style.background = 'rgba(0,200,150,0.2)';
+  btn.style.color = 'var(--accent)';
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  updateAssetValue();
+  updateRiskValues();
+  updateMatrixHighlight();
+  updateThreatHelp();
+});
+</script>
+</body>
+</html>

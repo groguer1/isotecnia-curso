@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M09 — Implementación Práctica del Sistema | ISOTECNIA</title>
+  <link rel="stylesheet" href="../css/isotecnia.css">
+  <style>
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin: 1.5rem 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--steel-mid));
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .timeline-month {
+      font-size: 0.65rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--accent-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+    .timeline-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.3rem;
+    }
+    .timeline-desc {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .gap-matrix {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2px;
+      margin: 1.5rem 0;
+    }
+    .gap-cell {
+      padding: 8px 10px;
+      font-size: 0.78rem;
+    }
+    .gap-header {
+      background: var(--navy);
+      color: var(--ice);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .gap-row-label {
+      background: var(--off-white);
+      color: var(--text-muted);
+      font-weight: 500;
+      border-right: 2px solid rgba(46,92,138,0.1);
+    }
+    .gap-none  { background: #E8F5E9; color: #2E7D32; font-weight: 600; text-align: center; }
+    .gap-low   { background: #FFF8E1; color: #F57F17; font-weight: 600; text-align: center; }
+    .gap-med   { background: #FFF3E0; color: #E65100; font-weight: 600; text-align: center; }
+    .gap-high  { background: #FFEBEE; color: #C62828; font-weight: 600; text-align: center; }
+    .gap-na    { background: var(--off-white); color: var(--text-faint); text-align: center; font-style: italic; }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar-track"><div class="progress-bar-fill"></div></div>
+
+<nav class="navbar">
+  <div class="navbar__inner">
+    <a href="../index.html" class="navbar__logo">
+      <div class="navbar__logo-mark">IT</div>
+      <div><span class="navbar__logo-text">ISOTECNIA</span><span class="navbar__logo-sub">ISO 27001 + ISO 27701</span></div>
+    </a>
+    <ul class="navbar__nav">
+      <li><a href="../index.html#modulos">Módulos</a></li>
+      <li><a href="../recursos/glosario.html">Glosario</a></li>
+      <li><a href="../recursos/plantillas.html">Plantillas</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="lesson-layout">
+  <aside class="sidebar">
+    <p class="sidebar__module-title" style="margin-top:1rem;">M09 · Implementación</p>
+    <ul class="sidebar__nav">
+      <li><a href="#l001" data-lesson-id="m09-l001"><span class="lesson-icon">○</span> L01 · Gap Analysis: metodología</a></li>
+      <li><a href="#l002" data-lesson-id="m09-l002"><span class="lesson-icon">○</span> L02 · Plan Director de Seguridad</a></li>
+      <li><a href="#l003" data-lesson-id="m09-l003"><span class="lesson-icon">○</span> L03 · Gestión del proyecto</a></li>
+      <li><a href="#l004" data-lesson-id="m09-l004"><span class="lesson-icon">○</span> L04 · Concienciación y formación</a></li>
+      <li><a href="#l005" data-lesson-id="m09-l005"><span class="lesson-icon">○</span> L05 · Gestión de proveedores</a></li>
+      <li><a href="#l006" data-lesson-id="m09-l006"><span class="lesson-icon">○</span> L06 · Continuidad del negocio</a></li>
+      <li><a href="#l007" data-lesson-id="m09-l007"><span class="lesson-icon">○</span> L07 · Seguridad en entornos cloud</a></li>
+      <li><a href="#l008" data-lesson-id="m09-l008"><span class="lesson-icon">○</span> L08 · Cronograma tipo 6–18 meses</a></li>
+    </ul>
+    <p class="sidebar__module-title" style="margin-top:2rem;">Navegación</p>
+    <ul class="sidebar__nav">
+      <li><a href="m08-rgpd-marco-legal.html"><span class="lesson-icon">←</span> M08 · Marco legal</a></li>
+      <li><a href="m10-documentacion.html"><span class="lesson-icon">→</span> M10 · Documentación</a></li>
+      <li><a href="m11-auditoria-interna.html"><span class="lesson-icon">→</span> M11 · Auditoría interna</a></li>
+    </ul>
+    <div style="padding:1.5rem; margin-top:2rem; border-top:1px solid var(--navy-light);">
+      <p style="font-size:0.7rem; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.5rem;">Recursos</p>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+        <li><a href="../recursos/plantillas.html#gap-analysis" style="font-size:0.8rem; color:var(--ice);">📄 Plantilla Gap Analysis</a></li>
+        <li><a href="../recursos/plantillas.html#plan-director" style="font-size:0.8rem; color:var(--ice);">📄 Plan Director de Seguridad</a></li>
+        <li><a href="../recursos/plantillas.html#proyecto-impl" style="font-size:0.8rem; color:var(--ice);">📄 Plan de proyecto (Gantt)</a></li>
+        <li><a href="../recursos/plantillas.html#bcp" style="font-size:0.8rem; color:var(--ice);">📄 Plantilla BCP/DRP</a></li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="lesson-content">
+
+    <div style="background:var(--navy); border-radius:var(--radius-lg); padding:2rem 2.5rem; margin-bottom:3rem;">
+      <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); margin-bottom:0.5rem;">Módulo 09 · 8 lecciones</p>
+      <h1 style="color:var(--white); margin-bottom:0.75rem; font-size:1.7rem;">Implementación práctica del sistema</h1>
+      <p style="color:var(--ice); font-size:0.95rem; line-height:1.75; max-width:580px;">Del papel a la realidad. Este módulo cubre todas las herramientas y procesos para llevar el SGSI+SGPI desde cero hasta la preparación para certificación: gap analysis, plan director, gestión del proyecto, formación, proveedores, continuidad, cloud y el cronograma completo.</p>
+      <div style="display:flex; gap:0.75rem; margin-top:1.25rem; flex-wrap:wrap;">
+        <span class="tag tag--norm">ISO 27001:2022</span>
+        <span class="tag tag--27701" style="background:rgba(0,200,150,0.12); color:var(--accent); border:1px solid rgba(0,200,150,0.25);">ISO 27701:2019</span>
+        <span class="tag tag--level">8 lecciones · herramientas prácticas</span>
+        <span class="tag tag--cert">Cronograma 6–18 meses</span>
+      </div>
+    </div>
+
+    <!-- L01 -->
+    <article id="l001">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 09 · Lección 1 de 8</p>
+        <h1 class="lesson-title">Gap Analysis: herramienta y metodología</h1>
+        <div class="lesson-meta"><span>⏱ 18 min</span><span><span class="badge badge--tool">Plantillas</span></span></div>
+      </div>
+
+      <p>El Gap Analysis (análisis de brechas) es el primer paso operativo de cualquier implementación. Compara el estado actual de seguridad y privacidad de la organización con los requisitos de ISO 27001 e ISO 27701, identificando las brechas que deben cerrarse antes de la certificación.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Estructura del Gap Analysis integrado 27001+27701</h2>
+
+      <p>Un Gap Analysis robusto evalúa tres dimensiones para cada control y requisito normativo:</p>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Dimensión</th><th>Escala de madurez</th><th>Criterio</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;">Existencia</td>
+            <td>0 = Inexistente · 1 = Inicial/ad hoc · 2 = Definido · 3 = Gestionado · 4 = Optimizado</td>
+            <td>¿Existe algún proceso, control o política que aborde este requisito?</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Efectividad</td>
+            <td>0 = No aplicable/inexistente · 1 = Parcialmente efectivo · 2 = Efectivo · 3 = Altamente efectivo</td>
+            <td>¿El control existente realmente mitiga el riesgo o satisface el requisito?</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Documentación</td>
+            <td>Sí / Parcial / No</td>
+            <td>¿Está documentado de forma que pueda evidenciarse ante un auditor?</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Extracto de Gap Analysis — ejemplo real</h2>
+
+      <div class="gap-matrix">
+        <div class="gap-cell gap-header">Control / Requisito</div>
+        <div class="gap-cell gap-header" style="text-align:center;">Madurez actual</div>
+        <div class="gap-cell gap-header" style="text-align:center;">Brecha</div>
+        <div class="gap-cell gap-header" style="text-align:center;">Documentado</div>
+
+        <div class="gap-cell gap-row-label"><strong style="display:block; font-size:0.7rem; color:var(--accent-dark);">5.1</strong> Políticas de seguridad</div>
+        <div class="gap-cell gap-low" style="text-align:center;">1 — Inicial</div>
+        <div class="gap-cell gap-med" style="text-align:center;">Media</div>
+        <div class="gap-cell gap-med" style="text-align:center;">Parcial</div>
+
+        <div class="gap-cell gap-row-label"><strong style="display:block; font-size:0.7rem; color:var(--accent-dark);">5.15</strong> Control de acceso</div>
+        <div class="gap-cell gap-low" style="text-align:center;">2 — Definido</div>
+        <div class="gap-cell gap-low" style="text-align:center;">Baja</div>
+        <div class="gap-cell gap-none" style="text-align:center;">Sí</div>
+
+        <div class="gap-cell gap-row-label"><strong style="display:block; font-size:0.7rem; color:var(--accent-dark);">5.23</strong> Seguridad cloud</div>
+        <div class="gap-cell gap-high" style="text-align:center;">0 — Inexistente</div>
+        <div class="gap-cell gap-high" style="text-align:center;">Alta</div>
+        <div class="gap-cell gap-high" style="text-align:center;">No</div>
+
+        <div class="gap-cell gap-row-label"><strong style="display:block; font-size:0.7rem; color:var(--accent-dark);">8.8</strong> Gestión vulnerabilidades</div>
+        <div class="gap-cell gap-med" style="text-align:center;">1 — Inicial</div>
+        <div class="gap-cell gap-med" style="text-align:center;">Media</div>
+        <div class="gap-cell gap-med" style="text-align:center;">Parcial</div>
+
+        <div class="gap-cell gap-row-label"><strong style="display:block; font-size:0.7rem; color:var(--accent-dark);">8.13</strong> Backups</div>
+        <div class="gap-cell gap-none" style="text-align:center;">3 — Gestionado</div>
+        <div class="gap-cell gap-none" style="text-align:center;">Ninguna</div>
+        <div class="gap-cell gap-none" style="text-align:center;">Sí</div>
+
+        <div class="gap-cell gap-row-label"><strong style="display:block; font-size:0.7rem; color:var(--accent-dark);">7.2.4</strong> DPIA (27701)</div>
+        <div class="gap-cell gap-high" style="text-align:center;">0 — Inexistente</div>
+        <div class="gap-cell gap-high" style="text-align:center;">Alta</div>
+        <div class="gap-cell gap-high" style="text-align:center;">No</div>
+
+        <div class="gap-cell gap-row-label"><strong style="display:block; font-size:0.7rem; color:var(--accent-dark);">7.3</strong> Derechos interesados (27701)</div>
+        <div class="gap-cell gap-low" style="text-align:center;">1 — Inicial</div>
+        <div class="gap-cell gap-med" style="text-align:center;">Media</div>
+        <div class="gap-cell gap-high" style="text-align:center;">No</div>
+
+        <div class="gap-cell gap-row-label"><strong style="display:block; font-size:0.7rem; color:var(--accent-dark);">RAT</strong> Registro actividades (RGPD)</div>
+        <div class="gap-cell gap-med" style="text-align:center;">1 — Inicial</div>
+        <div class="gap-cell gap-med" style="text-align:center;">Media</div>
+        <div class="gap-cell gap-med" style="text-align:center;">Parcial</div>
+      </div>
+
+      <p style="font-size:0.78rem; color:var(--text-faint); margin-top:0.5rem;">🟢 Ninguna/Baja &nbsp; 🟡 Media &nbsp; 🔴 Alta — la plantilla completa para los 93 controles + requisitos 27701 está disponible en <a href="../recursos/plantillas.html#gap-analysis" style="color:var(--accent);">recursos del curso</a>.</p>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Priorización de brechas: la matriz de criticidad</h2>
+
+      <p>No todas las brechas deben cerrarse con la misma urgencia. La priorización combina la brecha normativa con el riesgo de negocio:</p>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Prioridad</th><th>Criterio</th><th>Plazo de cierre recomendado</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700; color:var(--danger);">P1 — Crítica</td>
+            <td>Brecha alta + riesgo de negocio alto. O brecha que impide directamente la certificación (requisito obligatorio sin implementar).</td>
+            <td>30–60 días</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:var(--warn);">P2 — Alta</td>
+            <td>Brecha alta + riesgo medio, o brecha media + riesgo alto. Controles incluidos en SoA no implementados para fecha de auditoría.</td>
+            <td>60–120 días</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:var(--accent-dark);">P3 — Media</td>
+            <td>Brecha media + riesgo medio. Controles implementados pero sin documentación suficiente.</td>
+            <td>120–180 días</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:var(--text-faint);">P4 — Baja</td>
+            <td>Brecha baja. Mejoras de madurez sobre controles ya implementados.</td>
+            <td>180–365 días</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Comprueba tu comprensión</p>
+        <p class="quiz-question">Durante el Gap Analysis, se detecta que la organización no tiene ningún proceso de gestión de vulnerabilidades (control 8.8) y que acumula más de 300 vulnerabilidades conocidas sin parchear en sistemas de producción. ¿Cuál debería ser la prioridad de esta brecha?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m09-l01"> P3 — Media, porque la gestión de vulnerabilidades es un control técnico que puede implementarse progresivamente.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m09-l01"> P1 — Crítica. La brecha es alta (proceso inexistente) y el riesgo de negocio es muy alto (300+ vulnerabilidades sin parchear en producción representan un riesgo real e inmediato de incidente). Además, un auditor que detecte esta situación podría emitir una no conformidad mayor que bloquee la certificación.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m09-l01"> P2 — Alta, porque la organización puede argumentar que gestiona el riesgo mediante otros controles.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m09-l01"> P4 — Baja, porque las vulnerabilidades sin parchear son aceptables si están documentadas en la SoA.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Correcto</p>
+          <p>Una situación de 300+ vulnerabilidades conocidas sin proceso de remediación es simultáneamente un riesgo de negocio crítico (alta probabilidad de incidente) y un requisito normativo incumplido (control 8.8 sin implementar). Esta es precisamente la prioridad P1 que debe cerrarse en 30-60 días. Ningún auditor de certificación otorgará un certificado a una organización con esta brecha abierta.</p>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L02 -->
+    <article id="l002">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 09 · Lección 2 de 8</p>
+        <h1 class="lesson-title">Plan Director de Seguridad</h1>
+        <div class="lesson-meta"><span>⏱ 16 min</span><span><span class="badge badge--tool">Plantillas</span></span></div>
+      </div>
+
+      <p>El Plan Director de Seguridad (PDS) es el documento estratégico que traduce los resultados del Gap Analysis en un plan de acción plurianual para construir el SGSI+SGPI. Es el compromiso formal de la organización con la seguridad y la privacidad — no un documento de cumplimiento, sino una hoja de ruta real.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Estructura del Plan Director de Seguridad</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Sección</th><th>Contenido</th><th>Quién lo elabora</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600;">1. Resumen ejecutivo</td><td>Estado actual de seguridad, principales brechas identificadas, inversión requerida, beneficios esperados. Orientado a la alta dirección.</td><td>CISO + DPO</td></tr>
+          <tr><td style="font-weight:600;">2. Contexto y alcance</td><td>Marco normativo aplicable, alcance del SGSI+SGPI, análisis de contexto resumido.</td><td>CISO + DPO</td></tr>
+          <tr><td style="font-weight:600;">3. Estado actual (baseline)</td><td>Resultados del Gap Analysis. Nivel de madurez por dominio. Principales riesgos identificados.</td><td>CISO</td></tr>
+          <tr><td style="font-weight:600;">4. Objetivos estratégicos</td><td>Objetivos de seguridad y privacidad a 1-3 años, medibles y alineados con los objetivos de negocio.</td><td>CISO + DPO + Dirección</td></tr>
+          <tr><td style="font-weight:600;">5. Iniciativas y proyectos</td><td>Lista de proyectos de mejora priorizados, con descripción, beneficio esperado, recursos necesarios y plazos.</td><td>CISO</td></tr>
+          <tr><td style="font-weight:600;">6. Hoja de ruta</td><td>Cronograma de implementación por fases (trimestres o meses). Hitos clave. Dependencias entre proyectos.</td><td>CISO</td></tr>
+          <tr><td style="font-weight:600;">7. Presupuesto</td><td>Estimación de inversión por iniciativa: personas, tecnología, consultoría, certificación.</td><td>CISO + Finanzas</td></tr>
+          <tr><td style="font-weight:600;">8. Gobernanza y seguimiento</td><td>Cómo se revisará el avance del PDS. Responsables. Frecuencia de revisión. Escalado ante desviaciones.</td><td>CISO</td></tr>
+          <tr><td style="font-weight:600;">9. Aprobación</td><td>Firma de la alta dirección. Compromiso de recursos.</td><td>Dirección General</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--info" style="margin-top:1.5rem;">
+        <p class="callout__title">El PDS como herramienta de venta interna</p>
+        <p>El Plan Director de Seguridad no es solo un documento técnico — es el instrumento con el que el CISO y el DPO consiguen el compromiso real de la alta dirección: recursos, presupuesto y tiempo. Un PDS bien elaborado traduce los riesgos técnicos en lenguaje de negocio (coste de un incidente, riesgo reputacional, sanciones potenciales) y propone inversiones con retorno medible. La dirección aprueba presupuestos cuando entiende el riesgo que está pagando por mitigar.</p>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L03 -->
+    <article id="l003">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 09 · Lección 3 de 8</p>
+        <h1 class="lesson-title">Gestión del proyecto de implementación</h1>
+        <div class="lesson-meta"><span>⏱ 14 min</span><span><span class="badge badge--tool">Gestión de proyectos</span></span></div>
+      </div>
+
+      <p>La implementación de un SGSI+SGPI es un proyecto complejo que debe gestionarse con rigor. Las organizaciones que lo tratan como un proyecto ad hoc sin estructura de gestión formal suelen llegar a la auditoría de certificación con brechas inesperadas, retrasos o documentación incompleta.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Estructura de gobierno del proyecto</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Rol</th><th>Responsabilidad</th><th>Dedicación típica</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600;">Sponsor ejecutivo (CEO/COO)</td><td>Aprobación del PDS y presupuesto. Resolución de bloqueos organizativos. Visibilidad ante la organización.</td><td>2-4h/mes</td></tr>
+          <tr><td style="font-weight:600;">Director del proyecto (CISO)</td><td>Planificación, seguimiento y control del proyecto. Coordinación entre equipos. Reporte al sponsor.</td><td>50–100% según tamaño</td></tr>
+          <tr><td style="font-weight:600;">DPO</td><td>Liderazgo de la dimensión privacidad: RAT, DPIAs, contratos Art. 28, derechos de interesados.</td><td>50–100% según tamaño</td></tr>
+          <tr><td style="font-weight:600;">Equipo técnico (IT/Seguridad)</td><td>Implementación de controles técnicos: configuraciones, herramientas, monitorización.</td><td>Variable por proyecto</td></tr>
+          <tr><td style="font-weight:600;">Propietarios de área</td><td>Implementación de controles en sus procesos. Provisión de evidencias. Formación a su equipo.</td><td>2-8h/semana en fase activa</td></tr>
+          <tr><td style="font-weight:600;">Asesoría externa (opcional)</td><td>Consultoría especializada en ISO 27001/27701. Auditoría pre-certificación (mock audit).</td><td>Bajo demanda</td></tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Factores críticos de éxito</h2>
+
+      <ul style="margin:1rem 0 0 1.5rem; color:var(--text-muted); line-height:2.3; font-size:0.95rem;">
+        <li><strong>Compromiso real de la alta dirección</strong> — no solo firma de documentos. Recursos asignados, tiempo en agenda, comunicación activa hacia la organización.</li>
+        <li><strong>Alcance realista y estable</strong> — los cambios de alcance durante el proyecto son la causa más frecuente de retrasos y sobrecostes.</li>
+        <li><strong>Propietarios de proceso comprometidos</strong> — la seguridad no puede ser responsabilidad exclusiva del equipo de IT. Cada área debe asumir sus controles.</li>
+        <li><strong>Documentación paralela a la implementación</strong> — documentar mientras se implementa, no al final. La documentación "a posteriori" es menos precisa y más costosa.</li>
+        <li><strong>Auditoría interna antes de la certificación</strong> — una auditoría interna completa 2-3 meses antes de la auditoría de certificación permite detectar y cerrar las últimas brechas.</li>
+        <li><strong>Gestión del cambio cultural</strong> — la seguridad y la privacidad requieren cambios de comportamiento. La comunicación interna y la formación son inversiones, no gastos.</li>
+      </ul>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L04 -->
+    <article id="l004">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 09 · Lección 4 de 8</p>
+        <h1 class="lesson-title">Concienciación y formación interna</h1>
+        <div class="lesson-meta"><span>⏱ 12 min</span><span><span class="badge badge--27001">Controles 6.3 · 7.2 · 7.3</span></span></div>
+      </div>
+
+      <p>La concienciación en seguridad y privacidad es la inversión con mayor retorno de cualquier programa de seguridad. El 74% de las brechas de seguridad tienen un elemento humano (Verizon DBIR 2024). La tecnología puede mitigar, pero no puede sustituir a personas que entienden y aplican los principios de seguridad en su día a día.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Programa de concienciación integrado</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Componente</th><th>Frecuencia</th><th>Contenido</th><th>Evidencia</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600;">Formación de incorporación</td><td>Primer día / primera semana</td><td>Política de seguridad, política de privacidad, uso aceptable, derechos de los interesados, cómo reportar incidentes, cómo manejar PII.</td><td>Registro de asistencia + test de comprensión firmado</td></tr>
+          <tr><td style="font-weight:600;">Formación anual obligatoria</td><td>Anual (todos los empleados)</td><td>Actualización de amenazas, cambios en políticas, repaso de principios clave, privacidad y RGPD básico.</td><td>Registro de finalización del curso en LMS</td></tr>
+          <tr><td style="font-weight:600;">Simulacros de phishing</td><td>Trimestral o mensual</td><td>Envío de emails de phishing simulados. Formación inmediata a quienes caigan. Métricas de click rate.</td><td>Informes de la plataforma (tasa de clic, tasa de reporte)</td></tr>
+          <tr><td style="font-weight:600;">Comunicaciones de seguridad</td><td>Mensual o cuando haya novedades</td><td>Newsletter de seguridad, alertas sobre amenazas activas, buenas prácticas del mes.</td><td>Registros de envío (no requiere confirmación de lectura)</td></tr>
+          <tr><td style="font-weight:600;">Formación especializada por rol</td><td>Según rol y cambios</td><td>Desarrolladores: secure coding. Administradores: gestión de privilegios. RR.HH.: tratamiento de datos de empleados. Directivos: gobernanza y riesgos.</td><td>Registro de asistencia + evaluación específica</td></tr>
+          <tr><td style="font-weight:600;">Ejercicios de respuesta a incidentes</td><td>Anual (tabletop) + semestral (funcional)</td><td>Simulacros de incidentes de seguridad y brechas de datos personales. Pone a prueba el procedimiento de gestión de incidentes.</td><td>Acta del ejercicio, lecciones aprendidas, acciones de mejora</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L05 -->
+    <article id="l005">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 09 · Lección 5 de 8</p>
+        <h1 class="lesson-title">Gestión de proveedores y terceras partes</h1>
+        <div class="lesson-meta"><span>⏱ 14 min</span><span><span class="badge badge--27001">Controles 5.19–5.22</span></span></div>
+      </div>
+
+      <p>La cadena de suministro es uno de los vectores de ataque de mayor crecimiento. SolarWinds, MOVEit, XZ Utils — los ataques más impactantes de los últimos años han llegado a través de proveedores de confianza. La gestión de proveedores en el SGSI+SGPI no es burocracia — es gestión del riesgo real.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Clasificación de proveedores por criticidad</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Nivel</th><th>Criterio</th><th>Ejemplos</th><th>Controles mínimos</th></tr></thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700; color:var(--danger);">Crítico</td>
+            <td>Acceso a sistemas o datos críticos. Procesador de PII de categoría especial. Servicio cuyo fallo detiene el negocio.</td>
+            <td>Proveedor cloud principal, ERP, gestor de nóminas, bureau de crédito</td>
+            <td>Due diligence exhaustiva. Contrato con cláusulas de seguridad + Art. 28. Auditoría periódica (o certificación ISO 27001). SLA con penalizaciones. Derecho de auditoría.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:var(--warn);">Alto</td>
+            <td>Acceso a sistemas o datos no críticos. Servicios IT auxiliares.</td>
+            <td>Herramienta de ticketing, software de marketing, servicio de videoconferencia</td>
+            <td>Cuestionario de seguridad. Contrato con cláusulas básicas de seguridad y Art. 28 si hay PII. Revisión anual.</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700; color:var(--accent-dark);">Estándar</td>
+            <td>Sin acceso a datos. Servicios de bajo riesgo.</td>
+            <td>Proveedor de material de oficina, servicio de mensajería</td>
+            <td>Cláusulas de confidencialidad básicas. Sin requisitos técnicos específicos.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">El contrato marco integrado de seguridad y protección de datos</h2>
+
+      <p>Para proveedores críticos y altos que tratan datos personales, el contrato debe incluir de forma integrada:</p>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-top:1.25rem;">
+        <div class="clause-box">
+          <p class="clause-box__ref">Cláusulas de seguridad (ISO 27001 §5.20)</p>
+          <ul style="font-size:0.82rem; color:var(--text-muted); line-height:1.9; padding-left:1rem; margin-top:0.5rem;">
+            <li>Medidas de seguridad mínimas exigidas</li>
+            <li>Obligación de mantener certificación ISO 27001 o equivalente</li>
+            <li>Notificación de incidentes de seguridad en plazo definido</li>
+            <li>Derecho de auditoría de seguridad</li>
+            <li>Gestión de vulnerabilidades en los sistemas que proveen</li>
+            <li>Restricción de subcontratación sin aprobación</li>
+          </ul>
+        </div>
+        <div class="clause-box">
+          <p class="clause-box__ref">Cláusulas de protección de datos (Art. 28 RGPD)</p>
+          <ul style="font-size:0.82rem; color:var(--text-muted); line-height:1.9; padding-left:1rem; margin-top:0.5rem;">
+            <li>Tratamiento solo según instrucciones documentadas</li>
+            <li>Confidencialidad del personal autorizado</li>
+            <li>Medidas de seguridad del Art. 32 RGPD</li>
+            <li>Autorización para subencargados + lista actualizada</li>
+            <li>Asistencia en el ejercicio de derechos</li>
+            <li>Asistencia en brechas de datos (notificación ≤24-48h)</li>
+            <li>Devolución/destrucción de datos al finalizar</li>
+            <li>Puesta a disposición de información de cumplimiento</li>
+          </ul>
+        </div>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L06 -->
+    <article id="l006">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 09 · Lección 6 de 8</p>
+        <h1 class="lesson-title">Continuidad del negocio y recuperación ante desastres</h1>
+        <div class="lesson-meta"><span>⏱ 14 min</span><span><span class="badge badge--27001">Controles 5.29 · 5.30 · 8.13 · 8.14</span></span></div>
+      </div>
+
+      <p>Los controles de continuidad del negocio en ISO 27001 (5.29 y 5.30) garantizan que la organización puede mantener o recuperar la seguridad de la información durante y después de una interrupción. Son los controles que más directamente se relacionan con la resiliencia operativa.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">Los conceptos fundamentales de continuidad</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Concepto</th><th>Definición</th><th>Cómo se determina</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:600;">BIA (Business Impact Analysis)</td><td>Análisis del impacto en el negocio de la interrupción de cada proceso crítico. Base para definir los parámetros de recuperación.</td><td>Entrevistas con propietarios de proceso. Cuantificación del impacto (económico, operativo, reputacional) por hora/día de indisponibilidad.</td></tr>
+          <tr><td style="font-weight:600;">RTO (Recovery Time Objective)</td><td>Tiempo máximo aceptable para restaurar un sistema o proceso tras una interrupción.</td><td>Definido por el negocio en el BIA. Determina los requisitos técnicos de redundancia y failover.</td></tr>
+          <tr><td style="font-weight:600;">RPO (Recovery Point Objective)</td><td>Máxima pérdida de datos aceptable, expresada en tiempo. ¿Hasta qué punto del pasado podemos recuperar datos?</td><td>Definido por el negocio en el BIA. Determina la frecuencia de backups y la arquitectura de replicación.</td></tr>
+          <tr><td style="font-weight:600;">BCP (Business Continuity Plan)</td><td>Plan que describe cómo la organización continuará operando durante una interrupción mayor.</td><td>Elaborado a partir del BIA. Incluye procedimientos alternativos, comunicaciones de crisis, activación de proveedores de respaldo.</td></tr>
+          <tr><td style="font-weight:600;">DRP (Disaster Recovery Plan)</td><td>Plan técnico para restaurar los sistemas TIC tras un desastre.</td><td>Subconjunto del BCP. Pasos detallados para restaurar cada sistema dentro del RTO y RPO definidos.</td></tr>
+        </tbody>
+      </table>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Regla 3-2-1-1-0 para backups</h2>
+
+      <div style="background:var(--navy); border-radius:var(--radius-lg); padding:1.75rem; margin-top:1rem;">
+        <p style="font-size:0.75rem; font-weight:700; color:var(--accent); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:1.25rem;">La regla de oro de las copias de seguridad</p>
+        <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:0.75rem;">
+          <div style="background:rgba(255,255,255,0.06); border-radius:var(--radius-md); padding:0.75rem; text-align:center;">
+            <p style="font-size:1.5rem; font-weight:700; color:var(--white);">3</p>
+            <p style="font-size:0.72rem; color:var(--ice-light); margin-top:4px;">Copias de los datos</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border-radius:var(--radius-md); padding:0.75rem; text-align:center;">
+            <p style="font-size:1.5rem; font-weight:700; color:var(--white);">2</p>
+            <p style="font-size:0.72rem; color:var(--ice-light); margin-top:4px;">Medios de almacenamiento distintos</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border-radius:var(--radius-md); padding:0.75rem; text-align:center;">
+            <p style="font-size:1.5rem; font-weight:700; color:var(--white);">1</p>
+            <p style="font-size:0.72rem; color:var(--ice-light); margin-top:4px;">Copia en ubicación offsite</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border-radius:var(--radius-md); padding:0.75rem; text-align:center;">
+            <p style="font-size:1.5rem; font-weight:700; color:var(--accent);">1</p>
+            <p style="font-size:0.72rem; color:var(--ice-light); margin-top:4px;">Copia offline o inmutable (air-gapped)</p>
+          </div>
+          <div style="background:rgba(255,255,255,0.06); border-radius:var(--radius-md); padding:0.75rem; text-align:center;">
+            <p style="font-size:1.5rem; font-weight:700; color:var(--accent);">0</p>
+            <p style="font-size:0.72rem; color:var(--ice-light); margin-top:4px;">Errores en la prueba de restauración</p>
+          </div>
+        </div>
+        <p style="font-size:0.78rem; color:var(--text-faint); margin-top:1rem;">La copia offline/inmutable (el cuarto "1") es la defensa contra el ransomware — los atacantes no pueden cifrar lo que no pueden alcanzar. El cero final es el más importante: un backup no probado no es un backup.</p>
+      </div>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L07 -->
+    <article id="l007">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 09 · Lección 7 de 8</p>
+        <h1 class="lesson-title">Seguridad en entornos cloud</h1>
+        <div class="lesson-meta"><span>⏱ 14 min</span><span><span class="badge badge--27001">Control 5.23</span></span></div>
+      </div>
+
+      <p>El control 5.23 (nuevo en 2022) aborda explícitamente la seguridad en servicios cloud. Con la mayoría de las organizaciones operando en entornos multicloud o híbridos, este control es uno de los más relevantes en implementaciones actuales.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1rem;">El modelo de responsabilidad compartida</h2>
+
+      <p>En cloud, la responsabilidad de seguridad se comparte entre el proveedor (CSP) y el cliente. El error más frecuente es asumir que el proveedor cubre más de lo que realmente cubre:</p>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Responsabilidad</th><th>IaaS (AWS/Azure/GCP)</th><th>PaaS</th><th>SaaS</th></tr></thead>
+        <tbody>
+          <tr><td>Infraestructura física (CPD, hardware, red)</td><td style="color:var(--accent); font-weight:600;">CSP</td><td style="color:var(--accent); font-weight:600;">CSP</td><td style="color:var(--accent); font-weight:600;">CSP</td></tr>
+          <tr><td>Hipervisor y virtualización</td><td style="color:var(--accent); font-weight:600;">CSP</td><td style="color:var(--accent); font-weight:600;">CSP</td><td style="color:var(--accent); font-weight:600;">CSP</td></tr>
+          <tr><td>Sistema operativo</td><td style="color:var(--danger); font-weight:600;">Cliente</td><td style="color:var(--accent); font-weight:600;">CSP</td><td style="color:var(--accent); font-weight:600;">CSP</td></tr>
+          <tr><td>Middleware y runtime</td><td style="color:var(--danger); font-weight:600;">Cliente</td><td style="color:var(--accent); font-weight:600;">CSP</td><td style="color:var(--accent); font-weight:600;">CSP</td></tr>
+          <tr><td>Aplicaciones</td><td style="color:var(--danger); font-weight:600;">Cliente</td><td style="color:var(--danger); font-weight:600;">Cliente</td><td style="color:var(--accent); font-weight:600;">CSP</td></tr>
+          <tr><td>Datos y su clasificación</td><td style="color:var(--danger); font-weight:600;">Cliente</td><td style="color:var(--danger); font-weight:600;">Cliente</td><td style="color:var(--danger); font-weight:600;">Cliente</td></tr>
+          <tr><td>Gestión de identidades y acceso</td><td style="color:var(--danger); font-weight:600;">Cliente</td><td style="color:var(--danger); font-weight:600;">Cliente</td><td style="color:var(--warn); font-weight:600;">Compartida</td></tr>
+          <tr><td>Cifrado de datos en reposo</td><td style="color:var(--warn); font-weight:600;">Compartida</td><td style="color:var(--warn); font-weight:600;">Compartida</td><td style="color:var(--warn); font-weight:600;">Compartida</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout--warn" style="margin-top:1.5rem;">
+        <p class="callout__title">La responsabilidad de los datos siempre es del cliente</p>
+        <p>Independientemente del modelo de servicio cloud, la responsabilidad sobre los datos — su clasificación, protección, retención, y cumplimiento normativo (RGPD) — es siempre del cliente. El CSP proporciona las herramientas técnicas; el cliente decide cómo usarlas. Una brecha de datos personales en AWS es responsabilidad del cliente ante la AEPD, no de AWS.</p>
+      </div>
+
+      <h2 style="margin-top:2.5rem; margin-bottom:1rem;">Controles clave para entornos cloud</h2>
+
+      <table class="control-table" style="margin-top:1rem;">
+        <thead><tr><th>Área</th><th>Control ISO 27001</th><th>Implementación cloud</th></tr></thead>
+        <tbody>
+          <tr><td>Inventario de servicios cloud</td><td>5.9 + 5.23</td><td>CASB (Cloud Access Security Broker) o registro manual. Combatir shadow IT con política aprobada de nuevos servicios.</td></tr>
+          <tr><td>Gestión de identidades</td><td>5.16 + 8.2 + 8.5</td><td>Identidad federada (SSO). MFA para consolas cloud. Roles IAM con mínimo privilegio. Cuentas de administración separadas. Privileged Access Management.</td></tr>
+          <tr><td>Cifrado</td><td>8.24</td><td>Cifrado en reposo para todos los almacenamientos (S3, Azure Blob, GCS). Gestión de claves con KMS propio cuando sea posible (bring your own key).</td></tr>
+          <tr><td>Configuración segura</td><td>8.9</td><td>Baseline de configuración para cada servicio cloud. Infrastructure as Code (Terraform/Pulumi) para reproducibilidad. AWS Config/Azure Policy para detección de desvíos.</td></tr>
+          <tr><td>Monitorización</td><td>8.15 + 8.16</td><td>CloudTrail/Azure Monitor/GCP Cloud Audit Logs habilitados. Integración con SIEM. Alertas para actividades anómalas (acceso desde IP desconocida, cambios de IAM, eliminación masiva de datos).</td></tr>
+          <tr><td>Transferencias internacionales</td><td>7.5.3 (27701)</td><td>Verificar qué regiones usa el CSP para procesar datos. Configurar restricciones de región cuando sea posible. Evaluar mecanismo legal para transferencias fuera del EEE.</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <hr style="border:none; border-top:2px solid var(--off-white); margin:4rem 0;">
+
+    <!-- L08 -->
+    <article id="l008">
+      <div class="lesson-header">
+        <p class="lesson-eyebrow">Módulo 09 · Lección 8 de 8</p>
+        <h1 class="lesson-title">Cronograma tipo de implementación: 6–18 meses</h1>
+        <div class="lesson-meta"><span>⏱ 14 min</span><span><span class="badge badge--tool">Planificación</span></span></div>
+      </div>
+
+      <p>El tiempo de implementación de un SGSI+SGPI hasta la certificación depende de la madurez de partida, el tamaño de la organización y los recursos disponibles. El rango habitual es de 9 a 18 meses para organizaciones sin sistema previo. Organizaciones con ISO 27001 existente que añaden 27701 pueden hacerlo en 6-12 meses adicionales.</p>
+
+      <h2 style="margin-top:2rem; margin-bottom:1.25rem;">Cronograma tipo para certificación 27001+27701 desde cero (12-18 meses)</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <p class="timeline-month">Meses 1–2 · Preparación y análisis</p>
+          <p class="timeline-title">Fase 0: Fundamentos</p>
+          <p class="timeline-desc">Constitución del equipo del proyecto (CISO, DPO, sponsor ejecutivo). Gap Analysis completo 27001+27701. Análisis de contexto inicial. Definición del alcance del SGSI+SGPI. Aprobación del Plan Director de Seguridad por la dirección.</p>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-month">Meses 3–4 · Diseño del sistema</p>
+          <p class="timeline-title">Fase 1: Arquitectura documental</p>
+          <p class="timeline-desc">Política integrada de seguridad y privacidad. Primera versión del inventario de activos. Metodología de gestión del riesgo documentada y aprobada. Criterios de riesgo y aceptación. Primera versión de la SoA (borrador). Registro de actividades de tratamiento (RAT) inicial.</p>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-month">Meses 5–8 · Implementación core</p>
+          <p class="timeline-title">Fase 2: Implementación de controles prioritarios</p>
+          <p class="timeline-desc">Evaluación de riesgos completa + DPIAs para tratamientos de alto riesgo. Plan de tratamiento del riesgo. Implementación de controles P1 y P2 del Gap Analysis. Contratos con proveedores (seguridad + Art. 28). Procedimientos de gestión de incidentes (seguridad + brechas). Programa de formación y primera oleada de concienciación. SoA versión 1.0 aprobada.</p>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-month">Meses 9–12 · Maduración</p>
+          <p class="timeline-title">Fase 3: Operación y mejora</p>
+          <p class="timeline-desc">Implementación de controles P3. Puesta en marcha de monitorización y métricas (KPIs). Primer ciclo operativo completo del SGSI+SGPI. Actualización del RAT. Revisión de DPIAs existentes. Gestión de solicitudes de derechos (primer trimestre en producción). Primera simulación de incidente (tabletop exercise).</p>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-month">Mes 13–14 · Pre-certificación</p>
+          <p class="timeline-title">Fase 4: Auditoría interna + cierre de brechas</p>
+          <p class="timeline-desc">Auditoría interna completa de ISO 27001 e ISO 27701. Cierre de no conformidades identificadas. Primera revisión por la dirección con métricas reales. Mock audit externo (opcional pero muy recomendable). Refinamiento de documentación para auditoría de certificación.</p>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-month">Meses 15–18 · Certificación</p>
+          <p class="timeline-title">Fase 5: Auditoría de certificación</p>
+          <p class="timeline-desc">Selección y contratación del organismo certificador. Auditoría Etapa 1: revisión documental (1-2 días). Resolución de observaciones de Etapa 1. Auditoría Etapa 2: auditoría principal en sitio (2-5 días según alcance). Gestión de no conformidades detectadas. Emisión de certificado.</p>
+        </div>
+      </div>
+
+      <div class="callout callout--info" style="margin-top:1rem;">
+        <p class="callout__title">Para organizaciones con ISO 27001 existente que añaden ISO 27701</p>
+        <p>El proceso es significativamente más corto porque la estructura del SGSI ya existe. Las fases principales son: Gap Analysis 27701 (1 mes) → RAT + DPIAs + contratos Art. 28 (2-3 meses) → Derechos de interesados + formación en privacidad (2 meses) → Auditoría interna integrada (1 mes) → Auditoría de certificación (1-2 meses). Total estimado: 6-9 meses.</p>
+      </div>
+
+      <div class="quiz-block" style="margin-top:2.5rem;">
+        <p class="quiz-block__title">✦ Evaluación final — Módulo M09</p>
+        <p class="quiz-question">A los 6 meses del inicio del proyecto de implementación, el equipo detecta que el sponsor ejecutivo (CEO) ha dejado de asistir a las reuniones de seguimiento mensual y que el presupuesto para una herramienta de gestión de vulnerabilidades prioritaria no ha sido aprobado. ¿Cuál es la acción correcta del director del proyecto (CISO)?</p>
+        <ul class="quiz-options">
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m09-l08"> Continuar con el proyecto con los recursos disponibles; la certificación puede obtenerse sin esa herramienta.</li>
+          <li class="quiz-option" data-correct="true"><input type="radio" name="q-m09-l08"> Escalar formalmente al sponsor documentando el impacto en el proyecto (retraso del cronograma, riesgo de certificación) y en la postura de seguridad (vulnerabilidades sin gestionar). Si el sponsor no reactiva su compromiso, la certificación debe retrasarse hasta que el compromiso de la alta dirección sea real — sin él, el auditor rechazará el SGSI por incumplimiento de la cláusula 5.1.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m09-l08"> Sustituir la herramienta por un proceso manual sin informar a la dirección para no alarmarla.</li>
+          <li class="quiz-option" data-correct="false"><input type="radio" name="q-m09-l08"> Solicitar al organismo certificador una extensión del plazo para la certificación.</li>
+        </ul>
+        <div class="quiz-feedback callout" style="display:none; margin-top:1rem;">
+          <p class="callout__title">Módulo completado</p>
+          <p>El compromiso real de la alta dirección (cláusula 5.1 de ISO 27001) es un requisito no negociable para la certificación. Un auditor que detecte que la dirección no está comprometida activamente — en términos de tiempo, recursos y decisiones — levantará una no conformidad mayor. El CISO tiene la responsabilidad de comunicar este riesgo con claridad, documentar la situación, y si es necesario, recomendar posponer la certificación hasta que el compromiso sea genuino.</p>
+        </div>
+      </div>
+
+      <div class="nav-lesson" style="margin-top:3rem;">
+        <a href="m08-rgpd-marco-legal.html" class="nav-lesson__btn">← M08 · Marco legal</a>
+        <a href="m10-documentacion.html" class="nav-lesson__btn">M10 · Documentación del sistema →</a>
+      </div>
+    </article>
+
+  </main>
+</div>
+
+<footer class="footer" style="margin-top:0;">
+  <div class="footer__bottom" style="max-width:100%; padding:1.5rem 2rem;">
+    <span style="color:var(--text-faint); font-size:0.8rem;">© 2025 ISOTECNIA · <a href="../index.html" style="color:var(--text-faint);">Volver al índice</a></span>
+    <div class="footer__norm-logos"><span class="norm-logo">ISO/IEC 27001:2022</span><span class="norm-logo">ISO/IEC 27701:2019</span></div>
+  </div>
+</footer>
+
+<script src="../js/isotecnia.js"></script>
+</body>
+</html>
