@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glosario Normativo | ISOTECNIA</title>
+  <link rel="stylesheet" href="../css/isotecnia.css">
+  <style>
+    .glosario-search { width:100%; padding:12px 16px; font-size:1rem; font-family:var(--font-sans); border:1px solid rgba(46,92,138,0.2); border-radius:var(--radius-md); outline:none; background:var(--white); color:var(--text-body); margin-bottom:1.5rem; transition:border-color 0.2s; }
+    .glosario-search:focus { border-color:var(--steel-mid); }
+    .term-card { background:var(--white); border:1px solid rgba(46,92,138,0.08); border-radius:var(--radius-lg); padding:1.25rem 1.5rem; margin-bottom:0.75rem; transition:all 0.15s; }
+    .term-card:hover { border-color:rgba(46,92,138,0.2); box-shadow:0 2px 12px rgba(13,27,42,0.07); }
+    .term-card.hidden { display:none; }
+    .term-name { font-size:1rem; font-weight:700; color:var(--navy); margin-bottom:0.25rem; }
+    .term-source { font-size:0.65rem; font-weight:700; font-family:var(--font-mono); color:var(--accent-dark); background:rgba(0,200,150,0.08); padding:2px 8px; border-radius:100px; margin-bottom:0.6rem; display:inline-block; }
+    .term-def { font-size:0.875rem; color:var(--text-muted); line-height:1.7; }
+    .term-note { font-size:0.8rem; color:var(--text-faint); font-style:italic; margin-top:0.4rem; }
+    .alpha-nav { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:2rem; }
+    .alpha-btn { font-size:0.75rem; font-weight:600; width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); border:1px solid rgba(46,92,138,0.15); background:var(--white); color:var(--text-muted); cursor:pointer; font-family:var(--font-sans); transition:all 0.15s; }
+    .alpha-btn:hover { background:var(--navy); color:var(--white); border-color:var(--navy); }
+    .alpha-section-title { font-size:0.7rem; font-weight:700; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.12em; margin:1.5rem 0 0.75rem; padding-bottom:0.4rem; border-bottom:1px solid rgba(46,92,138,0.08); }
+    #glosario-count { font-size:0.8rem; color:var(--text-faint); margin-bottom:1rem; }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar__inner">
+    <a href="../index.html" class="navbar__logo">
+      <div class="navbar__logo-mark">IT</div>
+      <div><span class="navbar__logo-text">ISOTECNIA</span><span class="navbar__logo-sub">ISO 27001 + ISO 27701</span></div>
+    </a>
+    <ul class="navbar__nav">
+      <li><a href="../index.html#modulos">Módulos</a></li>
+      <li><a href="referencias.html">Referencias</a></li>
+      <li><a href="plantillas.html">Plantillas</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div style="max-width:860px; margin:0 auto; padding:4rem 2rem;">
+  <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent-dark); margin-bottom:0.75rem;">Recursos del curso</p>
+  <h1 style="margin-bottom:0.75rem;">Glosario normativo</h1>
+  <p style="font-size:1rem; color:var(--text-muted); max-width:600px; line-height:1.8; margin-bottom:2rem;">Terminología oficial de ISO 27001, ISO 27701, RGPD y marcos relacionados. Fuentes primarias: ISO 27000:2018, RGPD 2016/679, ISO 27701:2019.</p>
+
+  <input type="text" class="glosario-search" id="glosario-search" placeholder="Buscar término... (ej: riesgo residual, PII, consentimiento...)" oninput="filterGlosario(this.value)">
+  <p id="glosario-count"></p>
+  <div id="glosario-container"></div>
+</div>
+
+<footer class="footer">
+  <div class="footer__bottom" style="max-width:100%; padding:1.5rem 2rem;">
+    <span style="color:var(--text-faint); font-size:0.8rem;">© 2025 ISOTECNIA · <a href="../index.html" style="color:var(--text-faint);">Volver al índice</a></span>
+    <div class="footer__norm-logos"><span class="norm-logo">ISO/IEC 27001:2022</span><span class="norm-logo">ISO/IEC 27701:2019</span></div>
+  </div>
+</footer>
+
+<script src="../js/isotecnia.js"></script>
+<script>
+const terms = [
+  { t:"Activo", s:"ISO 27000:2018", d:"Cualquier elemento que tiene valor para la organización. En seguridad de la información incluye información, software, hardware, servicios, personas e instalaciones.", n:"Todo activo debe tener un propietario asignado (control 5.9 del Anexo A)." },
+  { t:"Acción correctiva", s:"ISO 27001:2022 §10.1", d:"Acción para eliminar la causa de una no conformidad y prevenir su recurrencia. Distinta de la corrección (que solo elimina el síntoma).", n:"La acción correctiva eficaz requiere análisis de causa raíz." },
+  { t:"Alcance del SGSI", s:"ISO 27001:2022 §4.3", d:"Límites y aplicabilidad del Sistema de Gestión de la Seguridad de la Información. Documento obligatorio que especifica qué activos, procesos, ubicaciones y partes de la organización están incluidos.", n:"El certificado ISO 27001 refleja literalmente el alcance definido." },
+  { t:"Amenaza", s:"ISO 27000:2018", d:"Causa potencial de un incidente no deseado que puede resultar en daño a un sistema, organización o persona.", n:"Una misma amenaza puede explotar diferentes vulnerabilidades en distintos activos." },
+  { t:"Análisis de riesgos", s:"ISO 27005:2022", d:"Proceso para comprender la naturaleza del riesgo y determinar su nivel. Implica identificar fuentes, causas, probabilidades e impactos.", n:"El análisis precede a la evaluación del riesgo, que compara el nivel obtenido con los criterios de riesgo establecidos." },
+  { t:"Apetito de riesgo", s:"ISO 27000:2018", d:"Nivel y tipo de riesgo que una organización está dispuesta a aceptar en la búsqueda de sus objetivos. Definido por la alta dirección.", n:"Es diferente de la tolerancia al riesgo (variación aceptable alrededor del apetito)." },
+  { t:"Auditoría interna", s:"ISO 27001:2022 §9.2", d:"Proceso sistemático, independiente y documentado para obtener evidencia de auditoría y evaluarla con el fin de determinar el grado en que se cumplen los criterios de auditoría.", n:"Los auditores no deben auditar su propio trabajo (imparcialidad requerida)." },
+  { t:"Autenticación multifactor (MFA)", s:"ISO 27002:2022 §8.5", d:"Método de verificación de identidad que requiere dos o más factores de autenticación: algo que sabes, algo que tienes, o algo que eres.", n:"Obligatorio para accesos remotos y cuentas privilegiadas en la mayoría de implementaciones." },
+  { t:"Brecha de datos personales", s:"RGPD Art. 4.12", d:"Violación de la seguridad que ocasione la destrucción, pérdida, alteración accidental o ilícita, o la comunicación o acceso no autorizados a datos personales.", n:"Incluye pérdidas de confidencialidad, integridad Y disponibilidad. La inaccesibilidad de datos es una brecha." },
+  { t:"CIA (Confidencialidad, Integridad, Disponibilidad)", s:"ISO 27000:2018", d:"Las tres propiedades fundamentales de la seguridad de la información. Confidencialidad: acceso solo a personas autorizadas. Integridad: exactitud y completitud. Disponibilidad: acceso cuando se necesita.", n:"ISO 27701 añade Autenticidad (A) y Trazabilidad (T) en su valoración de activos PII." },
+  { t:"Categorías especiales de datos", s:"RGPD Art. 9", d:"Datos personales que revelan el origen étnico o racial, opiniones políticas, convicciones religiosas o filosóficas, afiliación sindical, datos genéticos, biométricos, relativos a la salud, vida u orientación sexual.", n:"Su tratamiento está prohibido salvo en las excepciones del Art. 9.2. Requieren DPIA si se tratan a gran escala." },
+  { t:"Clausula 4 (Contexto)", s:"ISO 27001:2022 §4", d:"Primera cláusula sustantiva de la norma. Exige comprender el contexto externo e interno, las partes interesadas y definir el alcance del SGSI.", n:"Los factores del contexto deben mantenerse actualizados — no son un ejercicio puntual." },
+  { t:"Consentimiento", s:"RGPD Art. 4.11 / ISO 27701:2019 §7.2.3", d:"Toda manifestación de voluntad libre, específica, informada e inequívoca por la que el interesado acepta el tratamiento de sus datos personales.", n:"Debe ser revocable con la misma facilidad que se otorgó. No puede ser condición para el acceso a un servicio si no es necesario para su prestación." },
+  { t:"Control", s:"ISO 27000:2018", d:"Medida que modifica el riesgo. Incluye cualquier proceso, política, procedimiento, directriz, práctica o estructura organizativa que pueda ser de naturaleza administrativa, técnica, de gestión o legal.", n:"Los controles del Anexo A pueden ser preventivos, detectivos o correctivos." },
+  { t:"Datos personales", s:"RGPD Art. 4.1", d:"Toda información sobre una persona física identificada o identificable. Una persona es identificable cuando puede ser determinada directa o indirectamente, en particular mediante un número de identificación o factores específicos.", n:"La seudonimización no convierte los datos en anónimos — siguen siendo datos personales." },
+  { t:"Declaración de Aplicabilidad (SoA)", s:"ISO 27001:2022 §6.1.3", d:"Documento que lista todos los controles del Anexo A de ISO 27001, indica si cada uno está incluido o excluido, justifica cada decisión y describe el estado de implementación.", n:"Documento obligatorio y el más examinado por los auditores de certificación." },
+  { t:"DPO / Delegado de Protección de Datos", s:"RGPD Arts. 37-39", d:"Figura obligatoria en autoridades públicas, organizaciones que realizan monitorización sistemática a gran escala, y las que tratan categorías especiales de datos a gran escala. Punto de contacto con la AEPD.", n:"No es responsable de las infracciones (eso es del Responsable). Debe tener independencia funcional." },
+  { t:"DPIA (Data Protection Impact Assessment)", s:"RGPD Art. 35 / ISO 27701 §7.2.4", d:"Evaluación del impacto de las operaciones de tratamiento en la protección de datos personales. Obligatoria cuando el tratamiento sea probable que entrañe un alto riesgo para los derechos y libertades.", n:"Debe realizarse antes de iniciar el tratamiento, no después. El DPO debe ser consultado." },
+  { t:"ENS (Esquema Nacional de Seguridad)", s:"RD 311/2022", d:"Marco normativo obligatorio para la Administración Pública española que establece los principios básicos y requisitos mínimos de seguridad para el uso de medios electrónicos.", n:"Alta compatibilidad con ISO 27001. MAGERIT/PILAR son las herramientas de análisis de riesgos oficiales del ENS." },
+  { t:"Evaluación del riesgo", s:"ISO 27005:2022", d:"Proceso global de identificación, análisis y evaluación del riesgo. La evaluación compara el nivel de riesgo obtenido contra los criterios de riesgo establecidos para determinar si es aceptable.", n:"ISO 27001 exige que el proceso produzca resultados consistentes, válidos y comparables." },
+  { t:"Gap Analysis", s:"Práctica de implementación", d:"Análisis de brechas que compara el estado actual de seguridad y privacidad de la organización con los requisitos de las normas aplicables. Base para el Plan Director de Seguridad.", n:"Primer paso operativo de cualquier proyecto de implementación de SGSI." },
+  { t:"HLS (High Level Structure)", s:"Directiva ISO/IEC Parte 1, Suplemento ISO, Anexo L", d:"Estructura de alto nivel de 10 cláusulas común a todas las normas de sistemas de gestión ISO (27001, 9001, 14001, 45001...). Facilita la integración de sistemas de gestión.", n:"También conocida como Anexo SL. Garantiza que todas las normas ISO de sistemas de gestión son estructuralmente compatibles." },
+  { t:"Impacto", s:"ISO 27000:2018", d:"Consecuencia de la materialización de un riesgo de seguridad sobre los objetivos organizativos. Puede medirse en términos económicos, reputacionales, operativos, legales o de continuidad.", n:"El impacto sobre los activos se evalúa en las dimensiones CIA (y AT en MAGERIT)." },
+  { t:"Información documentada", s:"ISO 27001:2022 §7.5", d:"Información que la organización debe controlar y mantener. Puede ser en cualquier formato y medio. Incluye tanto documentos (que se actualizan) como registros (evidencias históricas que no se modifican).", n:"La norma no prescribe formatos ni sistemas específicos para la documentación." },
+  { t:"Interés legítimo", s:"RGPD Art. 6.1(f)", d:"Base legal del tratamiento que permite tratar datos cuando sea necesario para los fines de los intereses legítimos perseguidos por el responsable o por un tercero, salvo cuando prevalezcan los intereses o derechos del interesado.", n:"Requiere un balance de intereses documentado. No aplicable a autoridades públicas en el ejercicio de sus funciones." },
+  { t:"ISO 27005:2022", s:"ISO/IEC 27005:2022", d:"Norma que proporciona orientación para la gestión del riesgo de seguridad de la información. La versión 2022 introdujo el enfoque basado en escenarios como alternativa al basado en activos.", n:"No es certificable. Es la guía metodológica de referencia para satisfacer los requisitos de la cláusula 6 de ISO 27001." },
+  { t:"LOPDGDD", s:"Ley Orgánica 3/2018", d:"Ley Orgánica de Protección de Datos Personales y garantía de los derechos digitales. Adapta el RGPD al ordenamiento jurídico español y añade disposiciones propias, como la edad de consentimiento en 14 años.", n:"De obligado conocimiento para cualquier profesional que opere en España." },
+  { t:"MAGERIT", s:"CCN / Ministerio de Hacienda", d:"Metodología de Análisis y Gestión de Riesgos de los Sistemas de Información. Metodología oficial española de análisis de riesgos de seguridad. Alineada con ISO 27005. La herramienta PILAR la implementa.", n:"Especialmente relevante para el sector público y organizaciones en alcance ENS." },
+  { t:"NIS2 (Directiva NIS2)", s:"Directiva (UE) 2022/2555", d:"Directiva sobre medidas para un nivel elevado común de ciberseguridad en la Unión Europea. Establece obligaciones de seguridad y notificación de incidentes para entidades esenciales e importantes.", n:"Plazos de notificación: alerta 24h, notificación 72h, informe final 1 mes." },
+  { t:"No conformidad", s:"ISO 27000:2018", d:"Incumplimiento de un requisito. En ISO 27001, los requisitos pueden ser de la propia norma, de los documentos internos del SGSI, de requisitos legales o contractuales.", n:"Clasificación: mayor (incumplimiento sistémico que bloquea certificación) o menor (incumplimiento puntual)." },
+  { t:"PII (Personally Identifiable Information)", s:"ISO 27701:2019", d:"Cualquier información que pueda utilizarse para identificar, contactar o localizar a una persona. Equivalente a 'datos personales' en la terminología del RGPD.", n:"ISO 27701 usa PII; el RGPD usa 'datos personales'. Son conceptos equivalentes." },
+  { t:"PII Controller", s:"ISO 27701:2019 §7", d:"Entidad que determina los fines y medios del tratamiento de información de identificación personal. Equivalente al 'Responsable del Tratamiento' en terminología RGPD.", n:"La cláusula 7 de ISO 27701 contiene los controles adicionales para Controllers." },
+  { t:"PII Processor", s:"ISO 27701:2019 §8", d:"Entidad que trata información de identificación personal por cuenta de un PII Controller. Equivalente al 'Encargado del Tratamiento' en terminología RGPD.", n:"La cláusula 8 de ISO 27701 contiene los controles adicionales para Processors. Si un Processor actúa más allá de las instrucciones del Controller, se convierte en Controller." },
+  { t:"Plan Director de Seguridad", s:"Práctica de implementación", d:"Documento estratégico que traduce los resultados del Gap Analysis en un plan de acción plurianual para construir o mejorar el SGSI+SGPI. Aprobado por la alta dirección.", n:"También sirve como herramienta de venta interna para obtener recursos y presupuesto." },
+  { t:"Plan de tratamiento del riesgo", s:"ISO 27001:2022 §6.1.3", d:"Documento que describe las acciones a tomar para modificar los riesgos identificados, incluyendo los controles seleccionados, los responsables y los plazos. Información documentada obligatoria.", n:"Debe estar alineado con la SoA — los controles del PTR deben estar incluidos en la SoA." },
+  { t:"Privacy by Default", s:"RGPD Art. 25.2 / ISO 27701 §7.4.6", d:"Principio que exige que la configuración predeterminada garantice el máximo nivel de protección de la privacidad, sin requerir acción del interesado.", n:"Ejemplos: perfiles de redes sociales privados por defecto, casillas de boletines desmarcadas por defecto, solo cookies técnicas activas por defecto." },
+  { t:"Privacy by Design", s:"RGPD Art. 25 / ISO 27701 §7.4.5", d:"Principio que exige integrar la protección de datos personales en el diseño de sistemas, procesos y productos desde el inicio, no como una capa añadida posteriormente.", n:"Uno de los 7 principios fundacionales de Ann Cavoukian. Operacionalizado en el SSDLC mediante modelado de amenazas de privacidad, DPIAs en fase de diseño y pseudonimización." },
+  { t:"Propietario del riesgo", s:"ISO 27000:2018", d:"Persona o entidad con responsabilidad y autoridad para gestionar un riesgo. Quien tiene la capacidad de aprobar las opciones de tratamiento y aceptar el riesgo residual.", n:"El propietario del riesgo no necesariamente es quien implementa los controles." },
+  { t:"RAT (Registro de Actividades de Tratamiento)", s:"RGPD Art. 30", d:"Documento obligatorio que debe llevar el responsable y el encargado del tratamiento, que describe todas las actividades de tratamiento de datos personales que realizan.", n:"Obligatorio para organizaciones con más de 250 empleados, y también para las menores si realizan tratamientos de alto riesgo, habituales o de categorías especiales." },
+  { t:"RGPD", s:"Reglamento (UE) 2016/679", d:"Reglamento General de Protección de Datos. Marco jurídico europeo de referencia para la protección de datos personales. Vigente desde mayo de 2018. Aplicación directa en todos los estados miembros.", n:"ISO 27701 proporciona el marco técnico-organizativo para operacionalizar el cumplimiento del RGPD." },
+  { t:"Riesgo inherente", s:"Práctica de gestión del riesgo", d:"Nivel de riesgo antes de aplicar controles o medidas de mitigación. Refleja la exposición bruta de la organización si no existieran controles.", n:"Se diferencia del riesgo residual, que es el nivel que permanece después de aplicar los controles." },
+  { t:"Riesgo residual", s:"ISO 27000:2018", d:"Riesgo que permanece después de que se han tomado las medidas de tratamiento del riesgo. Debe ser evaluado formalmente y aceptado por el propietario del riesgo.", n:"ISO 27001 exige evidencia documentada de la aceptación del riesgo residual." },
+  { t:"Revisión por la dirección", s:"ISO 27001:2022 §9.3", d:"Mecanismo formal mediante el cual la alta dirección evalúa periódicamente el estado del SGSI y toma decisiones sobre su evolución. Información documentada obligatoria.", n:"Debe cubrir todas las entradas exigidas por la cláusula 9.3 y generar salidas documentadas (decisiones y compromisos)." },
+  { t:"RPO (Recovery Point Objective)", s:"Gestión de continuidad", d:"Máxima pérdida de datos aceptable, expresada en tiempo. Define hasta qué punto en el pasado podemos recuperar datos tras un incidente. Determina la frecuencia de backups.", n:"Un RPO de 4 horas significa que debemos poder recuperar los datos hasta 4 horas antes del incidente." },
+  { t:"RTO (Recovery Time Objective)", s:"Gestión de continuidad", d:"Tiempo máximo aceptable para restaurar un sistema o proceso después de una interrupción. Determina los requisitos técnicos de redundancia y failover.", n:"Un RTO de 2 horas significa que el sistema debe estar operativo en 2 horas desde la interrupción." },
+  { t:"SGSI (Sistema de Gestión de la Seguridad de la Información)", s:"ISO 27000:2018", d:"Parte del sistema de gestión global, basado en un enfoque de riesgo, para establecer, implementar, operar, monitorizar, revisar, mantener y mejorar la seguridad de la información.", n:"ISO 27001 define los requisitos del SGSI. ISO 27701 extiende el SGSI para incluir la gestión de la privacidad." },
+  { t:"SGPI (Sistema de Gestión de la Información de Privacidad)", s:"ISO 27701:2019", d:"Extensión del SGSI que incorpora los controles y procesos necesarios para gestionar la protección de la información de identificación personal (PII). No es un sistema independiente sino una extensión del SGSI.", n:"La certificación ISO 27701 solo puede obtenerse como extensión de la certificación ISO 27001." },
+  { t:"SoA (Statement of Applicability)", s:"ISO 27001:2022 §6.1.3", d:"Ver 'Declaración de Aplicabilidad'. El término inglés SoA es el más utilizado en la práctica profesional.", n:"" },
+  { t:"Seudonimización", s:"RGPD Art. 4.5", d:"Tratamiento de datos personales de manera que ya no puedan atribuirse a un interesado específico sin utilizar información adicional, siempre que dicha información adicional figure por separado.", n:"La seudonimización NO es anonimización — los datos seudónimos siguen siendo datos personales. Es una medida de reducción del riesgo reconocida expresamente en el RGPD." },
+  { t:"Threat Intelligence (Inteligencia sobre amenazas)", s:"ISO 27002:2022 Control 5.7", d:"Proceso de recopilación, análisis y uso de información sobre amenazas relevantes para el contexto de la organización. Nuevo control en la versión 2022.", n:"Fuentes: CCN-CERT, ENISA Threat Landscape, MITRE ATT&CK, ISACs sectoriales." },
+  { t:"Tratamiento de datos personales", s:"RGPD Art. 4.2", d:"Cualquier operación o conjunto de operaciones realizadas sobre datos personales: recogida, registro, organización, estructuración, conservación, adaptación, modificación, extracción, consulta, utilización, comunicación, difusión, etc.", n:"El concepto es muy amplio — casi cualquier operación con datos personales es tratamiento." },
+  { t:"Transferencia internacional", s:"RGPD Arts. 44-49", d:"Cualquier comunicación, copia o transferencia de datos personales hacia un tercer país u organización internacional. Requiere que el nivel de protección no quede menoscabado.", n:"Incluye transferencias implícitas: usar un servicio cloud con servidores fuera del EEE constituye una transferencia internacional." },
+  { t:"Vulnerabilidad", s:"ISO 27000:2018", d:"Debilidad de un activo o control que puede ser explotada por una o más amenazas.", n:"Distinta de la amenaza: la amenaza es el agente o evento, la vulnerabilidad es la debilidad que explota. Una vulnerabilidad sin amenaza no genera riesgo (y viceversa)." },
+  { t:"Zero Trust", s:"Marco de arquitectura de seguridad", d:"Modelo de seguridad basado en el principio 'nunca confíes, siempre verifica'. Exige verificación continua de identidades y dispositivos, mínimo privilegio y asunción de que la brecha ya ocurrió.", n:"Se operacionaliza en ISO 27001 mediante los controles 5.15-5.18, 8.2, 8.5 y 8.22." }
+];
+
+function renderGlosario(filter = '') {
+  const container = document.getElementById('glosario-container');
+  const q = filter.toLowerCase().trim();
+  const filtered = q ? terms.filter(t => t.t.toLowerCase().includes(q) || t.d.toLowerCase().includes(q) || t.s.toLowerCase().includes(q)) : terms;
+
+  const sorted = [...filtered].sort((a,b) => a.t.localeCompare(b.t,'es'));
+  container.innerHTML = '';
+  let lastLetter = '';
+  sorted.forEach(term => {
+    const letter = term.t[0].toUpperCase();
+    if (!q && letter !== lastLetter) {
+      lastLetter = letter;
+      const sep = document.createElement('p');
+      sep.className = 'alpha-section-title';
+      sep.textContent = letter;
+      container.appendChild(sep);
+    }
+    const card = document.createElement('div');
+    card.className = 'term-card';
+    card.innerHTML = `
+      <p class="term-name">${term.t}</p>
+      <span class="term-source">${term.s}</span>
+      <p class="term-def">${term.d}</p>
+      ${term.n ? `<p class="term-note">→ ${term.n}</p>` : ''}
+    `;
+    container.appendChild(card);
+  });
+  document.getElementById('glosario-count').textContent = `${filtered.length} término${filtered.length !== 1 ? 's' : ''}${q ? ' encontrados' : ' en total'}`;
+}
+
+function filterGlosario(val) { renderGlosario(val); }
+
+document.addEventListener('DOMContentLoaded', () => renderGlosario());
+</script>
+</body>
+</html>
