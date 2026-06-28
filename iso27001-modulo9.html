@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Implementación | Curso ISO/IEC 27001</title>
+<link rel="stylesheet" href="engine.css">
+<style>
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin: 1.5rem 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--steel-mid));
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .timeline-month {
+      font-size: 0.65rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--accent-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+    }
+    .timeline-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 0.3rem;
+    }
+    .timeline-desc {
+      font-size: 0.825rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .gap-matrix {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2px;
+      margin: 1.5rem 0;
+    }
+    .gap-cell {
+      padding: 8px 10px;
+      font-size: 0.78rem;
+    }
+    .gap-header {
+      background: var(--navy);
+      color: var(--ice);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .gap-row-label {
+      background: var(--off-white);
+      color: var(--text-muted);
+      font-weight: 500;
+      border-right: 2px solid rgba(46,92,138,0.1);
+    }
+    .gap-none  { background: #E8F5E9; color: #2E7D32; font-weight: 600; text-align: center; }
+    .gap-low   { background: #FFF8E1; color: #F57F17; font-weight: 600; text-align: center; }
+    .gap-med   { background: #FFF3E0; color: #E65100; font-weight: 600; text-align: center; }
+    .gap-high  { background: #FFEBEE; color: #C62828; font-weight: 600; text-align: center; }
+    .gap-na    { background: var(--off-white); color: var(--text-faint); text-align: center; font-style: italic; }
+  </style>
+</head>
+<body data-module="9">
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="badge">ISO/IEC 27001 · 27701</div>
+      <h2>Implementador de<br>SGSI Certificado</h2>
+      <p>Seguridad de la Información y Privacidad</p>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label">Progreso del curso</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+      <div class="progress-pct">Módulo 9 de 14</div>
+    </div>
+    <nav><ul id="sidebar-nav"></ul></nav>
+  </aside>
+  <div class="stage-wrap">
+    <div class="deck-progress"><div class="deck-progress-fill" id="deckProgressFill"></div></div>
+    <div class="stage" id="stage"></div>
+    <div class="navbar">
+      <button class="btn-nav secundario" id="btnPrev" onclick="Deck.goPrev()">← Anterior</button>
+      <div class="dots" id="deckDots"></div>
+      <button class="btn-nav" id="btnNext" onclick="Deck.goNext()">Siguiente →</button>
+    </div>
+    <div class="lock-msg" id="lockMsg"></div>
+  </div>
+</div>
+<script src="jspdf.umd.min.js"></script>
+<script src="scorm_api.js"></script>
+<script src="engine.js"></script>
+<script src="slides-modulo9.js"></script>
+<script>Deck.boot(9, window.SLIDES);</script>
+</body>
+</html>

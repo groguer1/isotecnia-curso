@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentación | Curso ISO/IEC 27001</title>
+<link rel="stylesheet" href="engine.css">
+<style>
+    .doc-level {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 1.25rem 1.5rem;
+      border-radius: var(--radius-lg);
+      margin-bottom: 1rem;
+      border: 1px solid;
+    }
+    .doc-level--1 { background: rgba(13,27,42,0.04); border-color: var(--navy); }
+    .doc-level--2 { background: rgba(46,92,138,0.05); border-color: var(--steel-mid); }
+    .doc-level--3 { background: rgba(0,200,150,0.04); border-color: rgba(0,200,150,0.25); }
+    .doc-level--4 { background: var(--off-white); border-color: rgba(46,92,138,0.1); }
+    .doc-level-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .doc-level--1 .doc-level-num { background: var(--navy); color: var(--white); }
+    .doc-level--2 .doc-level-num { background: var(--steel-mid); color: var(--white); }
+    .doc-level--3 .doc-level-num { background: var(--accent); color: var(--navy); }
+    .doc-level--4 .doc-level-num { background: var(--off-white); color: var(--text-muted); border: 1px solid rgba(46,92,138,0.2); }
+  </style>
+</head>
+<body data-module="10">
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="badge">ISO/IEC 27001 · 27701</div>
+      <h2>Implementador de<br>SGSI Certificado</h2>
+      <p>Seguridad de la Información y Privacidad</p>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label">Progreso del curso</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+      <div class="progress-pct">Módulo 10 de 14</div>
+    </div>
+    <nav><ul id="sidebar-nav"></ul></nav>
+  </aside>
+  <div class="stage-wrap">
+    <div class="deck-progress"><div class="deck-progress-fill" id="deckProgressFill"></div></div>
+    <div class="stage" id="stage"></div>
+    <div class="navbar">
+      <button class="btn-nav secundario" id="btnPrev" onclick="Deck.goPrev()">← Anterior</button>
+      <div class="dots" id="deckDots"></div>
+      <button class="btn-nav" id="btnNext" onclick="Deck.goNext()">Siguiente →</button>
+    </div>
+    <div class="lock-msg" id="lockMsg"></div>
+  </div>
+</div>
+<script src="jspdf.umd.min.js"></script>
+<script src="scorm_api.js"></script>
+<script src="engine.js"></script>
+<script src="slides-modulo10.js"></script>
+<script>Deck.boot(10, window.SLIDES);</script>
+</body>
+</html>

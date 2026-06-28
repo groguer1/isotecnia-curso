@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anexo A 2022 | Curso ISO/IEC 27001</title>
+<link rel="stylesheet" href="engine.css">
+<style>
+    /* ---- Filtro de controles ---- */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
+      background: var(--off-white);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(46,92,138,0.1);
+    }
+    .filter-btn {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid rgba(46,92,138,0.15);
+      background: var(--white);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: var(--font-sans);
+    }
+    .filter-btn:hover { border-color: var(--steel-mid); color: var(--steel-mid); }
+    .filter-btn.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .filter-btn.active-cat { background: var(--accent); color: var(--navy); border-color: var(--accent); }
+
+    /* ---- Tabla de controles interactiva ---- */
+    .controls-table-wrap { overflow-x: auto; }
+    .controls-full-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .controls-full-table th {
+      background: var(--navy);
+      color: var(--ice);
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 10px 12px;
+      text-align: left;
+      white-space: nowrap;
+    }
+    .controls-full-table td {
+      padding: 9px 12px;
+      border-bottom: 1px solid rgba(46,92,138,0.07);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+    .controls-full-table tr:hover td { background: var(--off-white); }
+    .ctrl-row { display: table-row; }
+    .ctrl-row.hidden { display: none; }
+
+    .ctrl-ref {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent-dark);
+      white-space: nowrap;
+    }
+    .ctrl-name { font-weight: 500; color: var(--navy); }
+    .ctrl-cat-pill {
+      font-size: 0.62rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .cat-org  { background: #EEF5FF; color: #1565C0; }
+    .cat-per  { background: #FFF3E0; color: #E65100; }
+    .cat-fis  { background: #E8F5E9; color: #2E7D32; }
+    .cat-tec  { background: #F3E5F5; color: #6A1B9A; }
+
+    .tipo-pill {
+      font-size: 0.6rem;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .tipo-prev { background: #E8F5E9; color: #2E7D32; }
+    .tipo-det  { background: #FFF8E1; color: #F57F17; }
+    .tipo-cor  { background: #FCE4EC; color: #880E4F; }
+
+    .nuevo-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      background: rgba(0,200,150,0.12);
+      color: var(--accent-dark);
+      border: 1px solid rgba(0,200,150,0.3);
+      padding: 1px 6px;
+      border-radius: 100px;
+      margin-left: 4px;
+    }
+
+    /* ---- Estadísticas de filtro ---- */
+    .filter-stats {
+      font-size: 0.78rem;
+      color: var(--text-faint);
+      margin-bottom: 0.75rem;
+      font-style: italic;
+    }
+
+    /* ---- Análisis profundo por subcategoría ---- */
+    .deep-section {
+      background: var(--white);
+      border: 1px solid rgba(46,92,138,0.1);
+      border-radius: var(--radius-lg);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .deep-section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--off-white);
+      border-bottom: 1px solid rgba(46,92,138,0.08);
+    }
+    .deep-section-body { padding: 1.5rem; }
+
+    /* Search */
+    .ctrl-search {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-family: var(--font-sans);
+      border: 1px solid rgba(46,92,138,0.15);
+      border-radius: var(--radius-md);
+      outline: none;
+      background: var(--white);
+      color: var(--text-body);
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .ctrl-search:focus { border-color: var(--steel-mid); }
+  </style>
+</head>
+<body data-module="4">
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="badge">ISO/IEC 27001 · 27701</div>
+      <h2>Implementador de<br>SGSI Certificado</h2>
+      <p>Seguridad de la Información y Privacidad</p>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label">Progreso del curso</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+      <div class="progress-pct">Módulo 4 de 14</div>
+    </div>
+    <nav><ul id="sidebar-nav"></ul></nav>
+  </aside>
+  <div class="stage-wrap">
+    <div class="deck-progress"><div class="deck-progress-fill" id="deckProgressFill"></div></div>
+    <div class="stage" id="stage"></div>
+    <div class="navbar">
+      <button class="btn-nav secundario" id="btnPrev" onclick="Deck.goPrev()">← Anterior</button>
+      <div class="dots" id="deckDots"></div>
+      <button class="btn-nav" id="btnNext" onclick="Deck.goNext()">Siguiente →</button>
+    </div>
+    <div class="lock-msg" id="lockMsg"></div>
+  </div>
+</div>
+<script src="jspdf.umd.min.js"></script>
+<script src="scorm_api.js"></script>
+<script src="engine.js"></script>
+<script src="slides-modulo4.js"></script>
+<script>Deck.boot(4, window.SLIDES);</script>
+</body>
+</html>

@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<manifest identifier="COM.ISO27001.GESTOR.CURSO" version="1"
-      xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
-      xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
-                          http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
+<manifest identifier="COM.ISO27001.SGSI.CURSO" version="1"
+    xmlns="http://www.imsproject.org/xsd/imscp_rootv1p1p2"
+    xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_rootv1p2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.imsproject.org/xsd/imscp_rootv1p1p2 imscp_rootv1p1p2.xsd
+                         http://www.adlnet.org/xsd/adlcp_rootv1p2 adlcp_rootv1p2.xsd">
 
-    <metadata>
-          <schema>ADL SCORM</schema>
-          <schemaversion>1.2</schemaversion>
-    </metadata>
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>1.2</schemaversion>
+  </metadata>
 
-    <organizations default="ORG-ISO27001">
-          <organization identifier="ORG-ISO27001">
-                  <title>ISO/IEC 27001 &amp; 27701 — De Cero a Implementador</title>
-                  <item identifier="ITEM-CURSO" identifierref="RES-CURSO">
-                            <title>ISO/IEC 27001 &amp; 27701 — De Cero a Implementador</title>
-                            <adlcp:masteryscore>70</adlcp:masteryscore>
-                  </item>
-          </organization>
-    </organizations>
+  <organizations default="ORG-ISO27001">
+    <organization identifier="ORG-ISO27001">
+      <title>Implementador ISO/IEC 27001 &amp; 27701 — SGSI y SGPI</title>
+      <item identifier="ITEM-CURSO" identifierref="RES-CURSO">
+        <title>Implementador ISO/IEC 27001 &amp; 27701 — SGSI y SGPI</title>
+        <adlcp:masteryscore>70</adlcp:masteryscore>
+      </item>
+    </organization>
+  </organizations>
 
-    <resources>
-          <resource identifier="RES-CURSO" type="webcontent" adlcp:scormtype="sco" href="iso27001-modulo1.html">
-                  <file href="iso27001-modulo1.html"/>
-                  <file href="iso27001-modulo2.html"/>
-                  <file href="iso27001-modulo3.html"/>
-                  <file href="iso27001-modulo4.html"/>
-                  <file href="iso27001-modulo5.html"/>
-                  <file href="iso27001-modulo6.html"/>
-                  <file href="iso27001-modulo7.html"/>
-                  <file href="iso27001-modulo8.html"/>
-                  <file href="iso27001-modulo9.html"/>
-                  <file href="iso27001-modulo10.html"/>
-                  <file href="iso27001-modulo11.html"/>
-                  <file href="iso27001-modulo12.html"/>
-                  <file href="iso27001-modulo13.html"/>
-                  <file href="iso27001-modulo14.html"/>
-                  <file href="engine.css"/>
-                  <file href="engine.js"/>
-                  <file href="engine-m14.js"/>
-                  <file href="scorm_api.js"/>
-                  <file href="jspdf.umd.min.js"/>
-                  <file href="slides-modulo1.js"/>
-                  <file href="slides-modulo2.js"/>
-                  <file href="slides-modulo3.js"/>
-                  <file href="slides-modulo4.js"/>
-                  <file href="slides-modulo5.js"/>
-                  <file href="slides-modulo6.js"/>
-                  <file href="slides-modulo7.js"/>
-                  <file href="slides-modulo8.js"/>
-                  <file href="slides-modulo9.js"/>
-                  <file href="slides-modulo10.js"/>
-                  <file href="slides-modulo11.js"/>
-                  <file href="slides-modulo12.js"/>
-                  <file href="slides-modulo13.js"/>
-                  <file href="slides-modulo14.js"/>
-          </resource>
-    </resources>
+  <resources>
+    <resource identifier="RES-CURSO" type="webcontent" adlcp:scormtype="sco" href="iso27001-modulo1.html">
+      <file href="iso27001-modulo1.html"/>
+      <file href="iso27001-modulo2.html"/>
+      <file href="iso27001-modulo3.html"/>
+      <file href="iso27001-modulo4.html"/>
+      <file href="iso27001-modulo5.html"/>
+      <file href="iso27001-modulo6.html"/>
+      <file href="iso27001-modulo7.html"/>
+      <file href="iso27001-modulo8.html"/>
+      <file href="iso27001-modulo9.html"/>
+      <file href="iso27001-modulo10.html"/>
+      <file href="iso27001-modulo11.html"/>
+      <file href="iso27001-modulo12.html"/>
+      <file href="iso27001-modulo13.html"/>
+      <file href="iso27001-modulo14.html"/>
+      <file href="engine.css"/>
+      <file href="engine.js"/>
+      <file href="engine-m14.js"/>
+      <file href="scorm_api.js"/>
+      <file href="jspdf.umd.min.js"/>
+      <file href="slides-modulo1.js"/>
+      <file href="slides-modulo2.js"/>
+      <file href="slides-modulo3.js"/>
+      <file href="slides-modulo4.js"/>
+      <file href="slides-modulo5.js"/>
+      <file href="slides-modulo6.js"/>
+      <file href="slides-modulo7.js"/>
+      <file href="slides-modulo8.js"/>
+      <file href="slides-modulo9.js"/>
+      <file href="slides-modulo10.js"/>
+      <file href="slides-modulo11.js"/>
+      <file href="slides-modulo12.js"/>
+      <file href="slides-modulo13.js"/>
+      <file href="slides-modulo14.js"/>
+    </resource>
+  </resources>
 </manifest>

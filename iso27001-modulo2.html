@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cláusulas 4–10 | Curso ISO/IEC 27001</title>
+<link rel="stylesheet" href="engine.css">
+</head>
+<body data-module="2">
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="badge">ISO/IEC 27001 · 27701</div>
+      <h2>Implementador de<br>SGSI Certificado</h2>
+      <p>Seguridad de la Información y Privacidad</p>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label">Progreso del curso</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+      <div class="progress-pct">Módulo 2 de 14</div>
+    </div>
+    <nav><ul id="sidebar-nav"></ul></nav>
+  </aside>
+  <div class="stage-wrap">
+    <div class="deck-progress"><div class="deck-progress-fill" id="deckProgressFill"></div></div>
+    <div class="stage" id="stage"></div>
+    <div class="navbar">
+      <button class="btn-nav secundario" id="btnPrev" onclick="Deck.goPrev()">← Anterior</button>
+      <div class="dots" id="deckDots"></div>
+      <button class="btn-nav" id="btnNext" onclick="Deck.goNext()">Siguiente →</button>
+    </div>
+    <div class="lock-msg" id="lockMsg"></div>
+  </div>
+</div>
+<script src="jspdf.umd.min.js"></script>
+<script src="scorm_api.js"></script>
+<script src="engine.js"></script>
+<script src="slides-modulo2.js"></script>
+<script>Deck.boot(2, window.SLIDES);</script>
+</body>
+</html>

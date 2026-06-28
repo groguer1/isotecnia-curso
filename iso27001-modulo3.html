@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestión de Riesgos | Curso ISO/IEC 27001</title>
+<link rel="stylesheet" href="engine.css">
+<style>
+    /* ---- Laboratorio interactivo ---- */
+    .lab-container {
+      background: var(--navy);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      margin: 2.5rem 0;
+    }
+    .lab-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--navy-light);
+    }
+    .lab-icon {
+      width: 44px; height: 44px;
+      background: rgba(0,200,150,0.12);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .lab-title { font-size: 1.1rem; font-weight: 700; color: var(--white); }
+    .lab-subtitle { font-size: 0.82rem; color: var(--text-faint); margin-top: 3px; }
+
+    .lab-step {
+      display: none;
+    }
+    .lab-step.active { display: block; }
+
+    .lab-step-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .lab-step-num {
+      font-size: 0.65rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      background: rgba(0,200,150,0.15);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+    .lab-step-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .lab-field {
+      margin-bottom: 1.25rem;
+    }
+    .lab-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--ice);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .lab-input, .lab-select, .lab-textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(168,200,232,0.15);
+      border-radius: var(--radius-md);
+      color: var(--white);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      padding: 10px 14px;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .lab-input:focus, .lab-select:focus, .lab-textarea:focus {
+      border-color: var(--accent);
+    }
+    .lab-textarea { resize: vertical; min-height: 80px; }
+    .lab-select option { background: var(--navy-mid); color: var(--white); }
+
+    .lab-scale {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .lab-scale-btn {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(168,200,232,0.2);
+      background: transparent;
+      color: var(--ice);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: var(--font-sans);
+    }
+    .lab-scale-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .lab-scale-btn.selected-1, .lab-scale-btn.selected-2 { background: rgba(0,200,150,0.12); border-color: var(--accent); color: var(--accent); }
+    .lab-scale-btn.selected-3 { background: rgba(245,158,11,0.15); border-color: var(--warn); color: var(--warn); }
+    .lab-scale-btn.selected-4, .lab-scale-btn.selected-5 { background: rgba(239,68,68,0.12); border-color: var(--danger); color: #FCA5A5; }
+
+    .risk-matrix {
+      display: grid;
+      grid-template-columns: auto repeat(5, 1fr);
+      gap: 3px;
+      margin: 1.5rem 0;
+      font-size: 0.7rem;
+    }
+    .rm-cell {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.65rem;
+      letter-spacing: 0.04em;
+      transition: all 0.2s;
+    }
+    .rm-label { background: transparent; color: var(--text-faint); font-size: 0.65rem; }
+    .rm-header { background: rgba(168,200,232,0.08); color: var(--ice); font-size: 0.65rem; }
+    .rm-low { background: rgba(0,200,150,0.15); color: var(--accent); }
+    .rm-med { background: rgba(245,158,11,0.15); color: var(--warn); }
+    .rm-high { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+    .rm-cell.highlighted { box-shadow: 0 0 0 2px var(--accent); transform: scale(1.1); z-index: 1; position: relative; }
+
+    .result-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(168,200,232,0.1);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .result-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      margin-bottom: 0.25rem;
+    }
+    .result-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .risk-level-pill {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .risk-pill-low  { background: rgba(0,200,150,0.15); color: var(--accent); }
+    .risk-pill-med  { background: rgba(245,158,11,0.15); color: var(--warn); }
+    .risk-pill-high { background: rgba(239,68,68,0.15); color: #FCA5A5; }
+    .risk-pill-crit { background: rgba(239,68,68,0.25); color: #FCA5A5; border: 1px solid rgba(239,68,68,0.4); }
+
+    .lab-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--navy-light);
+      gap: 1rem;
+    }
+    .lab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      border: 1px solid rgba(168,200,232,0.2);
+      background: transparent;
+      color: var(--ice);
+      transition: all 0.2s;
+    }
+    .lab-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .lab-btn--primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--navy);
+    }
+    .lab-btn--primary:hover {
+      background: #00E5AE;
+      color: var(--navy);
+    }
+    .lab-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+    .lab-progress {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .lab-progress-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(168,200,232,0.2);
+      transition: background 0.2s;
+    }
+    .lab-progress-dot.done { background: var(--accent); }
+    .lab-progress-dot.current { background: var(--white); }
+
+    /* Resumen final */
+    .risk-summary-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 0.5rem;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+    }
+    .rsr-header {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+      margin-bottom: 0.5rem;
+    }
+    .rsr-data { background: rgba(255,255,255,0.04); }
+  </style>
+</head>
+<body data-module="3">
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="badge">ISO/IEC 27001 · 27701</div>
+      <h2>Implementador de<br>SGSI Certificado</h2>
+      <p>Seguridad de la Información y Privacidad</p>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label">Progreso del curso</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+      <div class="progress-pct">Módulo 3 de 14</div>
+    </div>
+    <nav><ul id="sidebar-nav"></ul></nav>
+  </aside>
+  <div class="stage-wrap">
+    <div class="deck-progress"><div class="deck-progress-fill" id="deckProgressFill"></div></div>
+    <div class="stage" id="stage"></div>
+    <div class="navbar">
+      <button class="btn-nav secundario" id="btnPrev" onclick="Deck.goPrev()">← Anterior</button>
+      <div class="dots" id="deckDots"></div>
+      <button class="btn-nav" id="btnNext" onclick="Deck.goNext()">Siguiente →</button>
+    </div>
+    <div class="lock-msg" id="lockMsg"></div>
+  </div>
+</div>
+<script src="jspdf.umd.min.js"></script>
+<script src="scorm_api.js"></script>
+<script src="engine.js"></script>
+<script src="slides-modulo3.js"></script>
+<script>Deck.boot(3, window.SLIDES);</script>
+</body>
+</html>

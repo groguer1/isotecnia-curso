@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casos Prácticos | Curso ISO/IEC 27001</title>
+<link rel="stylesheet" href="engine.css">
+<style>
+    .case-header {
+      background: var(--navy);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--accent);
+    }
+    .case-tag {
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 0.5rem; display: block;
+    }
+    .final-quiz-block {
+      background: var(--navy);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+      margin: 2rem 0;
+    }
+    .fq-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(168,200,232,0.1);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .fq-num {
+      font-size: 0.65rem; font-weight: 700; font-family: var(--font-mono);
+      color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+    }
+    .fq-question { font-size: 0.95rem; font-weight: 600; color: var(--white); line-height: 1.55; margin-bottom: 1.25rem; }
+    .fq-options { display: flex; flex-direction: column; gap: 8px; }
+    .fq-option {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 14px; border-radius: var(--radius-md);
+      border: 1px solid rgba(168,200,232,0.12);
+      cursor: pointer; transition: all 0.15s;
+      color: var(--ice); font-size: 0.875rem;
+      background: transparent; font-family: var(--font-sans);
+      text-align: left;
+    }
+    .fq-option:hover { background: rgba(0,200,150,0.05); border-color: rgba(0,200,150,0.25); }
+    .fq-option.correct { background: rgba(0,200,150,0.12); border-color: var(--accent); color: var(--accent); }
+    .fq-option.incorrect { background: rgba(239,68,68,0.08); border-color: var(--danger); color: #FCA5A5; }
+    .diploma {
+      background: linear-gradient(135deg, var(--navy) 0%, #0a3040 50%, var(--navy) 100%);
+      border: 2px solid var(--accent);
+      border-radius: var(--radius-xl);
+      padding: 3rem 2.5rem;
+      text-align: center;
+      margin: 2rem 0;
+      display: none;
+    }
+  </style>
+</head>
+<body data-module="13">
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="badge">ISO/IEC 27001 · 27701</div>
+      <h2>Implementador de<br>SGSI Certificado</h2>
+      <p>Seguridad de la Información y Privacidad</p>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label">Progreso del curso</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+      <div class="progress-pct">Módulo 13 de 14</div>
+    </div>
+    <nav><ul id="sidebar-nav"></ul></nav>
+  </aside>
+  <div class="stage-wrap">
+    <div class="deck-progress"><div class="deck-progress-fill" id="deckProgressFill"></div></div>
+    <div class="stage" id="stage"></div>
+    <div class="navbar">
+      <button class="btn-nav secundario" id="btnPrev" onclick="Deck.goPrev()">← Anterior</button>
+      <div class="dots" id="deckDots"></div>
+      <button class="btn-nav" id="btnNext" onclick="Deck.goNext()">Siguiente →</button>
+    </div>
+    <div class="lock-msg" id="lockMsg"></div>
+  </div>
+</div>
+<script src="jspdf.umd.min.js"></script>
+<script src="scorm_api.js"></script>
+<script src="engine.js"></script>
+<script src="slides-modulo13.js"></script>
+<script>Deck.boot(13, window.SLIDES);</script>
+</body>
+</html>

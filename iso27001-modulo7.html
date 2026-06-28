@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Integrado | Curso ISO/IEC 27001</title>
+<link rel="stylesheet" href="engine.css">
+<style>
+    .integration-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-size: 1.5rem;
+      margin: 0.5rem 0;
+    }
+    .system-card {
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      border: 1px solid;
+    }
+    .system-card--sgsi {
+      background: rgba(46,92,138,0.06);
+      border-color: rgba(46,92,138,0.2);
+    }
+    .system-card--sgpi {
+      background: rgba(0,200,150,0.05);
+      border-color: rgba(0,200,150,0.2);
+    }
+    .system-card--unified {
+      background: var(--navy);
+      border-color: var(--accent);
+    }
+    .mapping-grid {
+      display: grid;
+      grid-template-columns: 1fr 40px 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+    .mapping-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .mapping-arrow-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .map-item {
+      background: var(--white);
+      border: 1px solid rgba(46,92,138,0.1);
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+    }
+    .map-item strong { color: var(--navy); display: block; font-size: 0.72rem; margin-bottom: 2px; }
+    .map-arrow {
+      font-size: 0.9rem;
+      color: var(--accent);
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .metric-card {
+      background: var(--white);
+      border: 1px solid rgba(46,92,138,0.1);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+    }
+    .metric-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 0.5rem; }
+    .metric-name { font-size: 0.9rem; font-weight: 600; color: var(--navy); margin-bottom: 0.4rem; }
+    .metric-formula { font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono); background: var(--off-white); padding: 3px 8px; border-radius: var(--radius-sm); display: inline-block; }
+  </style>
+</head>
+<body data-module="7">
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="badge">ISO/IEC 27001 · 27701</div>
+      <h2>Implementador de<br>SGSI Certificado</h2>
+      <p>Seguridad de la Información y Privacidad</p>
+    </div>
+    <div class="sidebar-progress">
+      <div class="progress-label">Progreso del curso</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+      <div class="progress-pct">Módulo 7 de 14</div>
+    </div>
+    <nav><ul id="sidebar-nav"></ul></nav>
+  </aside>
+  <div class="stage-wrap">
+    <div class="deck-progress"><div class="deck-progress-fill" id="deckProgressFill"></div></div>
+    <div class="stage" id="stage"></div>
+    <div class="navbar">
+      <button class="btn-nav secundario" id="btnPrev" onclick="Deck.goPrev()">← Anterior</button>
+      <div class="dots" id="deckDots"></div>
+      <button class="btn-nav" id="btnNext" onclick="Deck.goNext()">Siguiente →</button>
+    </div>
+    <div class="lock-msg" id="lockMsg"></div>
+  </div>
+</div>
+<script src="jspdf.umd.min.js"></script>
+<script src="scorm_api.js"></script>
+<script src="engine.js"></script>
+<script src="slides-modulo7.js"></script>
+<script>Deck.boot(7, window.SLIDES);</script>
+</body>
+</html>
