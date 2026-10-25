@@ -279,7 +279,7 @@
     doc.setFontSize(8.5);
     doc.setTextColor(150, 158, 170);
     doc.setFont('helvetica', 'normal');
-    doc.text('ISO/IEC 27001:2022 · ISO/IEC 27701:2019 · 30 horas · Proyecto final de implementación SGSI', cx, h - 58, { align: 'center' });
+    doc.text('ISO/IEC 27001:2022 · ISO/IEC 27701 · 30 horas · Proyecto final de implementación SGSI', cx, h - 58, { align: 'center' });
 
     doc.save('certificado-iso27001-' + data.nombre.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '.pdf');
   }
